@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Smartphone, Tap, Share2, Users } from "lucide-react";
+import { ArrowRight, Smartphone, Hand, Share2, Users } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -24,7 +24,7 @@ const steps = [
     number: "03",
     title: "Tap to Share",
     description: "Simply tap your NFC card on any smartphone to instantly share your digital profile. No apps required for recipients.",
-    icon: Tap,
+    icon: Hand,
     color: "green"
   },
   {
