@@ -74,7 +74,7 @@ const Navigation = () => {
                 className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
                 asChild
               >
-                <Link to="/buy-nfc-card">Buy NFC Card</Link>
+                <Link to="/buy-nfc-card">Buy tapZe Card</Link>
               </Button>
               
               <Button 
@@ -155,7 +155,7 @@ const Navigation = () => {
                       onClick={closeMobileMenu}
                       asChild
                     >
-                      <Link to="/buy-nfc-card">Buy NFC Card</Link>
+                      <Link to="/buy-nfc-card">Get NFC Card</Link>
                     </Button>
                     
                     <Button 

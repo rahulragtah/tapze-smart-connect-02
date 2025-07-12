@@ -32,12 +32,12 @@ const DigitalProfile = () => {
               </div>
             </div>
             
-            <Button 
+            {/* <Button 
               size="lg" 
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
             >
               Create Your Profile
-            </Button>
+            </Button> */}
           </div>
         </section>
 
@@ -133,15 +133,15 @@ const DigitalProfile = () => {
                   size="lg" 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
                 >
-                  Start Free Trial
+                  Create Your Digital Profile Now
                 </Button>
-                <Button 
+                {/* <Button 
                   variant="outline" 
                   size="lg" 
                   className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-4 text-lg font-semibold rounded-full"
                 >
                   View Demo
-                </Button>
+                </Button> */}
               </div>
             </Card>
           </div>

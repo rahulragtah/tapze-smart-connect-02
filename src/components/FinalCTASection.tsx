@@ -66,9 +66,9 @@ const FinalCTASection = () => {
                 >
                   Join Now
                 </Button>
-                <Button variant="outline" size="lg" className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
+                {/* <Button variant="outline" size="lg" className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
                   Learn More
-                </Button>
+                </Button> */}
               </div>
               
               <div className="flex justify-center items-center gap-8 text-gray-400 text-sm">

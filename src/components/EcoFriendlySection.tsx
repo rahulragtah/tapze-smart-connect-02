@@ -92,9 +92,9 @@ const EcoFriendlySection = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-full font-semibold text-lg">
+          {/* <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-4 rounded-full font-semibold text-lg">
             Join the Green Revolution
-          </Button>
+          </Button> */}
         </div>
       </div>
     </section>

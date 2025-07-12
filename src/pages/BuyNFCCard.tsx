@@ -58,7 +58,7 @@ const BuyNFCCard = () => {
         <section className="py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Choose Your Perfect <span className="text-gradient">NFC Card</span>
+              Your Card, <span className="text-gradient">Your Style</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Premium NFC business cards designed to make lasting impressions. 

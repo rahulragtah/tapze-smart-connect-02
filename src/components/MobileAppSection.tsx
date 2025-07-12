@@ -93,7 +93,7 @@ const MobileAppSection = () => {
           <div className="space-y-8 order-1 lg:order-2">
             <div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                The <span className="text-gradient">Control Panel</span>
+                Manage Your <span className="text-gradient">Digital Profile</span>
               </h2>
               <p className="text-xl text-gray-300 mb-4">Complete control at your fingertips</p>
               <p className="text-gray-400 leading-relaxed">

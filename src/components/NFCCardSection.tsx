@@ -52,7 +52,7 @@ const NFCCardSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Our <span className="text-gradient">NFC Cards</span>
+            Our <span className="text-gradient">Bestseller</span>
           </h2>
           <p className="text-xl text-gray-300 mb-4">Your brand, in your pocket</p>
           <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto">
@@ -125,7 +125,7 @@ const NFCCardSection = () => {
           <div className="space-y-8">
             <div>
               <h3 className="text-3xl font-bold mb-6 text-white">
-                Engineered for <span className="text-gradient">Digital Profile</span>
+                You, <span className="text-gradient">Your Way</span>
               </h3>
               <p className="text-gray-400 leading-relaxed mb-6">
                 Every Tapze card is crafted with precision using premium materials and cutting-edge NFC technology. 
@@ -181,11 +181,11 @@ const NFCCardSection = () => {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold">
-                Customize Your Card
+                Customize Your Digital Profile
               </Button>
-              <Button variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 px-8 py-3 rounded-full font-semibold">
+              {/* <Button variant="outline" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 px-8 py-3 rounded-full font-semibold">
                 View All Options
-              </Button>
+              </Button> */}
             </div>
           </div>
           

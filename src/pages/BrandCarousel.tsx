@@ -69,7 +69,7 @@ const BrandCarousel = () => {
         <div className="max-w-6xl mx-auto px-4 py-16">
           {/* Hero Section */}
           <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6 text-gradient">Brand Partnerships</h1>
+            <h1 className="text-5xl font-bold mb-6 text-gradient">Our Impact</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Join 100+ leading companies across India who trust Tapze for innovative NFC business card solutions
             </p>
