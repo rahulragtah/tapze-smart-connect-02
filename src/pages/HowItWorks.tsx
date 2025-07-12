@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, Smartphone, Hand, Share2, Users } from "lucide-react";
+import { ArrowRight, Smartphone, Hand, Share2, Users, CheckCircle } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -54,44 +54,105 @@ const HowItWorks = () => {
           </div>
         </section>
 
-        {/* Steps Section */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {steps.map((step, index) => {
-                const IconComponent = step.icon;
-                const isEven = index % 2 === 1;
-                
-                return (
-                  <div key={step.number} className={`flex gap-8 ${isEven ? 'lg:flex-row-reverse' : ''}`}>
-                    <Card className="glass p-8 flex-1">
-                      <CardContent className="p-0">
-                        <div className="flex items-start gap-6">
-                          <div className={`w-16 h-16 bg-${step.color}-600/20 rounded-full flex items-center justify-center flex-shrink-0`}>
-                            <IconComponent className={`w-8 h-8 text-${step.color}-400`} />
+        {/* Steps Section - Redesigned */}
+        <section className="py-20 px-4 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            {/* Background Elements */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-pink-900/10 rounded-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-600/5 to-pink-600/5 rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              {/* Section Header */}
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600/10 rounded-full text-purple-400 text-sm font-medium mb-4">
+                  <CheckCircle className="w-4 h-4" />
+                  Simple Process
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+                  Get Started in Minutes
+                </h2>
+                <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                  Our streamlined process makes it easy to create and share your professional digital presence
+                </p>
+              </div>
+
+              {/* Steps Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                {steps.map((step, index) => {
+                  const IconComponent = step.icon;
+                  const isEven = index % 2 === 1;
+                  
+                  return (
+                    <div key={step.number} className="group">
+                      <Card className="glass border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl overflow-hidden">
+                        <CardContent className="p-8">
+                          {/* Step Header */}
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className={`relative w-16 h-16 bg-gradient-to-br from-${step.color}-500/20 to-${step.color}-600/30 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                              <IconComponent className={`w-8 h-8 text-${step.color}-400`} />
+                              {/* Glow effect */}
+                              <div className={`absolute inset-0 bg-${step.color}-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-3 mb-2">
+                                <span className="text-2xl font-bold text-gradient">{step.number}</span>
+                                <div className="h-px bg-gradient-to-r from-purple-500 to-pink-500 flex-1"></div>
+                              </div>
+                              <h3 className="text-xl font-bold text-white group-hover:text-gradient transition-colors duration-300">
+                                {step.title}
+                              </h3>
+                            </div>
                           </div>
                           
-                          <div className="flex-1">
-                            <div className="flex items-center gap-4 mb-4">
-                              <span className="text-3xl font-bold text-gradient">{step.number}</span>
-                              <h3 className="text-2xl font-bold text-white">{step.title}</h3>
-                            </div>
-                            <p className="text-gray-300 text-lg leading-relaxed">
-                              {step.description}
-                            </p>
+                          {/* Step Description */}
+                          <p className="text-gray-300 text-base leading-relaxed">
+                            {step.description}
+                          </p>
+                          
+                          {/* Progress Indicator */}
+                          <div className="mt-6 flex items-center gap-2">
+                            {Array.from({ length: 4 }, (_, i) => (
+                              <div 
+                                key={i}
+                                className={`h-1 rounded-full transition-all duration-300 ${
+                                  i <= index 
+                                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 flex-1' 
+                                    : 'bg-gray-700 w-8'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </CardContent>
+                        
+                        {/* Animated border */}
+                        <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                      </Card>
+                      
+                      {/* Connection Arrow for Desktop */}
+                      {index < steps.length - 1 && index % 2 === 0 && (
+                        <div className="hidden lg:flex absolute top-1/2 right-0 translate-x-6 -translate-y-1/2 z-20">
+                          <div className="flex items-center gap-2 text-gray-600">
+                            <div className="w-8 h-px bg-gradient-to-r from-purple-500/50 to-transparent"></div>
+                            <ArrowRight className="w-5 h-5" />
+                            <div className="w-8 h-px bg-gradient-to-l from-purple-500/50 to-transparent"></div>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                    
-                    {index < steps.length - 1 && (
-                      <div className="hidden lg:flex items-center justify-center w-16">
-                        <ArrowRight className="w-8 h-8 text-gray-600" />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Call to Action */}
+              <div className="text-center mt-16">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                >
+                  Start Your Journey
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
             </div>
           </div>
         </section>
