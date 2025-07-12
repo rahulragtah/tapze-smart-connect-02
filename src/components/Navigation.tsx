@@ -1,0 +1,236 @@
+import { Button } from "@/components/ui/button";
+import { ShoppingCart, User, LogOut, UserCircle, Menu, X } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
+import { useState } from "react";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import LoginModal from "./LoginModal";
+import { Link } from "react-router-dom";
+
+const Navigation = () => {
+  const { totalItems, setIsOpen } = useCart();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: "John Doe", phone: "" });
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleLogin = (phone: string) => {
+    setIsLoggedIn(true);
+    setUserInfo({ name: "John Doe", phone });
+    setIsLoginModalOpen(false);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserInfo({ name: "", phone: "" });
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  const handleCartOpen = () => {
+    setIsOpen(true);
+    closeMobileMenu();
+  };
+
+  const handleLoginOpen = () => {
+    setIsLoginModalOpen(true);
+    closeMobileMenu();
+  };
+
+  return (
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link to="/">
+                <h1 className="text-2xl font-bold text-gradient">Tapze</h1>
+              </Link>
+            </div>
+            
+            {/* Desktop Navigation Items */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Button 
+                variant="ghost" 
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                asChild
+              >
+                <Link to="/buy-nfc-card">Buy NFC Card</Link>
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                asChild
+              >
+                <Link to="/digital-profile">Digital Profile</Link>
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative"
+                onClick={() => setIsOpen(true)}
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Cart
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Button>
+              
+              {isLoggedIn ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                    >
+                      <UserCircle className="w-4 h-4 mr-2" />
+                      {userInfo.name}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>
+                      <User className="w-4 h-4 mr-2" />
+                      My Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button 
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200"
+                  onClick={() => setIsLoginModalOpen(true)}
+                >
+                  Login
+                </Button>
+              )}
+            </div>
+
+            {/* Mobile Hamburger Menu */}
+            <div className="md:hidden">
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                  >
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-80 bg-background/95 backdrop-blur-md border-l border-border">
+                  <SheetHeader>
+                    <SheetTitle className="text-left">Menu</SheetTitle>
+                  </SheetHeader>
+                  
+                  <div className="flex flex-col space-y-4 mt-8">
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                      onClick={closeMobileMenu}
+                      asChild
+                    >
+                      <Link to="/buy-nfc-card">Buy NFC Card</Link>
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                      onClick={closeMobileMenu}
+                      asChild
+                    >
+                      <Link to="/digital-profile">Digital Profile</Link>
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative w-full"
+                      onClick={handleCartOpen}
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      Cart
+                      {totalItems > 0 && (
+                        <span className="absolute left-16 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                          {totalItems}
+                        </span>
+                      )}
+                    </Button>
+                    
+                    <div className="border-t border-border pt-4">
+                      {isLoggedIn ? (
+                        <div className="space-y-2">
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            onClick={closeMobileMenu}
+                          >
+                            <UserCircle className="w-4 h-4 mr-2" />
+                            {userInfo.name}
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            onClick={closeMobileMenu}
+                          >
+                            <User className="w-4 h-4 mr-2" />
+                            My Profile
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            onClick={() => {
+                              handleLogout();
+                              closeMobileMenu();
+                            }}
+                          >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Logout
+                          </Button>
+                        </div>
+                      ) : (
+                        <Button 
+                          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 w-full"
+                          onClick={handleLoginOpen}
+                        >
+                          Login
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
+        </div>
+      </nav>
+      
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onLogin={handleLogin}
+      />
+    </>
+  );
+};
+
+export default Navigation;
