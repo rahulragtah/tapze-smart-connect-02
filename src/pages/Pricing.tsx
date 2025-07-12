@@ -96,7 +96,7 @@ const Pricing = () => {
                     </CardTitle>
                     <p className="text-gray-300 mb-4">{plan.description}</p>
                     <div className="text-4xl font-bold text-white mb-2">
-                      ${plan.price}
+                    ₹{plan.price}
                     </div>
                     <div className="text-sm text-gray-400">
                       One-time purchase • {plan.cardType}

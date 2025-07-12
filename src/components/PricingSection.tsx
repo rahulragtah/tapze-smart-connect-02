@@ -4,15 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
 const plans = [{
-  name: "Start Smart",
-  price: "$49",
+  name: "Starter",
+  price: "Free",
   description: "Perfect for individual professionals",
   features: ["Premium NFC card", "Basic profile customization", "Unlimited taps", "Email support", "Standard shipping"],
   buttonText: "Get Started",
   popular: false
 }, {
-  name: "Grow Smart",
-  price: "$89",
+  name: "Business",
+  price: "₹ 1499",
   description: "For professionals who want it all",
   features: ["Premium NFC card", "Full mobile app access", "Advanced analytics", "Lead capture & CRM sync", "Real-time updates", "Priority support", "Express shipping"],
   buttonText: "Get Pro Access",

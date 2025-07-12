@@ -5,26 +5,26 @@ import { ShoppingCart, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 const cardVarieties = [{
   id: "classic-black",
-  name: "Classic Black",
+  name: "Standard NFC Card",
   description: "Timeless elegance with matte finish",
   image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop",
   features: ["Matte black finish", "Laser engraving", "Standard thickness"],
-  price: 49
+  price: 499
 }, {
   id: "premium-metal",
-  name: "Premium Metal",
+  name: "Premium Metal NFC Card",
   description: "Luxury steel with custom etching",
   image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
   features: ["Brushed steel", "Precision etching", "Extra durability"],
-  price: 89,
+  price: 999,
   popular: true
 }, {
   id: "transparent-glass",
-  name: "Transparent Glass",
+  name: "Custom NFC Card",
   description: "Modern frosted glass design",
   image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=250&fit=crop",
   features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
-  price: 129
+  price: 1299
 }];
 const NFCCardSection = () => {
   const {
@@ -52,7 +52,7 @@ const NFCCardSection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Digital <span className="text-gradient">NFC Cards</span>
+            Our <span className="text-gradient">NFC Cards</span>
           </h2>
           <p className="text-xl text-gray-300 mb-4">Your brand, in your pocket</p>
           <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto">
@@ -92,7 +92,7 @@ const NFCCardSection = () => {
                   <Link to={`/products/${card.id}`} className="hover:text-purple-400 transition-colors">
                     <h3 className="text-xl font-semibold text-white">{card.name}</h3>
                   </Link>
-                  <span className="text-2xl font-bold text-gradient">${card.price}</span>
+                  <span className="text-2xl font-bold text-gradient">₹{card.price}</span>
                 </div>
                 
                 <p className="text-gray-400 text-sm mb-4">{card.description}</p>

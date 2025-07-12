@@ -39,7 +39,7 @@ const AddToCartDemo = () => {
           />
           <div>
             <h3 className="font-semibold text-lg">{product.name}</h3>
-            <p className="text-2xl font-bold text-primary">${product.price}</p>
+            <p className="text-2xl font-bold text-primary">₹{product.price}</p>
           </div>
           <Button 
             onClick={() => addItem(product)}

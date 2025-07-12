@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }} />
       
       {/* Main content - Left-Right Layout */}
-      <div className="relative z-10 max-w-7xl mx-auto min-h-screen flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto  flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           {/* Left side - Text content */}
           <div className="animate-fade-in">

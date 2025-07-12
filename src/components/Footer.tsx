@@ -23,28 +23,28 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               <a 
-                href="#" 
+                href="http://www.facebook.com/Tapze.official" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="Facebook"
               >
                 <Facebook className="w-4 h-4" />
               </a>
-              <a 
+              {/* <a 
                 href="#" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="Twitter"
               >
                 <Twitter className="w-4 h-4" />
-              </a>
-              <a 
-                href="#" 
+              </a> */}
+              {/* <a 
+                href="https://www.instagram.com/tapze.official/" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
-              </a>
+              </a> */}
               <a 
-                href="#" 
+                href="https://www.instagram.com/tapze.official/" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="Instagram"
               >
@@ -60,7 +60,7 @@ const Footer = () => {
               <li><Link to="/buy-nfc-card" className="hover:text-white transition-colors">Buy NFC Card</Link></li>
               <li><Link to="/digital-profile" className="hover:text-white transition-colors">Digital Profile</Link></li>
               <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
-              <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link to="/pricing" className="hover:text-white transition-colors">Our Plans</Link></li>
               <li><Link to="/brands" className="hover:text-white transition-colors">Our Brands</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
@@ -81,7 +81,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 text-center">
           <p className="text-gray-400">
-            © {currentYear} Tapze. All rights reserved. Made with ❤️ for professionals worldwide.
+            © {currentYear} Tapze (A product of Webfarms Infotech LLP). All rights reserved. Made with ❤️ for professionals worldwide.
           </p>
         </div>
       </div>

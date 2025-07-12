@@ -31,7 +31,7 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
       <div className="flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0">
           <p className="text-white font-medium truncate">{productName}</p>
-          <p className="text-purple-400 font-bold">${price}</p>
+          <p className="text-purple-400 font-bold">₹{price}</p>
         </div>
         
         <div className="flex gap-2">

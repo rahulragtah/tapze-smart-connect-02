@@ -87,8 +87,8 @@ const Contact = () => {
                         <MapPin className="w-6 h-6 text-purple-400" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">Visit Us</h3>
-                        <p className="text-gray-300">123 Innovation Street, Tech Valley, CA 94025</p>
+                        <h3 className="font-semibold text-white">Registered Address</h3>
+                        <p className="text-gray-300">3/1, Subhash Nagar, New Delhi, 110027</p>
                       </div>
                     </div>
                   </Card>
@@ -100,7 +100,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">Email Us</h3>
-                        <p className="text-gray-300">hello@tapze.com</p>
+                        <p className="text-gray-300">hello@tapze.in</p>
                       </div>
                     </div>
                   </Card>
@@ -112,7 +112,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">Call Us</h3>
-                        <p className="text-gray-300">+1 (555) 123-4567</p>
+                        <p className="text-gray-300">+91 9990909789</p>
                       </div>
                     </div>
                   </Card>

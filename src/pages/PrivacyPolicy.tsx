@@ -93,9 +93,9 @@ const PrivacyPolicy = () => {
               <h2 className="text-2xl font-semibold mb-4 text-white">8. Contact Us</h2>
               <div className="text-gray-300 space-y-4">
                 <p>If you have any questions about this Privacy Policy or our data practices, please contact us at:</p>
-                <p>Email: privacy@tapze.com<br />
-                Phone: +1 (555) 123-4567<br />
-                Address: 123 Innovation Street, Tech Valley, CA 94025</p>
+                <p>Email: privacy@tapze.in<br />
+                Phone: +91 9990909789<br />
+                Registered Address: 3/1, Subhash Nagar, New Delhi, 110027</p>
               </div>
             </section>
 

@@ -11,10 +11,10 @@ import Footer from "@/components/Footer";
 const products = [
   {
     id: "classic-black",
-    name: "Classic Black NFC Card",
+    name: "Standard NFC Card",
     description: "Timeless elegance with matte finish",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=300&fit=crop",
-    price: 49,
+    price: 499,
     features: ["Matte black finish", "Laser engraving", "Standard thickness"],
     popular: false
   },
@@ -23,16 +23,16 @@ const products = [
     name: "Premium Metal NFC Card",
     description: "Luxury steel with custom etching",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop",
-    price: 89,
+    price: 999,
     features: ["Brushed steel", "Precision etching", "Extra durability"],
     popular: true
   },
   {
     id: "transparent-glass",
-    name: "Transparent Glass NFC Card",
+    name: "Custom NFC Card",
     description: "Modern frosted glass design",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=300&fit=crop",
-    price: 129,
+    price: 1299,
     features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
     popular: false
   }
@@ -104,7 +104,7 @@ const BuyNFCCard = () => {
                     </div>
                     
                     <div className="text-3xl font-bold text-white">
-                      ${product.price}
+                    ₹{product.price}
                     </div>
                   </CardContent>
                   
