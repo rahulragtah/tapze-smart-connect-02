@@ -1,9 +1,11 @@
 
+import { useEffect, useState } from "react";
 import { 
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import type { CarouselApi } from "@/components/ui/carousel";
 
 const ClientLogosCarousel = () => {
   const logos = [
@@ -15,7 +17,28 @@ const ClientLogosCarousel = () => {
     { name: "Netflix", url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
     { name: "Spotify", url: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
     { name: "Uber", url: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" },
+    { name: "Tesla", url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Tesla_T_symbol.svg" },
+    { name: "Adobe", url: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg" },
+    { name: "Intel", url: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg" },
+    { name: "Samsung", url: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" },
   ];
+
+  const [api, setApi] = useState<CarouselApi>();
+
+  useEffect(() => {
+    if (!api) {
+      return;
+    }
+
+    // Auto-scroll functionality
+    const autoScroll = setInterval(() => {
+      api.scrollNext();
+    }, 3000); // Scroll every 3 seconds
+
+    return () => {
+      clearInterval(autoScroll);
+    };
+  }, [api]);
 
   return (
     <section className="py-20 px-4">
@@ -30,9 +53,11 @@ const ClientLogosCarousel = () => {
         </div>
         
         <Carousel
+          setApi={setApi}
           opts={{
             align: "start",
             loop: true,
+            dragFree: true,
           }}
           className="w-full"
         >

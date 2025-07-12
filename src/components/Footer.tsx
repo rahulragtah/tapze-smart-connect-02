@@ -55,6 +55,7 @@ const Footer = () => {
               <li><Link to="/digital-profile" className="hover:text-white transition-colors">Digital Profile</Link></li>
               <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
               <li><Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
+              <li><Link to="/brands" className="hover:text-white transition-colors">Our Brands</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
