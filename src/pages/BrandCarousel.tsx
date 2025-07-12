@@ -1,89 +1,213 @@
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Monitor, 
+  Building2, 
+  Heart, 
+  Home, 
+  Users, 
+  TrendingUp, 
+  Shield, 
+  Briefcase,
+  CheckCircle,
+  Star,
+  Globe,
+  Award
+} from "lucide-react";
 
 const BrandCarousel = () => {
+  const industries = [
+    {
+      title: "Technology",
+      description: "Software companies, IT services, and tech startups rely on Tapze for seamless digital networking at conferences and client meetings.",
+      icon: Monitor,
+      color: "text-blue-400"
+    },
+    {
+      title: "Finance & Banking",
+      description: "Financial institutions use our secure NFC cards to maintain professional standards while embracing digital transformation.",
+      icon: TrendingUp,
+      color: "text-green-400"
+    },
+    {
+      title: "Healthcare",
+      description: "Medical professionals and healthcare organizations trust Tapze for hygienic, contactless information sharing.",
+      icon: Heart,
+      color: "text-red-400"
+    },
+    {
+      title: "Real Estate",
+      description: "Real estate agents and firms use our NFC cards to instantly share property listings and contact information.",
+      icon: Home,
+      color: "text-orange-400"
+    }
+  ];
+
+  const benefits = [
+    "Reducing environmental impact with digital-first solutions",
+    "Improving networking efficiency by 300%",
+    "Enhancing brand image with cutting-edge technology",
+    "Increasing lead conversion rates through instant contact sharing",
+    "Streamlining follow-up processes with automated integrations"
+  ];
+
+  const features = [
+    "Professional-grade NFC technology with 99.9% reliability",
+    "Customizable branding options for corporate identity",
+    "Bulk ordering solutions with competitive pricing",
+    "Dedicated account management and support",
+    "Analytics and insights for networking performance",
+    "Enterprise-level security and data protection"
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <div className="pt-16">
-        <div className="max-w-4xl mx-auto px-4 py-16">
-          <h1 className="text-4xl font-bold mb-8 text-white">Brand Partnerships</h1>
-          <div className="prose prose-invert max-w-none space-y-8">
-            
-            <section>
-              <h2 className="text-2xl font-semibold mb-4 text-white">Trusted by Leading Companies</h2>
-              <div className="text-gray-300 space-y-4">
-                <p>Tapze is proud to partner with over 100 leading brands across India, providing them with innovative NFC business card solutions that revolutionize professional networking.</p>
-                <p>Our clients range from Fortune 500 companies to innovative startups, all united by their commitment to modern, efficient networking solutions.</p>
-              </div>
-            </section>
+        <div className="max-w-6xl mx-auto px-4 py-16">
+          {/* Hero Section */}
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold mb-6 text-gradient">Brand Partnerships</h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Join 100+ leading companies across India who trust Tapze for innovative NFC business card solutions
+            </p>
+          </div>
 
-            <section>
-              <h2 className="text-2xl font-semibold mb-4 text-white">Why Companies Choose Tapze</h2>
-              <div className="text-gray-300 space-y-4">
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Professional-grade NFC technology with 99.9% reliability</li>
-                  <li>Customizable branding options for corporate identity</li>
-                  <li>Bulk ordering solutions with competitive pricing</li>
-                  <li>Dedicated account management and support</li>
-                  <li>Analytics and insights for networking performance</li>
-                  <li>Enterprise-level security and data protection</li>
-                </ul>
-              </div>
-            </section>
+          {/* Stats Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <Card className="text-center glass">
+              <CardContent className="pt-6">
+                <div className="text-4xl font-bold text-gradient mb-2">100+</div>
+                <p className="text-muted-foreground">Trusted Partners</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center glass">
+              <CardContent className="pt-6">
+                <div className="text-4xl font-bold text-gradient mb-2">99.9%</div>
+                <p className="text-muted-foreground">Reliability Rate</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center glass">
+              <CardContent className="pt-6">
+                <div className="text-4xl font-bold text-gradient mb-2">300%</div>
+                <p className="text-muted-foreground">Efficiency Boost</p>
+              </CardContent>
+            </Card>
+          </div>
 
-            <section>
-              <h2 className="text-2xl font-semibold mb-4 text-white">Industries We Serve</h2>
-              <div className="text-gray-300 space-y-4">
+          {/* Why Choose Section */}
+          <section className="mb-16">
+            <Card className="glass">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
+                  <Award className="w-8 h-8 text-primary" />
+                  Why Companies Choose Tapze
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-white">Technology</h3>
-                    <p>Software companies, IT services, and tech startups rely on Tapze for seamless digital networking at conferences and client meetings.</p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-white">Finance & Banking</h3>
-                    <p>Financial institutions use our secure NFC cards to maintain professional standards while embracing digital transformation.</p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-white">Healthcare</h3>
-                    <p>Medical professionals and healthcare organizations trust Tapze for hygienic, contactless information sharing.</p>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium mb-2 text-white">Real Estate</h3>
-                    <p>Real estate agents and firms use our NFC cards to instantly share property listings and contact information.</p>
-                  </div>
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                      <p className="text-gray-300">{feature}</p>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            </section>
+              </CardContent>
+            </Card>
+          </section>
 
-            <section>
-              <h2 className="text-2xl font-semibold mb-4 text-white">Partnership Benefits</h2>
-              <div className="text-gray-300 space-y-4">
-                <p>When you partner with Tapze, you join a community of forward-thinking companies that are:</p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Reducing environmental impact with digital-first solutions</li>
-                  <li>Improving networking efficiency by 300%</li>
-                  <li>Enhancing brand image with cutting-edge technology</li>
-                  <li>Increasing lead conversion rates through instant contact sharing</li>
-                  <li>Streamlining follow-up processes with automated integrations</li>
-                </ul>
-              </div>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold mb-4 text-white">Get Started</h2>
-              <div className="text-gray-300 space-y-4">
-                <p>Ready to join the companies that are transforming their networking? Contact our enterprise team to discuss bulk orders, custom branding, and partnership opportunities.</p>
-                <p>Email: enterprise@tapze.com<br />
-                Phone: +91 98765 43210<br />
-                Schedule a demo: <a href="/contact" className="text-purple-400 hover:text-purple-300">Contact us today</a></p>
-              </div>
-            </section>
-
-            <div className="text-sm text-gray-400 mt-12 pt-8 border-t border-gray-800">
-              <p>Join 100+ companies that trust Tapze for their networking needs.</p>
+          {/* Industries Section */}
+          <section className="mb-16">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-4 text-white flex items-center justify-center gap-3">
+                <Globe className="w-8 h-8 text-primary" />
+                Industries We Serve
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Transforming networking across diverse sectors
+              </p>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {industries.map((industry, index) => {
+                const IconComponent = industry.icon;
+                return (
+                  <Card key={index} className="glass hover:scale-105 transition-all duration-300 group">
+                    <CardContent className="p-8">
+                      <div className="flex items-center gap-4 mb-4">
+                        <div className={`p-3 rounded-lg bg-gray-800/50 group-hover:bg-gray-700/50 transition-colors`}>
+                          <IconComponent className={`w-8 h-8 ${industry.color}`} />
+                        </div>
+                        <h3 className="text-2xl font-semibold text-white">{industry.title}</h3>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">{industry.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Partnership Benefits */}
+          <section className="mb-16">
+            <Card className="glass">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
+                  <Star className="w-8 h-8 text-primary" />
+                  Partnership Benefits
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-300 text-center mb-8 text-lg">
+                  When you partner with Tapze, you join a community of forward-thinking companies that are:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                      <p className="text-gray-300">{benefit}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* CTA Section */}
+          <section className="mb-16">
+            <Card className="glass border-primary/20">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
+                  <Briefcase className="w-8 h-8 text-primary" />
+                  Ready to Get Started?
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-gray-300 mb-6 text-lg">
+                  Join the companies that are transforming their networking. Contact our enterprise team to discuss bulk orders, custom branding, and partnership opportunities.
+                </p>
+                <div className="space-y-2 text-gray-300">
+                  <p><strong className="text-white">Email:</strong> enterprise@tapze.com</p>
+                  <p><strong className="text-white">Phone:</strong> +91 98765 43210</p>
+                  <p>
+                    <strong className="text-white">Schedule a demo:</strong>{" "}
+                    <a href="/contact" className="text-primary hover:text-primary/80 transition-colors underline">
+                      Contact us today
+                    </a>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Footer Stats */}
+          <div className="text-center pt-8 border-t border-gray-800">
+            <p className="text-gray-400 flex items-center justify-center gap-2">
+              <Users className="w-5 h-5" />
+              Join 100+ companies that trust Tapze for their networking needs.
+            </p>
           </div>
         </div>
       </div>
