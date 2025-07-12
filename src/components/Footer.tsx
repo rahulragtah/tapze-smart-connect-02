@@ -11,7 +11,13 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
-            <div className="text-3xl font-bold text-gradient mb-4">Tapze</div>
+            <div className="mb-4">
+              <img 
+                src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                alt="Tapze Logo" 
+                className="h-10 w-auto"
+              />
+            </div>
             <p className="text-gray-400 mb-6 max-w-md">
               Premium NFC business cards with smart software to power your professional networking.
             </p>

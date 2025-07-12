@@ -86,7 +86,11 @@ const HeroSection = () => {
                 <div className="relative">
                   <div className="w-64 h-40 bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10" />
-                    <div className="text-white font-bold text-2xl z-10">TAPZE</div>
+                    <img 
+                      src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                      alt="Tapze Logo" 
+                      className="h-8 w-auto z-10"
+                    />
                     <div className="absolute bottom-4 right-4 w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                       <div className="w-4 h-4 border-2 border-white rounded-sm" />
                     </div>

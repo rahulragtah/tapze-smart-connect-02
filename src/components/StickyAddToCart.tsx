@@ -39,7 +39,7 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
             onClick={onAddToCart}
             variant="outline"
             size="sm"
-            className="border-purple-500 text-purple-400 hover:bg-purple-500/10"
+            className="border-purple-500 text-purple-400 hover:bg-purple-500/10 rounded-full"
           >
             <ShoppingCart className="w-4 h-4" />
           </Button>
@@ -47,7 +47,7 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
           <Button
             onClick={onBuyNow}
             size="sm"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full"
           >
             <Zap className="w-4 h-4 mr-1" />
             Buy Now

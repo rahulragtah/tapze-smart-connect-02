@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, LogOut, UserCircle, Menu, X } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
@@ -58,7 +59,11 @@ const Navigation = () => {
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/">
-                <h1 className="text-2xl font-bold text-gradient">Tapze</h1>
+                <img 
+                  src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                  alt="Tapze Logo" 
+                  className="h-8 w-auto"
+                />
               </Link>
             </div>
             
@@ -66,7 +71,7 @@ const Navigation = () => {
             <div className="hidden md:flex items-center space-x-6">
               <Button 
                 variant="ghost" 
-                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
                 asChild
               >
                 <Link to="/buy-nfc-card">Buy NFC Card</Link>
@@ -74,7 +79,7 @@ const Navigation = () => {
               
               <Button 
                 variant="ghost" 
-                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
                 asChild
               >
                 <Link to="/digital-profile">Digital Profile</Link>
@@ -82,7 +87,7 @@ const Navigation = () => {
               
               <Button 
                 variant="ghost" 
-                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative"
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative rounded-full"
                 onClick={() => setIsOpen(true)}
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
@@ -99,7 +104,7 @@ const Navigation = () => {
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="ghost" 
-                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
                     >
                       <UserCircle className="w-4 h-4 mr-2" />
                       {userInfo.name}
@@ -118,7 +123,7 @@ const Navigation = () => {
                 </DropdownMenu>
               ) : (
                 <Button 
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 rounded-full"
                   onClick={() => setIsLoginModalOpen(true)}
                 >
                   Login
@@ -133,7 +138,7 @@ const Navigation = () => {
                   <Button 
                     variant="ghost" 
                     size="icon"
-                    className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200"
+                    className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
                   >
                     <Menu className="h-6 w-6" />
                   </Button>
@@ -146,7 +151,7 @@ const Navigation = () => {
                   <div className="flex flex-col space-y-4 mt-8">
                     <Button 
                       variant="ghost" 
-                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
                       onClick={closeMobileMenu}
                       asChild
                     >
@@ -155,7 +160,7 @@ const Navigation = () => {
                     
                     <Button 
                       variant="ghost" 
-                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
                       onClick={closeMobileMenu}
                       asChild
                     >
@@ -164,7 +169,7 @@ const Navigation = () => {
                     
                     <Button 
                       variant="ghost" 
-                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative w-full"
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative w-full rounded-full"
                       onClick={handleCartOpen}
                     >
                       <ShoppingCart className="w-4 h-4 mr-2" />
@@ -181,7 +186,7 @@ const Navigation = () => {
                         <div className="space-y-2">
                           <Button 
                             variant="ghost" 
-                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
                             onClick={closeMobileMenu}
                           >
                             <UserCircle className="w-4 h-4 mr-2" />
@@ -189,7 +194,7 @@ const Navigation = () => {
                           </Button>
                           <Button 
                             variant="ghost" 
-                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
                             onClick={closeMobileMenu}
                           >
                             <User className="w-4 h-4 mr-2" />
@@ -197,7 +202,7 @@ const Navigation = () => {
                           </Button>
                           <Button 
                             variant="ghost" 
-                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full"
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
                             onClick={() => {
                               handleLogout();
                               closeMobileMenu();
@@ -209,7 +214,7 @@ const Navigation = () => {
                         </div>
                       ) : (
                         <Button 
-                          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 w-full"
+                          className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 w-full rounded-full"
                           onClick={handleLoginOpen}
                         >
                           Login
