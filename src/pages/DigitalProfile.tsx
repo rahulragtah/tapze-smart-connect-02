@@ -20,6 +20,18 @@ const DigitalProfile = () => {
               Create a stunning digital business card that showcases your professional identity. 
               Share your contact info, social links, and portfolio instantly.
             </p>
+            
+            {/* Banner Image */}
+            <div className="mb-8 flex justify-center">
+              <div className="relative max-w-md mx-auto">
+                <img 
+                  src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png"
+                  alt="NFC Card and Phone showing digital profile interaction"
+                  className="w-full h-auto rounded-lg shadow-2xl"
+                />
+              </div>
+            </div>
+            
             <Button 
               size="lg" 
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
