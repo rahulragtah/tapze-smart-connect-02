@@ -85,7 +85,7 @@ const HeroSection = () => {
                   <div className="w-64 h-40 bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10" />
                     <img 
-                      src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png" 
+                      src="/lovable-uploads/94594e9d-7a28-429f-a567-2117c0af204a.png" 
                       alt="Tapze Logo" 
                       className="h-8 w-auto z-10"
                     />

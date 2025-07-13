@@ -66,7 +66,7 @@ const Navigation = () => {
             <div className="flex-shrink-0">
               <Link to="/">
                 <img 
-                  src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png" 
+                  src="/lovable-uploads/94594e9d-7a28-429f-a567-2117c0af204a.png" 
                   alt="Tapze Logo" 
                   className="h-8 w-auto"
                 />

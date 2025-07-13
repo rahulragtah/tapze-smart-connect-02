@@ -1,61 +1,77 @@
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Check, Star } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { 
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-const plans = [
+const faqs = [
   {
-    name: "Starter",
-    price: 49,
-    description: "Perfect for individuals getting started with digital networking",
-    features: [
-      "1 NFC Business Card",
-      "Digital Profile Creation",
-      "Unlimited Profile Updates",
-      "Basic Analytics",
-      "QR Code Generation",
-      "Email Support"
-    ],
-    popular: false,
-    cardType: "Classic Black"
+    question: "How does NFC work?",
+    answer: "NFC (Near Field Communication) lets devices communicate when they're close together. Just hold your card near any smartphone, and it instantly shares your digital profile. No apps required!"
   },
   {
-    name: "Professional",
-    price: 89,
-    description: "Ideal for professionals who want to make a lasting impression", 
-    features: [
-      "1 Premium Metal NFC Card",
-      "Advanced Digital Profile",
-      "Unlimited Profile Updates", 
-      "Detailed Analytics & Insights",
-      "Custom QR Codes",
-      "Lead Management Tools",
-      "Priority Support",
-      "Custom Branding"
-    ],
-    popular: true,
-    cardType: "Premium Metal"
+    question: "Will this work with my iPhone?",
+    answer: "Absolutely! Our NFC cards work with all iPhones from iPhone 7 onwards, and virtually all Android phones. The recipient doesn't need any special app - it just works."
   },
   {
-    name: "Enterprise",
-    price: 129,
-    description: "For executives and enterprises requiring premium solutions",
-    features: [
-      "1 Transparent Glass NFC Card",
-      "Premium Digital Profile",
-      "Unlimited Profile Updates",
-      "Advanced Analytics Dashboard",
-      "Custom QR & NFC Programming",
-      "CRM Integration",
-      "White-label Solutions",
-      "Dedicated Account Manager",
-      "Custom Card Design"
-    ],
-    popular: false,
-    cardType: "Transparent Glass"
+    question: "How do I program my card?",
+    answer: "Download our free Tapze app, create your digital profile, and tap your card to your phone. You can update your info anytime - your card will always share the latest version."
+  },
+  {
+    question: "Can I customize what information gets shared?",
+    answer: "Yes! You control exactly what gets shared - name, phone, email, social media, website, or anything else. You can even create different profiles for different situations."
+  },
+  {
+    question: "What if I lose my card?",
+    answer: "No worries! Your information is stored safely in our app. Order a replacement card and program it with the same profile. You can also remotely disable a lost card for security."
+  },
+  {
+    question: "How durable are these cards?",
+    answer: "Our cards are built to last! They're waterproof, scratch-resistant, and can handle daily use. The Classic Black has a premium matte finish, while the Metal and Glass variants offer extra durability."
+  },
+  {
+    question: "Is this a one-time purchase or subscription?",
+    answer: "All our plans are one-time purchases. You get lifetime access to your digital profile, unlimited updates, and ongoing software improvements at no additional cost."
+  },
+  {
+    question: "Can I upgrade my plan later?",
+    answer: "Yes! You can upgrade to a higher tier at any time. We'll apply the difference in pricing and send you your new premium card."
+  },
+  {
+    question: "Do you offer bulk discounts?",
+    answer: "Absolutely! We offer special pricing for teams and enterprises. Contact our sales team for custom quotes on orders of 10 or more cards."
+  },
+  {
+    question: "What card types do you offer?",
+    answer: "We offer three premium card types: Classic Black (matte finish), Premium Metal (sleek and durable), and Transparent Glass (unique and eye-catching). Each card type offers the same NFC functionality."
+  },
+  {
+    question: "How long does shipping take?",
+    answer: "Standard shipping takes 5-7 business days within India. We also offer express shipping (2-3 business days) for urgent orders. International shipping is available with 10-15 business days delivery."
+  },
+  {
+    question: "Can I track my order?",
+    answer: "Yes! Once your order is processed, you'll receive a tracking number via email. You can track your order status in real-time through our website or the shipping partner's portal."
+  },
+  {
+    question: "What if my card stops working?",
+    answer: "Our cards come with a 1-year warranty against manufacturing defects. If your card stops working due to a defect, we'll replace it free of charge. Normal wear and tear is not covered."
+  },
+  {
+    question: "Can I use multiple cards with one profile?",
+    answer: "Yes! You can program multiple cards with the same profile. This is perfect if you want backup cards or different card types for different occasions."
+  },
+  {
+    question: "Is my data secure?",
+    answer: "Absolutely! We use industry-standard encryption to protect your data. You control what information is shared, and you can update or delete your profile anytime. We never sell your personal information."
+  },
+  {
+    question: "Do you offer customer support?",
+    answer: "Yes! We provide email support for all customers, with priority support for premium plans. Our support team typically responds within 24 hours on business days."
   }
 ];
 
@@ -68,104 +84,39 @@ const Pricing = () => {
         <section className="py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Simple, Transparent <span className="text-gradient">Pricing</span>
+              Frequently Asked <span className="text-gradient">Questions</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Choose the perfect plan for your networking needs. All plans include 
-              lifetime software updates and unlimited profile changes.
+              Got questions? We've got answers. Here's everything you need to know about tapZe NFC cards.
             </p>
           </div>
         </section>
 
-        {/* Pricing Cards */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {plans.map((plan) => (
-                <Card key={plan.name} className={`glass relative ${plan.popular ? 'border-2 border-purple-500' : ''}`}>
-                  {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600">
-                      <Star className="w-3 h-3 mr-1" />
-                      Most Popular
-                    </Badge>
-                  )}
-                  
-                  <CardHeader className="text-center pb-8">
-                    <CardTitle className="text-2xl font-bold text-white mb-2">
-                      {plan.name}
-                    </CardTitle>
-                    <p className="text-gray-300 mb-4">{plan.description}</p>
-                    <div className="text-4xl font-bold text-white mb-2">
-                    ₹{plan.price}
-                    </div>
-                    <div className="text-sm text-gray-400">
-                      One-time purchase • {plan.cardType}
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    {plan.features.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
-                        <span className="text-gray-300">{feature}</span>
-                      </div>
-                    ))}
-                  </CardContent>
-                  
-                  <CardFooter className="pt-8">
-                    <Button 
-                      className={`w-full ${
-                        plan.popular 
-                          ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700' 
-                          : 'bg-gray-800 hover:bg-gray-700'
-                      } text-white py-3 text-lg font-semibold`}
-                    >
-                      Get Started
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* FAQ Section */}
-        <section className="py-20 px-4">
+        <section className="py-16 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12 text-white">
-              Frequently Asked Questions
-            </h2>
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem 
+                  key={index} 
+                  value={`item-${index}`}
+                  className="glass rounded-xl border-none"
+                >
+                  <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-purple-400 transition-colors">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-4 text-gray-400 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
             
-            <div className="space-y-8">
-              <Card className="glass p-6">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Is this a one-time purchase or subscription?
-                </h3>
-                <p className="text-gray-300">
-                  All our plans are one-time purchases. You get lifetime access to your digital profile, 
-                  unlimited updates, and ongoing software improvements at no additional cost.
-                </p>
-              </Card>
-
-              <Card className="glass p-6">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Can I upgrade my plan later?
-                </h3>
-                <p className="text-gray-300">
-                  Yes! You can upgrade to a higher tier at any time. We'll apply the difference 
-                  in pricing and send you your new premium card.
-                </p>
-              </Card>
-
-              <Card className="glass p-6">
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  Do you offer bulk discounts?
-                </h3>
-                <p className="text-gray-300">
-                  Absolutely! We offer special pricing for teams and enterprises. Contact our sales 
-                  team for custom quotes on orders of 10 or more cards.
-                </p>
-              </Card>
+            <div className="text-center mt-12">
+              <p className="text-gray-400 mb-4">Still have questions?</p>
+              <button className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+                Contact our support team →
+              </button>
             </div>
           </div>
         </section>

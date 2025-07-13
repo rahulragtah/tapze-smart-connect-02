@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Instagram, Linkedin, Twitter, Facebook } from "lucide-react";
 
@@ -13,7 +12,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
               <img 
-                src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                src="/lovable-uploads/94594e9d-7a28-429f-a567-2117c0af204a.png" 
                 alt="Tapze Logo" 
                 className="h-10 w-auto"
               />
