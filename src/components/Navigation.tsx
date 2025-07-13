@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, LogOut, UserCircle, Menu, X } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -17,7 +17,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginModal from "./LoginModal";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navigation = () => {
   const { totalItems, setIsOpen } = useCart();
@@ -25,6 +25,7 @@ const Navigation = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({ name: "John Doe", phone: "" });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleLogin = (phone: string) => {
     setIsLoggedIn(true);
@@ -47,9 +48,14 @@ const Navigation = () => {
   };
 
   const handleLoginOpen = () => {
-    setIsLoginModalOpen(true);
+    window.open('https://dashboard.tapze.in/login', '_blank');
     closeMobileMenu();
   };
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <>
@@ -60,7 +66,7 @@ const Navigation = () => {
             <div className="flex-shrink-0">
               <Link to="/">
                 <img 
-                  src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                  src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png" 
                   alt="Tapze Logo" 
                   className="h-8 w-auto"
                 />
@@ -124,7 +130,7 @@ const Navigation = () => {
               ) : (
                 <Button 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 rounded-full"
-                  onClick={() => setIsLoginModalOpen(true)}
+                  onClick={handleLoginOpen}
                 >
                   Login
                 </Button>

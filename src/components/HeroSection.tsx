@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -53,12 +54,9 @@ const HeroSection = () => {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button to="/buy-nfc-card" size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105">
-                Get Your tapZe Card
+              <Button asChild size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105">
+                <Link to="/buy-nfc-card">Get Your tapZe Card</Link>
               </Button>
-              {/* <Button variant="outline" size="lg" className="border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
-                See How It Works
-              </Button> */}
             </div>
             
             {/* Stats */}
@@ -87,7 +85,7 @@ const HeroSection = () => {
                   <div className="w-64 h-40 bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10" />
                     <img 
-                      src="/lovable-uploads/bce3aedd-03f9-4ec8-a0e4-b98fa13bce26.png" 
+                      src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png" 
                       alt="Tapze Logo" 
                       className="h-8 w-auto z-10"
                     />

@@ -1,5 +1,14 @@
 
 import { Card } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 
 const testimonials = [
   {
@@ -47,6 +56,16 @@ const testimonials = [
 ];
 
 const TestimonialsSection = () => {
+  const plugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
+
+  // Group testimonials into sets of 3
+  const groupedTestimonials = [];
+  for (let i = 0; i < testimonials.length; i += 3) {
+    groupedTestimonials.push(testimonials.slice(i, i + 3));
+  }
+
   return (
     <section className="py-20 px-4 relative">
       <div className="max-w-6xl mx-auto">
@@ -59,28 +78,47 @@ const TestimonialsSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
-                  {testimonial.avatar}
+        <Carousel
+          plugins={[plugin.current]}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+        >
+          <CarouselContent>
+            {groupedTestimonials.map((group, groupIndex) => (
+              <CarouselItem key={groupIndex}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {group.map((testimonial, index) => (
+                    <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+                      <div className="flex items-center mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                          {testimonial.avatar}
+                        </div>
+                        <div>
+                          <div className="text-white font-semibold">{testimonial.name}</div>
+                          <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                          <div className="text-gray-500 text-xs">{testimonial.company}</div>
+                        </div>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed text-sm">
+                        "{testimonial.quote}"
+                      </p>
+                      <div className="flex text-yellow-400 mt-4">
+                        {"★".repeat(5)}
+                      </div>
+                    </Card>
+                  ))}
                 </div>
-                <div>
-                  <div className="text-white font-semibold">{testimonial.name}</div>
-                  <div className="text-gray-400 text-sm">{testimonial.role}</div>
-                  <div className="text-gray-500 text-xs">{testimonial.company}</div>
-                </div>
-              </div>
-              <p className="text-gray-300 leading-relaxed text-sm">
-                "{testimonial.quote}"
-              </p>
-              <div className="flex text-yellow-400 mt-4">
-                {"★".repeat(5)}
-              </div>
-            </Card>
-          ))}
-        </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="hidden md:flex" />
+          <CarouselNext className="hidden md:flex" />
+        </Carousel>
       </div>
     </section>
   );
