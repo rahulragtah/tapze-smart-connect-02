@@ -1,6 +1,8 @@
 
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { Flame } from "lucide-react";
 
 const cards = [
   {
@@ -10,7 +12,8 @@ const cards = [
     description: "Timeless elegance with matte finish",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop",
     features: ["Matte black finish", "Laser engraving", "Standard thickness"],
-    price: 49
+    price: 49,
+    hotSelling: false
   },
   {
     id: "premium-metal",
@@ -19,7 +22,8 @@ const cards = [
     description: "Luxury steel with custom etching",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
     features: ["Brushed steel", "Precision etching", "Extra durability"],
-    price: 89
+    price: 89,
+    hotSelling: true
   },
   {
     id: "transparent-glass",
@@ -28,7 +32,8 @@ const cards = [
     description: "Modern frosted glass design",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=600&fit=crop",
     features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
-    price: 129
+    price: 129,
+    hotSelling: false
   }
 ];
 
@@ -58,7 +63,14 @@ const NFCCardSection = () => {
               to={`/products/${card.id}`}
               className="group block"
             >
-              <Card className="glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer">
+              <Card className="glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden">
+                {card.hotSelling && (
+                  <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
+                    <Flame className="w-3 h-3 mr-1" />
+                    Hot Selling
+                  </Badge>
+                )}
+                
                 <div className="space-y-6">
                   {/* Card Image */}
                   <div className="relative overflow-hidden rounded-2xl">
@@ -93,7 +105,7 @@ const NFCCardSection = () => {
                     {/* Price */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                       <div className="text-2xl font-bold text-white">
-                        ${card.price}
+                        ₹{(card.price * 80).toLocaleString()}
                       </div>
                       <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                         View Details →
