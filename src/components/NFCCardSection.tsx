@@ -7,32 +7,32 @@ import { Flame } from "lucide-react";
 const cards = [
   {
     id: "classic-black",
-    name: "Classic Black NFC Card",
-    tagline: "Make your first impression unforgettable",
+    name: "Classic PVC Card",
+    tagline: "Tap it like it's hot" ,
     description: "Timeless elegance with matte finish",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop",
-    features: ["Matte black finish", "Laser engraving", "Standard thickness"],
-    price: 49,
+    features: ["Premium finish", "Digitally Printed", "Customized design"],
+    price: 499,
     hotSelling: false
   },
   {
     id: "premium-metal",
-    name: "Premium Metal NFC Card",
-    tagline: "Tap it like it's hot",
+    name: "Premium Metal Card",
+    tagline:  "Your First Impression, Perfected",
     description: "Luxury steel with custom etching",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
-    features: ["Brushed steel", "Precision etching", "Extra durability"],
-    price: 89,
+    features: ["Available in 4 Colors", "Laser Engraving", "Steel Finish"],
+    price: 999,
     hotSelling: true
   },
   {
     id: "transparent-glass",
-    name: "Transparent Glass NFC Card",
-    tagline: "Bye, boring paper cards",
+    name: "Customised Metal Card",
+    tagline: "Your Design, Our priority",
     description: "Modern frosted glass design",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=600&fit=crop",
-    features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
-    price: 129,
+    features: ["Laser Engraving", "Steel Finish", "Customised Design"],
+    price: 1499,
     hotSelling: false
   }
 ];
@@ -105,7 +105,7 @@ const NFCCardSection = () => {
                     {/* Price */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                       <div className="text-2xl font-bold text-white">
-                        ₹{(card.price * 80).toLocaleString()}
+                        ₹{(card.price )}
                       </div>
                       <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                         View Details →

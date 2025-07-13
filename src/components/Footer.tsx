@@ -18,7 +18,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
-              Premium NFC business cards with smart software to power your professional networking.
+            Experience the next generation of networking with NFC-enabled business cards. Tap, connect, and revolutionize the way you share your professional identity.
             </p>
             <div className="flex gap-4">
               <a 
@@ -80,7 +80,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8 text-center">
           <p className="text-gray-400">
-            © {currentYear} Tapze (A product of Webfarms Infotech LLP). All rights reserved. Made with ❤️ for professionals worldwide.
+            © {currentYear} Tapze (A product by Webfarms Infotech LLP). All rights reserved. Made with ❤️ for professionals worldwide.
           </p>
         </div>
       </div>

@@ -87,7 +87,9 @@ const Contact = () => {
                         <MapPin className="w-6 h-6 text-purple-400" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">Registered Address</h3>
+                        <h3 className="font-semibold text-white">Registered Office</h3>
+                        <p className="text-gray-300">Tapze </p>
+                        <p className="text-gray-300">(A product by Webfarms Infotech LLP)</p>
                         <p className="text-gray-300">3/1, Subhash Nagar, New Delhi, 110027</p>
                       </div>
                     </div>
