@@ -2,10 +2,56 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Smartphone, QrCode, Share2, BarChart3, Shield, Zap } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const DigitalProfile = () => {
+  const plugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
+
+  const profileScreenshots = [
+    {
+      id: 1,
+      name: "Pet Care Professional",
+      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      description: "Veterinarian profile with services showcase"
+    },
+    {
+      id: 2,
+      name: "Creative Professional",
+      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      description: "Designer profile with portfolio gallery"
+    },
+    {
+      id: 3,
+      name: "Business Consultant",
+      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      description: "Professional services and contact information"
+    },
+    {
+      id: 4,
+      name: "Interior Designer",
+      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      description: "Portfolio showcase with project gallery"
+    },
+    {
+      id: 5,
+      name: "Architecture Firm",
+      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      description: "Corporate profile with service offerings"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -21,23 +67,48 @@ const DigitalProfile = () => {
               Share your contact info, social links, and portfolio instantly.
             </p>
             
-            {/* Banner Image */}
+            {/* Profile Screenshots Carousel */}
             <div className="mb-8 flex justify-center">
-              <div className="relative max-w-md mx-auto">
-                <img 
-                  src="/lovable-uploads/da6c5064-c109-4d10-9c05-ce9b3314ec43.png"
-                  alt="NFC Card and Phone showing digital profile interaction"
-                  className="w-full h-auto rounded-lg shadow-2xl"
-                />
+              <div className="max-w-4xl mx-auto">
+                <Carousel
+                  plugins={[plugin.current]}
+                  opts={{
+                    align: "center",
+                    loop: true,
+                  }}
+                  className="w-full"
+                  onMouseEnter={plugin.current.stop}
+                  onMouseLeave={plugin.current.reset}
+                >
+                  <CarouselContent className="-ml-2 md:-ml-4">
+                    {profileScreenshots.map((profile) => (
+                      <CarouselItem key={profile.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                        <Card className="glass rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300">
+                          <div className="relative">
+                            <img 
+                              src={profile.image}
+                              alt={profile.name}
+                              className="w-full h-64 md:h-80 object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                              <h3 className="font-semibold text-lg mb-1">{profile.name}</h3>
+                              <p className="text-sm text-gray-200 opacity-90">{profile.description}</p>
+                            </div>
+                          </div>
+                        </Card>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden md:flex -left-8" />
+                  <CarouselNext className="hidden md:flex -right-8" />
+                </Carousel>
+                
+                <p className="text-gray-400 text-sm mt-4">
+                  Swipe to see different profile templates and designs
+                </p>
               </div>
             </div>
-            
-            {/* <Button 
-              size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
-            >
-              Create Your Profile
-            </Button> */}
           </div>
         </section>
 
@@ -135,13 +206,6 @@ const DigitalProfile = () => {
                 >
                   Create Your Digital Profile Now
                 </Button>
-                {/* <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 px-8 py-4 text-lg font-semibold rounded-full"
-                >
-                  View Demo
-                </Button> */}
               </div>
             </Card>
           </div>
