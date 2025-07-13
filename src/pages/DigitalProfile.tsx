@@ -23,31 +23,31 @@ const DigitalProfile = () => {
     {
       id: 1,
       name: "Pet Care Professional",
-      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      image: "/lovable-uploads/vcard27.png",
       description: "Veterinarian profile with services showcase"
     },
     {
       id: 2,
       name: "Creative Professional",
-      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      image: "/lovable-uploads/vcard28.png",
       description: "Designer profile with portfolio gallery"
     },
     {
       id: 3,
       name: "Business Consultant",
-      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      image: "/lovable-uploads/vcard29.png",
       description: "Professional services and contact information"
     },
     {
       id: 4,
       name: "Interior Designer",
-      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      image: "/lovable-uploads/vcard30.png",
       description: "Portfolio showcase with project gallery"
     },
     {
       id: 5,
       name: "Architecture Firm",
-      image: "/lovable-uploads/1a3f4f36-e2cb-47a5-b8cc-4cddb16b7e8b.png",
+      image: "/lovable-uploads/vcard31.png",
       description: "Corporate profile with service offerings"
     }
   ];

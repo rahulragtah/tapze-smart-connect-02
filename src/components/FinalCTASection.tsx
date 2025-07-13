@@ -16,7 +16,7 @@ const FinalCTASection = () => {
   return (
     <>
       <section className="py-20 px-4 relative">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <Card className="glass p-12 rounded-3xl text-center relative overflow-hidden">
             {/* Background elements */}
             <div className="absolute top-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl" />
