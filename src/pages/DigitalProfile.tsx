@@ -71,7 +71,7 @@ const DigitalProfile = () => {
             <div className="mb-8 flex justify-center">
               <div className="max-w-4xl mx-auto">
                 <Carousel
-                  plugins={[plugin.current]}
+                  plugins={[plugin.current as any]}
                   opts={{
                     align: "center",
                     loop: true,

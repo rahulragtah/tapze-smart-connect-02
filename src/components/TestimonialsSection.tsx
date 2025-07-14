@@ -79,7 +79,7 @@ const TestimonialsSection = () => {
         </div>
         
         <Carousel
-          plugins={[plugin.current]}
+          plugins={[plugin.current as any]}
           opts={{
             align: "start",
             loop: true,
