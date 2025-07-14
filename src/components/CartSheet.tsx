@@ -95,6 +95,10 @@ const CartSheet = () => {
               <Button 
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 size="lg"
+                onClick={() => {
+                  setIsOpen(false);
+                  window.location.href = '/checkout';
+                }}
               >
                 Buy Now
               </Button>
