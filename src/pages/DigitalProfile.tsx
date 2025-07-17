@@ -2,22 +2,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Smartphone, QrCode, Share2, BarChart3, Shield, Zap } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const DigitalProfile = () => {
-  const plugin = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true })
-  );
+  const [currentIndex, setCurrentIndex] = useState(2); // Start with center image active
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const profileScreenshots = [
     {
@@ -52,6 +43,45 @@ const DigitalProfile = () => {
     }
   ];
 
+  // Auto-animation effect
+  useEffect(() => {
+    const startAutoPlay = () => {
+      intervalRef.current = setInterval(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % profileScreenshots.length);
+      }, 3000);
+    };
+
+    startAutoPlay();
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [profileScreenshots.length]);
+
+  const handleMouseEnter = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % profileScreenshots.length);
+    }, 3000);
+  };
+
+  // Get visible images (5 at a time)
+  const getVisibleImages = () => {
+    const visible = [];
+    for (let i = 0; i < 5; i++) {
+      const index = (currentIndex - 2 + i + profileScreenshots.length) % profileScreenshots.length;
+      visible.push({ ...profileScreenshots[index], position: i });
+    }
+    return visible;
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -67,28 +97,31 @@ const DigitalProfile = () => {
               Share your contact info, social links, and portfolio instantly.
             </p>
             
-            {/* Profile Screenshots Carousel */}
+            {/* Custom Carousel */}
             <div className="mb-8 flex justify-center">
-              <div className="max-w-4xl mx-auto">
-                <Carousel
-                  plugins={[plugin.current as any]}
-                  opts={{
-                    align: "center",
-                    loop: true,
-                  }}
-                  className="w-full"
-                  onMouseEnter={plugin.current.stop}
-                  onMouseLeave={plugin.current.reset}
+              <div className="max-w-6xl mx-auto">
+                <div 
+                  className="flex items-start justify-center gap-4 h-96"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <CarouselContent className="-ml-2 md:-ml-4">
-                    {profileScreenshots.map((profile) => (
-                      <CarouselItem key={profile.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
-                        <Card className="glass rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300">
-                          <div className="relative">
+                  {getVisibleImages().map((profile, index) => {
+                    const isCenterImage = index === 2;
+                    return (
+                      <div
+                        key={`${profile.id}-${currentIndex}`}
+                        className={`transition-all duration-500 ease-in-out ${
+                          isCenterImage 
+                            ? 'w-72 h-96 scale-110 z-10' 
+                            : 'w-56 h-80 scale-95 opacity-70'
+                        }`}
+                      >
+                        <Card className="glass rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 h-full">
+                          <div className="relative h-full">
                             <img 
                               src={profile.image}
                               alt={profile.name}
-                              className="w-full h-64 md:h-80 object-cover"
+                              className="w-full h-full object-cover object-top"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                             <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -97,16 +130,29 @@ const DigitalProfile = () => {
                             </div>
                           </div>
                         </Card>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden md:flex -left-8" />
-                  <CarouselNext className="hidden md:flex -right-8" />
-                </Carousel>
+                      </div>
+                    );
+                  })}
+                </div>
                 
-                <p className="text-gray-400 text-sm mt-4">
-                  Swipe to see different profile templates and designs
+                <p className="text-gray-400 text-sm mt-6">
+                  Auto-rotating profile templates and designs
                 </p>
+
+                {/* Indicators */}
+                <div className="flex justify-center mt-4 gap-2">
+                  {profileScreenshots.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentIndex 
+                          ? 'bg-purple-400 w-8' 
+                          : 'bg-gray-600 hover:bg-gray-500'
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
