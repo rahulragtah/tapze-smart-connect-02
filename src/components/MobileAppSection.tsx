@@ -1,5 +1,6 @@
-
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const features = [
   {
@@ -110,6 +111,18 @@ const MobileAppSection = () => {
                   <p className="text-gray-400 text-sm">{feature.description}</p>
                 </Card>
               ))}
+            </div>
+            
+            <div className="pt-4">
+              <Button 
+                asChild
+                size="lg" 
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
+              >
+                <Link to="/digital-profile">
+                  Create Your Digital Profile
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
