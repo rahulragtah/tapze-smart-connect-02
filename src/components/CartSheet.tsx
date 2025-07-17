@@ -50,7 +50,9 @@ const CartSheet = () => {
     (validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
       ? (subtotal * couponDiscount) / 100 
       : couponDiscount) : 0;
-  const finalTotal = subtotal - discountAmount + shippingCharge;
+  const afterDiscount = subtotal - discountAmount;
+  const gstAmount = (afterDiscount * 18) / 100; // 18% GST
+  const finalTotal = afterDiscount + gstAmount + shippingCharge;
 
   const applyCoupon = () => {
     const coupon = validCoupons[couponCode.toUpperCase() as keyof typeof validCoupons];
@@ -129,7 +131,7 @@ const CartSheet = () => {
   );
 
   const CheckoutForm = () => (
-    <div className="space-y-6 h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
         <Button variant="ghost" size="sm" onClick={handleBackToCart}>
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -137,7 +139,7 @@ const CartSheet = () => {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-6">
+      <div className="flex-1 overflow-y-auto space-y-6 pb-6">
         {/* Personal Information */}
         <Card>
           <CardHeader>
@@ -351,6 +353,10 @@ const CartSheet = () => {
                 </div>
               )}
               <div className="flex justify-between">
+                <span>GST (18%)</span>
+                <span>₹{gstAmount.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
                 <span>Shipping</span>
                 <span>{shippingCharge === 0 ? 'Free' : `₹${shippingCharge}`}</span>
               </div>
@@ -369,8 +375,8 @@ const CartSheet = () => {
         </Card>
       </div>
 
-      {/* Place Order Button */}
-      <div className="border-t pt-4">
+      {/* Place Order Button - Fixed at bottom */}
+      <div className="border-t bg-background p-4 mt-auto">
         <Button 
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
