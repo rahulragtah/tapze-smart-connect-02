@@ -319,7 +319,7 @@ const DigitalProfile = () => {
                   </div>
                 </div>
                 <p className="text-gray-400">
-                  Match your brand identity with custom colors, fonts, and layouts. 
+                  Match your brand identity with custom colors, fonts, and layouts according to your profession. 
                   Create a unique digital presence that stands out.
                 </p>
               </div>

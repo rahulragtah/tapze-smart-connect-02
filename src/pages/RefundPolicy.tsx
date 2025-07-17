@@ -3,6 +3,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const RefundPolicy = () => {
+  const monthName = new Date().toLocaleString('default', { month: 'long' });
+  const currentYear = new Date().getFullYear();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -122,7 +124,7 @@ const RefundPolicy = () => {
             </section>
 
             <div className="text-sm text-gray-400 mt-12 pt-8 border-t border-gray-800">
-              <p>Last Updated: January 2025</p>
+              <p>Last Updated: {monthName} {currentYear}</p>
             </div>
           </div>
         </div>

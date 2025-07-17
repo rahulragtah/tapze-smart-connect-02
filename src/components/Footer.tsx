@@ -21,7 +21,7 @@ const Footer = () => {
             Experience the next generation of networking with NFC-enabled business cards. Tap, connect, and revolutionize the way you share your professional identity.
             </p>
             <div className="flex gap-4">
-              <a 
+              <a target="_blank"
                 href="http://www.facebook.com/Tapze.official" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="Facebook"
@@ -42,7 +42,7 @@ const Footer = () => {
               >
                 <Linkedin className="w-4 h-4" />
               </a> */}
-              <a 
+              <a target="_blank"
                 href="https://www.instagram.com/tapze.official/" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
                 aria-label="Instagram"

@@ -120,7 +120,7 @@ const MobileAppSection = () => {
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
               >
                 <Link to="/digital-profile">
-                  Create Your Digital Profile
+                  Know More about Digital Profile
                 </Link>
               </Button>
             </div>
