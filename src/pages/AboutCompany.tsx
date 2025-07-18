@@ -1,0 +1,249 @@
+
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
+import { Users, Target, Award, Globe } from "lucide-react";
+
+const AboutCompany = () => {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Navigation />
+      
+      <div className="pt-16">
+        {/* Hero Section */}
+        <section className="py-20 px-4 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              About <span className="text-gradient">Tapze</span>
+            </h1>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Revolutionizing professional networking through innovative NFC technology 
+              and digital business solutions.
+            </p>
+          </div>
+        </section>
+
+        {/* Company Story */}
+        <section className="py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                  Our <span className="text-gradient">Story</span>
+                </h2>
+                <p className="text-gray-300 mb-6">
+                  Founded with a vision to transform how professionals connect and share information, 
+                  Tapze emerged from the need to bridge the gap between traditional business cards 
+                  and modern digital communication.
+                </p>
+                <p className="text-gray-300 mb-6">
+                  Our journey began when we realized that despite living in a digital age, 
+                  most professionals were still relying on outdated paper business cards that 
+                  often ended up lost or forgotten.
+                </p>
+                <p className="text-gray-300">
+                  Today, we're proud to be at the forefront of the digital networking revolution, 
+                  helping thousands of professionals make meaningful connections with just a tap.
+                </p>
+              </div>
+              <div className="relative">
+                <img 
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
+                  alt="Team collaboration"
+                  className="rounded-2xl shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Mission & Vision */}
+        <section className="py-16 px-4 bg-gray-900/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="text-center p-8 glass rounded-3xl">
+                <Target className="w-12 h-12 text-purple-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+                <p className="text-gray-300">
+                  To empower professionals with cutting-edge NFC technology that simplifies 
+                  networking, enhances connections, and drives business growth in the digital age.
+                </p>
+              </div>
+              <div className="text-center p-8 glass rounded-3xl">
+                <Globe className="w-12 h-12 text-purple-500 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+                <p className="text-gray-300">
+                  To become the global leader in digital networking solutions, making traditional 
+                  business cards obsolete and creating a more connected professional world.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Values */}
+        <section className="py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Our <span className="text-gradient">Values</span>
+              </h2>
+              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                The principles that guide everything we do
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Innovation</h3>
+                <p className="text-gray-300">
+                  We constantly push boundaries to deliver cutting-edge solutions that 
+                  meet evolving professional needs.
+                </p>
+              </div>
+              
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Connection</h3>
+                <p className="text-gray-300">
+                  We believe in the power of meaningful connections and strive to 
+                  facilitate authentic professional relationships.
+                </p>
+              </div>
+              
+              <div className="text-center p-6">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Excellence</h3>
+                <p className="text-gray-300">
+                  We are committed to delivering exceptional quality in every product 
+                  and service we offer.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Company Stats */}
+        <section className="py-16 px-4 bg-gray-900/50">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Our <span className="text-gradient">Impact</span>
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">10K+</div>
+                <div className="text-gray-300">Happy Customers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">50K+</div>
+                <div className="text-gray-300">Cards Delivered</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">25+</div>
+                <div className="text-gray-300">Countries Served</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">99%</div>
+                <div className="text-gray-300">Satisfaction Rate</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Meet Our <span className="text-gradient">Team</span>
+              </h2>
+              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                The passionate individuals behind Tapze's success
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" 
+                  alt="CEO"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">John Smith</h3>
+                <p className="text-purple-400 mb-3">Chief Executive Officer</p>
+                <p className="text-gray-300 text-sm">
+                  Visionary leader with 15+ years of experience in tech innovation and business development.
+                </p>
+              </div>
+              
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=200&h=200&fit=crop&crop=face" 
+                  alt="CTO"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">Sarah Johnson</h3>
+                <p className="text-purple-400 mb-3">Chief Technology Officer</p>
+                <p className="text-gray-300 text-sm">
+                  Tech expert specializing in NFC technology and digital solutions architecture.
+                </p>
+              </div>
+              
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" 
+                  alt="Head of Design"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">Michael Chen</h3>
+                <p className="text-purple-400 mb-3">Head of Design</p>
+                <p className="text-gray-300 text-sm">
+                  Creative director passionate about user experience and innovative product design.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact CTA */}
+        <section className="py-16 px-4 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Ready to <span className="text-gradient">Connect</span>?
+            </h2>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Join thousands of professionals who have already transformed their networking with Tapze.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a 
+                href="/buy-nfc-card"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-200"
+              >
+                Get Your NFC Card
+              </a>
+              <a 
+                href="/contact"
+                className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-full font-semibold transition-all duration-200"
+              >
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+      
+      <Footer />
+    </div>
+  );
+};
+
+export default AboutCompany;

@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Instagram, Linkedin, Twitter, Facebook } from "lucide-react";
 
@@ -28,20 +29,6 @@ const Footer = () => {
               >
                 <Facebook className="w-4 h-4" />
               </a>
-              {/* <a 
-                href="#" 
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
-                aria-label="Twitter"
-              >
-                <Twitter className="w-4 h-4" />
-              </a> */}
-              {/* <a 
-                href="https://www.instagram.com/tapze.official/" 
-                className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a> */}
               <a target="_blank"
                 href="https://www.instagram.com/tapze.official/" 
                 className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-purple-600 transition-all duration-300"
@@ -56,6 +43,7 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-gray-400">
+              <li><Link to="/about-company" className="hover:text-white transition-colors">About Company</Link></li>
               <li><Link to="/buy-nfc-card" className="hover:text-white transition-colors">Buy tapZe Card</Link></li>
               <li><Link to="/digital-profile" className="hover:text-white transition-colors">Digital Profile</Link></li>
               <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>

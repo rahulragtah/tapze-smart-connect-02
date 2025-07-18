@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
@@ -42,6 +43,36 @@ const cardData = {
     heroImage: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=800&fit=crop",
     features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
     price: 129
+  },
+  "wooden-eco": {
+    id: "wooden-eco",
+    name: "Eco-Friendly Wood NFC Card",
+    tagline: "Nature meets technology",
+    description: "Sustainable bamboo with laser precision",
+    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop",
+    heroImage: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop",
+    features: ["Bamboo construction", "Eco-friendly", "Natural texture"],
+    price: 69
+  },
+  "carbon-fiber": {
+    id: "carbon-fiber",
+    name: "Carbon Fiber NFC Card",
+    tagline: "Engineered for professionals",
+    description: "Lightweight carbon fiber construction",
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop",
+    heroImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&h=800&fit=crop",
+    features: ["Carbon fiber weave", "Ultra-lightweight", "Premium finish"],
+    price: 109
+  },
+  "rose-gold": {
+    id: "rose-gold",
+    name: "Rose Gold NFC Card",
+    tagline: "Elegance redefined",
+    description: "Sophisticated rose gold plating",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
+    heroImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=800&fit=crop",
+    features: ["Rose gold plating", "Scratch resistant", "Premium packaging"],
+    price: 149
   }
 };
 
@@ -56,8 +87,8 @@ const ProductDetails = () => {
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Product not found</h1>
-          <Link to="/" className="text-purple-400 hover:text-purple-300">
-            ← Back to home
+          <Link to="/buy-nfc-card" className="text-purple-400 hover:text-purple-300">
+            ← Back to products
           </Link>
         </div>
       </div>
@@ -90,7 +121,7 @@ const ProductDetails = () => {
       {/* Back Button */}
       <div className="pt-20 px-4 max-w-7xl mx-auto">
         <Link 
-          to="/" 
+          to="/buy-nfc-card" 
           className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
