@@ -31,7 +31,7 @@ const AboutCompany = () => {
                   Our <span className="text-gradient">Story</span>
                 </h2>
                 <p className="text-gray-300 mb-6">
-                  Founded with a vision to transform how professionals connect and share information, 
+                  Tapze is a product By WEBFARMS INFOTECH LLP, founded with a vision to transform how professionals connect and share information, 
                   Tapze emerged from the need to bridge the gap between traditional business cards 
                   and modern digital communication.
                 </p>
@@ -47,7 +47,7 @@ const AboutCompany = () => {
               </div>
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
+                  src="/lovable-uploads/tapze-about.png" 
                   alt="Team collaboration"
                   className="rounded-2xl shadow-2xl"
                 />
@@ -174,40 +174,40 @@ const AboutCompany = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center glass p-6 rounded-3xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face" 
+                  src="/lovable-uploads/brijesh.png" 
                   alt="CEO"
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="text-xl font-bold mb-2">John Smith</h3>
-                <p className="text-purple-400 mb-3">Chief Executive Officer</p>
+                <h3 className="text-xl font-bold mb-2">Brijesh Kannaujia</h3>
+                <p className="text-purple-400 mb-3">Product Excellance</p>
                 <p className="text-gray-300 text-sm">
-                  Visionary leader with 15+ years of experience in tech innovation and business development.
+                Strategic product visionary with 15+ years of leading innovation and excellence.
                 </p>
               </div>
               
               <div className="text-center glass p-6 rounded-3xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1494790108755-2616b332c1c0?w=200&h=200&fit=crop&crop=face" 
+                  src="/lovable-uploads/sunil.png" 
                   alt="CTO"
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="text-xl font-bold mb-2">Sarah Johnson</h3>
+                <h3 className="text-xl font-bold mb-2">Sunil Kumar</h3>
                 <p className="text-purple-400 mb-3">Chief Technology Officer</p>
                 <p className="text-gray-300 text-sm">
-                  Tech expert specializing in NFC technology and digital solutions architecture.
+                With over 15 years of experience, a technology expert focused on NFC innovation, scalable digital architectures, and strategic business development.
                 </p>
               </div>
               
               <div className="text-center glass p-6 rounded-3xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" 
+                  src="/lovable-uploads/rahul.png" 
                   alt="Head of Design"
                   className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                 />
-                <h3 className="text-xl font-bold mb-2">Michael Chen</h3>
+                <h3 className="text-xl font-bold mb-2">Rahul Ragtah</h3>
                 <p className="text-purple-400 mb-3">Head of Design</p>
                 <p className="text-gray-300 text-sm">
-                  Creative director passionate about user experience and innovative product design.
+                Experienced Creative Director with over 12 years of crafting exceptional user experiences and forward-thinking product designs.
                 </p>
               </div>
             </div>
