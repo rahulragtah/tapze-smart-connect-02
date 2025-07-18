@@ -190,7 +190,7 @@ const BrandCarousel = () => {
                 </p>
                 <div className="space-y-2 text-gray-300">
                   <p><strong className="text-white">Email:</strong> enterprise@tapze.com</p>
-                  <p><strong className="text-white">Phone:</strong> +91 98765 43210</p>
+                  <p><strong className="text-white">Phone:</strong> +91 9990909789</p>
                   <p>
                     <strong className="text-white">Schedule a demo:</strong>{" "}
                     <a href="/contact" className="text-primary hover:text-primary/80 transition-colors underline">
