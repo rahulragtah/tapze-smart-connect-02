@@ -122,7 +122,7 @@ const LoginModal = ({ isOpen, onClose, onLogin }: LoginModalProps) => {
                   <Input
                     id="phone"
                     type="tel"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 9990909789"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     className="pl-10"

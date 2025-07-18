@@ -183,7 +183,7 @@ const Contact = () => {
                             <FormControl>
                               <Input 
                                 type="tel"
-                                placeholder="+1 (555) 123-4567" 
+                                placeholder="+91 9990909789" 
                                 {...field}
                                 className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400"
                               />
