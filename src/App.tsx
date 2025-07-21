@@ -19,6 +19,7 @@ import RefundPolicy from "./pages/RefundPolicy";
 import Support from "./pages/Support";
 import BrandCarousel from "./pages/BrandCarousel";
 import AboutCompany from "./pages/AboutCompany";
+import CancellationPolicy from "./pages/CancellationPolicy";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/refund-policy" element={<RefundPolicy />} />
+            <Route path="/cancellation-policy" element={<CancellationPolicy />} />
             <Route path="/support" element={<Support />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
