@@ -2,6 +2,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
 const CancellationPolicy = () => {
+  const monthName = new Date().toLocaleString('default', { month: 'long' });
+  const currentYear = new Date().getFullYear();
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/20 to-black">
       <Navigation />
@@ -94,17 +96,17 @@ const CancellationPolicy = () => {
               <div className="space-y-4 text-gray-300">
                 <p>For cancellation requests or questions:</p>
                 <div className="bg-purple-900/20 p-4 rounded-xl">
-                  <p><strong>Email:</strong> support@tapze.com</p>
-                  <p><strong>Phone:</strong> +91-XXX-XXX-XXXX</p>
-                  <p><strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM IST</p>
+                  <p><strong>Email:</strong> support@tapze.in</p>
+                  <p><strong>Phone:</strong> +91-9990909789</p>
+                  <p><strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM</p>
                 </div>
               </div>
             </div>
 
             <div className="border-t border-gray-700 pt-6">
               <p className="text-gray-400 text-sm">
-                This cancellation policy is effective as of January 2024 and may be updated periodically. 
-                For the most current version, please visit our website.
+                This cancellation policy is effective as of {monthName} {currentYear} and may be updated periodically. 
+          
               </p>
             </div>
           </div>
