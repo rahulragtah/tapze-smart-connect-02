@@ -179,6 +179,14 @@ const Navigation = () => {
                     >
                       <Link to="/digital-profile">Digital Profile</Link>
                     </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                      onClick={closeMobileMenu}
+                      asChild
+                    >
+                      <Link to="/about-company">About Us</Link>
+                    </Button>
                     
                     <Button 
                       variant="ghost" 
