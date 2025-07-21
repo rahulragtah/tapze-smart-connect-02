@@ -90,6 +90,13 @@ const Navigation = () => {
               >
                 <Link to="/digital-profile">Digital Profile</Link>
               </Button>
+              <Button 
+                variant="ghost" 
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
+                asChild
+              >
+                <Link to="/about-company">About Us</Link>
+              </Button>
               
               <Button 
                 variant="ghost" 
@@ -119,7 +126,7 @@ const Navigation = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem>
                       <User className="w-4 h-4 mr-2" />
-                      My Profile
+                      Dashboard
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
@@ -204,7 +211,7 @@ const Navigation = () => {
                             onClick={closeMobileMenu}
                           >
                             <User className="w-4 h-4 mr-2" />
-                            My Profile
+                            Dashboard
                           </Button>
                           <Button 
                             variant="ghost" 
