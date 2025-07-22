@@ -7,6 +7,10 @@ import LoginModal from "./LoginModal";
 
 const FinalCTASection = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const handleAffilation = () => {
+    window.open('https://dashboard.tapze.in/sadmin/affiliate-users', '_blank');
+    
+  };
 
   const handleLogin = (phone: string) => {
     console.log("Affiliate login with phone:", phone);
@@ -62,7 +66,7 @@ const FinalCTASection = () => {
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
-                  onClick={() => setIsLoginModalOpen(true)}
+                  onClick={handleAffilation}
                 >
                   Join Now
                 </Button>
