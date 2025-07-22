@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
+import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 
 interface CheckoutFormData {
@@ -26,6 +26,29 @@ interface CheckoutFormData {
   couponCode?: string;
 }
 
+ interface CheckoutDTO {
+  personalInfo: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+  };
+  address: {
+    line1: string;
+    line2?: string;
+    state: string;
+    city: string;
+    pinCode: string;
+  };
+  orderItems: CartItem[];
+  totalItems: number;
+  totalPrice:number;
+  couponDiscount:number;
+  couponCode:string;
+  gstAmount:number;
+  finalTotal:number;
+
+}
 const CartSheet = () => {
   const { items, totalItems, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
@@ -82,16 +105,66 @@ const CartSheet = () => {
     });
   };
 
-  const onSubmit = async (data: CheckoutFormData) => {
+  const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
+    const finalOrderDto: CheckoutDTO = {
+      personalInfo: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+        email: values.email,
+      },
+      address: {
+        line1: values.address,
+        line2: values.apartment,
+        state: values.state,
+        city: values.city,
+        pinCode: values.zipCode,
+      },
+      orderItems: items,
+      totalItems: totalItems,
+      totalPrice: totalPrice,
+      couponDiscount:couponDiscount,
+      couponCode:couponCode ,
+      gstAmount:gstAmount,
+      finalTotal:finalTotal,
+    }
+
+    console.log('current form data ', finalOrderDto);
+    console.log ('car item ', items);
+    console.log("total item ", totalItems);
+
+    try {
+      const response = await fetch("http://localhost:8081/site/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalOrderDto),
+      });
+
+      if (!response.ok) {
+        throw new Error("Order failed");
+      }
+
+      const responseData = await response.json();
+      console.log("✅ Order placed!", responseData);
+      alert(`Order placed! ID: ${responseData.id}`);
+       toast({
+          title: "Order Placed Successfully!",
+          description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
+        });
+    } catch (error) {
+      console.error(error);
+      alert("Order failed. Try again.");
+    }
+
+
     
     // Simulate order processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
+     //await new Promise(resolve => setTimeout(resolve, 2000));
     
-    toast({
-      title: "Order Placed Successfully!",
-      description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
-    });
+    
     
     // Clear cart and reset form
     clearCart();
