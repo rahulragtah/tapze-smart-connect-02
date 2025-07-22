@@ -10,6 +10,11 @@ const DigitalProfile = () => {
   const [currentIndex, setCurrentIndex] = useState(2); // Start with center image active
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  const handleSignupOpen = () => {
+    window.open('https://dashboard.tapze.in/register', '_blank');
+   
+  };
+
   const profileScreenshots = [
     {
       id: 1,
@@ -414,7 +419,7 @@ const DigitalProfile = () => {
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
-                >
+                  onClick={handleSignupOpen}>
                   Create Your Digital Profile Now
                 </Button>
               </div>

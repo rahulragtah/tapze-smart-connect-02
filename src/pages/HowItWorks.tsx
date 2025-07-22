@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Smartphone, Hand, Share2, Users, CheckCircle } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Link, useLocation } from "react-router-dom";
 
 const steps = [
   {
@@ -144,7 +145,7 @@ const HowItWorks = () => {
               </div>
               
               {/* Call to Action */}
-              <div className="text-center mt-16">
+              {/* <div className="text-center mt-16">
                 <Button 
                   size="lg" 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-lg font-semibold rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105"
@@ -152,7 +153,7 @@ const HowItWorks = () => {
                   Start Your Journey
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -183,7 +184,8 @@ const HowItWorks = () => {
               size="lg" 
               className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
             >
-              Get Started Today
+              <Link to="/buy-nfc-card">Get your TapZe card Today</Link>
+              
             </Button>
           </div>
         </section>
