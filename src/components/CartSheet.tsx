@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft } from 'lucide-react';
 import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 interface CheckoutFormData {
   firstName: string;
@@ -26,7 +27,7 @@ interface CheckoutFormData {
   couponCode?: string;
 }
 
- interface CheckoutDTO {
+ interface CheckoutDTO  extends Record<string, unknown> {
   personalInfo: {
     firstName: string;
     lastName: string;
@@ -135,21 +136,33 @@ const CartSheet = () => {
     console.log("total item ", totalItems);
 
     try {
-      const response = await fetch("http://localhost:8081/site/api/checkout", {
+
+      const response = await fetch("https://tapze.in/tapzeservice/order.php", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(finalOrderDto),
+        body: JSON.stringify(finalOrderDto)
       });
 
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
       if (!response.ok) {
         throw new Error("Order failed");
       }
 
-      const responseData = await response.json();
-      console.log("✅ Order placed!", responseData);
-      alert(`Order placed! ID: ${responseData.id}`);
+      emailjs.send('tapzeEmailService','template_t4zx6o9',finalOrderDto,'Yc8keWHr9MEOI9SGg').then(
+      (result) => {
+        console.log(result.text);
+        alert("Email sent successfully!");
+      },
+      (error) => {
+        console.log(error.text);
+        alert("Error sending email.");
+      }
+    );
+
+      alert(`Order placed! ID: ${responseData.order_id}`);
        toast({
           title: "Order Placed Successfully!",
           description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
