@@ -2,24 +2,40 @@
 import { Card } from "@/components/ui/card";
 import { ShoppingCart, Palette, Truck } from "lucide-react";
 
+
+
+function getDateNDaysFromToday(n) {
+  const today = new Date();
+  const result = new Date(today);
+  result.setDate(today.getDate() + n);
+
+  const day = String(result.getDate()).padStart(2, '0');
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = monthNames[result.getMonth()];
+  const year = result.getFullYear();
+
+  return `${day} ${month} ${year}`; // e.g., "25 Jul 2025"
+}
+
 const ProductOrderTimeline = () => {
   const steps = [
     {
       icon: ShoppingCart,
       title: "Order Today",
-      date: "9 Jul",
+      date: getDateNDaysFromToday(0) ,
       status: "completed"
     },
     {
       icon: Palette,
       title: "Design Confirmed",
-      date: "11 Jul - 12 Jul",
+      date: getDateNDaysFromToday(1) + " - "+getDateNDaysFromToday(2),
       status: "current"
     },
     {
       icon: Truck,
       title: "Order Shipped",
-      date: "14 Jul - 15 Jul",
+      date: getDateNDaysFromToday(4) + " - "+getDateNDaysFromToday(5),
       status: "pending"
     }
   ];
