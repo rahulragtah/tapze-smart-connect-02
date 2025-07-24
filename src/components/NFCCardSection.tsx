@@ -1,43 +1,34 @@
-
+import  { useEffect, useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
 
-const cards = [
-  {
-    id: "classic-black",
-    name: "Classic PVC Card",
-    tagline: "Tap it like it's hot" ,
-    description: "Timeless elegance with matte finish",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop",
-    features: ["Premium finish", "Digitally Printed", "Customized design"],
-    price: 499,
-    hotSelling: false
-  },
-  {
-    id: "premium-metal",
-    name: "Premium Metal Card",
-    tagline:  "Your First Impression, Perfected",
-    description: "Luxury steel with custom etching",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
-    features: ["Available in 4 Colors", "Laser Engraving", "Steel Finish"],
-    price: 999,
-    hotSelling: true
-  },
-  {
-    id: "transparent-glass",
-    name: "Customised Metal Card",
-    tagline: "Your Design, Our priority",
-    description: "Modern frosted glass design",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=600&fit=crop",
-    features: ["Laser Engraving", "Steel Finish", "Customised Design"],
-    price: 1499,
-    hotSelling: false
-  }
-];
 
 const NFCCardSection = () => {
+
+const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://tapze.in/tapzeservice/all_cards.php')
+      .then(response => response.json())
+      .then(data => {
+        setCards(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching cards:', error);
+        setLoading(false);
+      });
+  }, []); // 👈 empty array means run once on page load
+
+  if (loading) {
+    return <p>Loading cards...</p>;
+  }
+
+
+
   return (
     <section className="py-20 px-4 relative">
       <div className="max-w-7xl mx-auto">
