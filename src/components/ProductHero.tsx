@@ -1,4 +1,5 @@
 
+import  { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Zap, Star, Shield, Truck, Award, Users } from "lucide-react";
 import ProductGallery from "./ProductGallery";
@@ -15,6 +16,13 @@ interface Product {
   price: number;
 }
 
+interface Offer {
+  productId: string;
+  offerId: number;
+  offerType: string;
+  value: number;
+  isActive: boolean;
+}
 interface ProductHeroProps {
   product: Product;
   onAddToCart: () => void;
@@ -22,6 +30,23 @@ interface ProductHeroProps {
 }
 
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
+  const [offer, setOffer] =useState<Offer>();
+  useEffect(() => {
+         console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
+          fetch('https://tapze.in//tapzeservice/productoffer.php?product_id=' + product.id)
+          .then(response => response.json())
+          .then(data => {
+            setOffer(data[0]);
+           
+            console.log ('offers for current product  ', data);
+          })
+          .catch(error => {
+            console.error('Error fetching cards:', error);
+            
+          });
+      }, []
+    ); // 👈 empty array means run once on page load
+
   return (
     <section className="px-4 pb-8">
       <div className="max-w-7xl mx-auto">
@@ -59,18 +84,32 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
               <span className="text-gray-400">(247 reviews)</span>
               <span className="text-purple-400 text-sm hover:underline cursor-pointer">See all reviews</span>
             </div>
-
-            {/* Price */}
-            <div className="space-y-2">
+                 {/* Price */}
+            { offer && offer.isActive ? (
+                  <div className="space-y-2">
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-white">₹{(product.price * 80).toLocaleString()}</span>
-                <span className="text-lg text-gray-400 line-through">₹{((product.price + 20) * 80).toLocaleString()}</span>
+                <span className="text-3xl font-bold text-white">₹{(product.price- offer.value).toLocaleString()}</span>
+                <span className="text-lg text-gray-400 line-through">₹{((product.price ) ).toLocaleString()}</span>
                 <span className="bg-red-500 text-white px-2 py-1 rounded text-sm font-medium">
-                  Save ₹{(20 * 80).toLocaleString()}
+                  Save ₹{(offer.value).toLocaleString()}
                 </span>
               </div>
               <p className="text-sm text-gray-400">Inclusive of all taxes</p>
             </div>
+            ) : (
+                  <div className="space-y-2">
+              <div className="flex items-baseline gap-3">
+                <span className="text-3xl font-bold text-white">₹{(product.price).toLocaleString()}</span>
+                
+              </div>
+              <p className="text-sm text-gray-400">Inclusive of all taxes</p>
+            </div>
+              )
+              }
+
+           
+            
+
 
             {/* Offers */}
             <Card className="glass p-4 rounded-lg">
