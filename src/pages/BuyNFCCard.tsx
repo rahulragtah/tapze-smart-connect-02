@@ -1,4 +1,4 @@
-
+import  { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,76 +6,33 @@ import { Star, Flame } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
-const products = [
-  {
-    id: "classic-black",
-    name: "Standard NFC Card",
-    tagline: "Make your first impression unforgettable",
-    description: "Timeless elegance with matte finish",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=300&fit=crop",
-    price: 49,
-    features: ["Matte black finish", "Laser engraving", "Standard thickness"],
-    popular: false,
-    hotSelling: false
-  },
-  {
-    id: "premium-metal",
-    name: "Premium Metal NFC Card",
-    tagline: "Tap it like it's hot",
-    description: "Luxury steel with custom etching",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=300&fit=crop",
-    price: 89,
-    features: ["Brushed steel", "Precision etching", "Extra durability"],
-    popular: true,
-    hotSelling: true
-  },
-  {
-    id: "transparent-glass",
-    name: "Custom NFC Card",
-    tagline: "Bye, boring paper cards",
-    description: "Modern frosted glass design",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=300&fit=crop",
-    price: 129,
-    features: ["Frosted glass", "LED backlight", "Ultra-thin profile"],
-    popular: false,
-    hotSelling: false
-  },
-  {
-    id: "wooden-eco",
-    name: "Eco-Friendly Wood NFC Card",
-    tagline: "Nature meets technology",
-    description: "Sustainable bamboo with laser precision",
-    image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop",
-    price: 69,
-    features: ["Bamboo construction", "Eco-friendly", "Natural texture"],
-    popular: false,
-    hotSelling: false
-  },
-  {
-    id: "carbon-fiber",
-    name: "Carbon Fiber NFC Card",
-    tagline: "Engineered for professionals",
-    description: "Lightweight carbon fiber construction",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop",
-    price: 109,
-    features: ["Carbon fiber weave", "Ultra-lightweight", "Premium finish"],
-    popular: false,
-    hotSelling: false
-  },
-  {
-    id: "rose-gold",
-    name: "Rose Gold NFC Card",
-    tagline: "Elegance redefined",
-    description: "Sophisticated rose gold plating",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop",
-    price: 149,
-    features: ["Rose gold plating", "Scratch resistant", "Premium packaging"],
-    popular: false,
-    hotSelling: false
-  }
-];
 
 const BuyNFCCard = () => {
+
+
+    const [products, setProducts] = useState([]);
+        const [loading, setLoading] = useState(true);
+      
+        useEffect(() => {
+          const url = 'https://tapze.in/tapzeservice/all_cards.php';
+          fetch(url)
+            .then(response => response.json())
+            .then(data => {
+              setProducts(data);
+              setLoading(false);
+              console.log ('current product ', data);
+            })
+            .catch(error => {
+              console.error('Error fetching cards:', error);
+              setLoading(false);
+            });
+        }, []); // 👈 empty array means run once on page load
+      
+        if (loading) {
+          return <p>Loading cards...</p>;
+        }
+
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
