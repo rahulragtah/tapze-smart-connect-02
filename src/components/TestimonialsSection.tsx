@@ -60,10 +60,10 @@ const TestimonialsSection = () => {
     Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
-  // Group testimonials into sets of 3
-  const groupedTestimonials = [];
+  // Group testimonials into sets of 3 for desktop, 1 for mobile
+  const groupedTestimonialsDesktop = [];
   for (let i = 0; i < testimonials.length; i += 3) {
-    groupedTestimonials.push(testimonials.slice(i, i + 3));
+    groupedTestimonialsDesktop.push(testimonials.slice(i, i + 3));
   }
 
   return (
@@ -78,22 +78,23 @@ const TestimonialsSection = () => {
           </p>
         </div>
         
-        <Carousel
-          plugins={[plugin.current as any]}
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-          onMouseEnter={plugin.current.stop}
-          onMouseLeave={plugin.current.reset}
-        >
-          <CarouselContent>
-            {groupedTestimonials.map((group, groupIndex) => (
-              <CarouselItem key={groupIndex}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {group.map((testimonial, index) => (
-                    <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+        {/* Mobile Carousel - One card at a time */}
+        <div className="md:hidden">
+          <Carousel
+            plugins={[plugin.current as any]}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+          >
+            <CarouselContent>
+              {testimonials.map((testimonial, index) => (
+                <CarouselItem key={index}>
+                  <div className="px-4">
+                    <Card className="glass p-6 rounded-2xl">
                       <div className="flex items-center mb-4">
                         <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
                           {testimonial.avatar}
@@ -111,14 +112,57 @@ const TestimonialsSection = () => {
                         {"★".repeat(5)}
                       </div>
                     </Card>
-                  ))}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex" />
-          <CarouselNext className="hidden md:flex" />
-        </Carousel>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
+
+        {/* Desktop Carousel - Three cards at a time */}
+        <div className="hidden md:block">
+          <Carousel
+            plugins={[plugin.current as any]}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+          >
+            <CarouselContent>
+              {groupedTestimonialsDesktop.map((group, groupIndex) => (
+                <CarouselItem key={groupIndex}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {group.map((testimonial, index) => (
+                      <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300">
+                        <div className="flex items-center mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-semibold mr-4">
+                            {testimonial.avatar}
+                          </div>
+                          <div>
+                            <div className="text-white font-semibold">{testimonial.name}</div>
+                            <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                            <div className="text-gray-500 text-xs">{testimonial.company}</div>
+                          </div>
+                        </div>
+                        <p className="text-gray-300 leading-relaxed text-sm">
+                          "{testimonial.quote}"
+                        </p>
+                        <div className="flex text-yellow-400 mt-4">
+                          {"★".repeat(5)}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
       </div>
     </section>
   );
