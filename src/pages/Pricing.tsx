@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { 
@@ -115,7 +115,9 @@ const Pricing = () => {
             <div className="text-center mt-12">
               <p className="text-gray-400 mb-4">Still have questions?</p>
               <button className="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
+              <Link to="/support">
                 Contact our support team →
+                </Link>
               </button>
             </div>
           </div>

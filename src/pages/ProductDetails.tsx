@@ -101,7 +101,7 @@ const ProductDetails = () => {
       
       {/* Below the Fold Sections */}
       <div className="space-y-0">
-        <ProductOffers />
+        {/* <ProductOffers /> */}
         <ProductBulkOrder />
         <ProductReviews />
         <ProductFAQ />

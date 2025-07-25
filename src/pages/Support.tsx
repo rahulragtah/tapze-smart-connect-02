@@ -53,24 +53,27 @@ const Support = () => {
   const supportOptions = [
     {
       icon: MessageCircle,
-      title: "Live Chat",
+      title: "Instant Support",
       description: "Get instant help from our support team",
       availability: "Mon-Fri, 9 AM - 6 PM PST",
-      action: "Start Chat"
+      action: "Start Chat",
+      actionurl:"https://wa.me/+919990909789/"
     },
     {
       icon: Mail,
       title: "Email Support",
       description: "Send us a detailed message",
       availability: "Response within 24 hours",
-      action: "Send Email"
+      action: "Send Email",
+      actionurl:"mailto:contact@tapze.in"
     },
     {
       icon: Phone,
       title: "Phone Support",
       description: "Speak directly with our team",
       availability: "Mon-Fri, 9 AM - 5 PM PST",
-      action: "Call Now"
+      action: "Call Now",
+      actionurl:"tel:+919990909789"
     }
   ];
 
@@ -130,7 +133,7 @@ const Support = () => {
                       {option.availability}
                     </div>
                     <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                      {option.action}
+                      <a href={option.actionurl}>{option.action}</a>
                     </Button>
                   </Card>
                 );
@@ -269,7 +272,7 @@ const Support = () => {
                   ))}
                 </div>
 
-                <Card className="glass p-6 mt-8 text-center">
+                {/* <Card className="glass p-6 mt-8 text-center">
                   <Search className="w-8 h-8 text-purple-400 mx-auto mb-3" />
                   <h3 className="text-lg font-semibold text-white mb-2">Need More Help?</h3>
                   <p className="text-gray-300 mb-4">
@@ -278,7 +281,7 @@ const Support = () => {
                   <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
                     Visit Help Center
                   </Button>
-                </Card>
+                </Card> */}
               </div>
             </div>
           </div>

@@ -75,3 +75,17 @@ All colors MUST be HSL.
   line-clamp: 2; /* Fallback for other browsers */
   -webkit-box-orient: vertical;
 }
+.main-banner{
+  max-width:60%;
+  margin-left: 20%;
+}
+
+.custombg{
+width:400px;
+height:400px;
+right:20%;
+border-radius: 446px;
+opacity: 0.4;
+background: #D22885;
+filter: blur(157px);
+}

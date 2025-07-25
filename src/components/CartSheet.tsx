@@ -75,8 +75,9 @@ const CartSheet = () => {
       ? (subtotal * couponDiscount) / 100 
       : couponDiscount) : 0;
   const afterDiscount = subtotal - discountAmount;
-  const gstAmount = (afterDiscount * 18) / 100; // 18% GST
-  const finalTotal = afterDiscount + gstAmount + shippingCharge;
+  // const gstAmount = (afterDiscount * 18) / 100; // 18% GST
+  // const finalTotal = afterDiscount + gstAmount + shippingCharge;
+  const finalTotal = afterDiscount;
 
   const applyCoupon = () => {
     const coupon = validCoupons[couponCode.toUpperCase() as keyof typeof validCoupons];
@@ -439,16 +440,20 @@ const CartSheet = () => {
                 </div>
               )}
               <div className="flex justify-between">
-                <span>GST (18%)</span>
-                <span>₹{gstAmount.toFixed(2)}</span>
+                <span>Price includes 18% GST</span>
+                <span>-</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{shippingCharge === 0 ? 'Free' : `₹${shippingCharge}`}</span>
+                {/* <span>{shippingCharge === 0 ? 'Free' : `₹${shippingCharge}`}</span> */}
+                <span>Free</span>
               </div>
-              {shippingCharge === 0 && (
+              {/* {shippingCharge === 0 && (
                 <p className="text-xs text-green-600">Free shipping on orders above ₹1000!</p>
-              )}
+              )} */}
+               
+                <p className="text-xs text-green-600">Free shipping on all orders above!</p>
+             
               
               <Separator />
               

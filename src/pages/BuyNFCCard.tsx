@@ -64,12 +64,12 @@ const BuyNFCCard = () => {
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="pt-20 pb-8 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Your Card, <span className="text-gradient">Your Style</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Premium NFC business cards designed to make lasting impressions. 
               Each card comes with our smart software to power your networking.
             </p>
@@ -87,7 +87,7 @@ const BuyNFCCard = () => {
                   className="group block"
                 >
                   <Card className={`glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden ${
-                    product.hotSelling ? 'scale-110 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
+                    product.hotSelling ? 'scale-105 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
                   }`}>
                     {product.hotSelling && (
                       <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">

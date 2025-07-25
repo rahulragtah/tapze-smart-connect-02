@@ -34,7 +34,7 @@ const HowItWorksSection = () => {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            How <span className="text-gradient">Tapze</span> Works
+            How <span className="text-gradient">Tapze</span> Works ?
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Four simple steps to revolutionize your networking experience

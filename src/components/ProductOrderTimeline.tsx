@@ -24,13 +24,13 @@ const ProductOrderTimeline = () => {
       icon: ShoppingCart,
       title: "Order Today",
       date: getDateNDaysFromToday(0) ,
-      status: "completed"
+      status: "current"
     },
     {
       icon: Palette,
       title: "Design Confirmed",
       date: getDateNDaysFromToday(1) + " - "+getDateNDaysFromToday(2),
-      status: "current"
+      status: "pending"
     },
     {
       icon: Truck,

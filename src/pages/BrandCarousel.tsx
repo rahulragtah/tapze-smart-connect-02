@@ -79,8 +79,8 @@ const BrandCarousel = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <Card className="text-center glass">
               <CardContent className="pt-6">
-                <div className="text-4xl font-bold text-gradient mb-2">100+</div>
-                <p className="text-muted-foreground">Trusted Partners</p>
+                <div className="text-4xl font-bold text-gradient mb-2">7k+</div>
+                <p className="text-muted-foreground">Customer trusted Us</p>
               </CardContent>
             </Card>
             <Card className="text-center glass">

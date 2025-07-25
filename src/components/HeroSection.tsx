@@ -12,6 +12,7 @@ const HeroSection = () => {
       {/* Floating elements */}
       <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-float" />
       <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute custombg  animate-float" />
       
       {/* Main content - Left-Right Layout */}
       <div className="relative z-10 max-w-7xl mx-auto  flex items-center">
@@ -62,7 +63,7 @@ const HeroSection = () => {
             {/* Stats */}
             <div className="flex gap-8 text-sm">
               <div>
-                <div className="text-2xl font-bold text-white">10K+</div>
+                <div className="text-2xl font-bold text-white">7K+</div>
                 <div className="text-gray-400">Happy Users</div>
               </div>
               <div>
@@ -75,12 +76,15 @@ const HeroSection = () => {
               </div>
             </div>
           </div>
+
+          {/* Right side - Hero Visual */}
+          <img class="main-banner" src="/lovable-uploads/main-banner.png" alt></img>
           
           {/* Right side - Hero Visual */}
-          <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          {/* <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
             <Card className="glass p-8 rounded-3xl">
               <div className="flex flex-col items-center gap-8">
-                {/* NFC Card mockup */}
+                
                 <div className="relative">
                   <div className="w-64 h-40 bg-gradient-to-br from-gray-900 to-black rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10" />
@@ -98,7 +102,7 @@ const HeroSection = () => {
                   </div>
                 </div>
                 
-                {/* Connection Animation */}
+                
                 <div className="flex items-center gap-4">
                   <div className="w-1 h-12 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full animate-pulse" />
                   <div className="flex flex-col gap-1">
@@ -109,7 +113,7 @@ const HeroSection = () => {
                   <div className="w-1 h-12 bg-gradient-to-b from-pink-500 to-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
                 </div>
                 
-                {/* Phone mockup */}
+                
                 <div className="w-40 h-72 bg-gradient-to-b from-gray-900 to-black rounded-3xl border border-gray-700 flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-4 bg-gradient-to-b from-purple-600/20 to-pink-600/20 rounded-2xl flex flex-col items-center justify-center gap-3">
                     <div className="w-16 h-4 bg-gray-600 rounded-full" />
@@ -121,7 +125,7 @@ const HeroSection = () => {
                 </div>
               </div>
             </Card>
-          </div>
+          </div> */}
         </div>
       </div>
       

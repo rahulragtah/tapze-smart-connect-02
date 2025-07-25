@@ -41,7 +41,7 @@ const ProductReviews = () => {
   const totalReviews = 247;
 
   return (
-    <section className="px-4 py-20">
+    <section className="px-4 py-20" id="reviewsection">
       <div className="max-w-6xl mx-auto">
         <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
@@ -126,11 +126,11 @@ const ProductReviews = () => {
           ))}
         </div>
         
-        <div className="text-center mt-8">
+        {/* <div className="text-center mt-8">
           <Button variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
             View All Reviews
           </Button>
-        </div>
+        </div> */}
       </div>
     </section>
   );

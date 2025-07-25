@@ -105,15 +105,15 @@ const EngineeredForPerfectionSection = () => {
               <div className="text-5xl mb-4">🌍</div>
               <h3 className="text-2xl font-bold text-white mb-4">Global Network</h3>
               <p className="text-gray-400 mb-6">
-                Join professionals from over 50 countries who trust Tapze for their networking needs.
+                Join professionals from  all over countries who trust Tapze for their networking needs.
               </p>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-gradient">50+</div>
-                  <div className="text-gray-400 text-sm">Countries</div>
+                  <div className="text-2xl font-bold text-gradient">3</div>
+                  <div className="text-gray-400 text-sm">Countries served</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-gradient">10K+</div>
+                  <div className="text-2xl font-bold text-gradient">7K+</div>
                   <div className="text-gray-400 text-sm">Active Users</div>
                 </div>
                 <div>

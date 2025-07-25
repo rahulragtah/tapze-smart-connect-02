@@ -58,20 +58,20 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             <Card className="glass p-4 rounded-lg mt-5">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
                 <Award className="w-4 h-4 text-purple-400" />
-                Available Offers
+                Limited Time Offers
               </h3>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
-                  <span className="text-gray-300">Get 15% off your first order with code <strong className="text-white">FIRST15</strong></span>
+                  <span className="text-gray-300">Get 10% festive Discount code <strong className="text-white">FESTIVE10</strong></span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
-                  <span className="text-gray-300">Buy 3 cards, get 1 free + free shipping</span>
+                  <span className="text-gray-300">Buy 3 cards, get 1 free.</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
-                  <span className="text-gray-300">Free shipping on orders above ₹2,000</span>
+                  <span className="text-gray-300">Free shipping on all.</span>
                 </div>
               </div>
             </Card>
@@ -104,7 +104,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                 <span className="text-white font-medium ml-1">4.8</span>
               </div>
               <span className="text-gray-400">(247 reviews)</span>
-              <span className="text-purple-400 text-sm hover:underline cursor-pointer">See all reviews</span>
+              <span className="text-purple-400 text-sm hover:underline cursor-pointer"><a href="#reviewsection">See all reviews</a></span>
             </div>
                  {/* Price */}
             { offer && offer.isActive ? (
@@ -200,11 +200,11 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                     <p className="text-sm text-gray-400 mb-3">Bulk orders get priority processing and exclusive discounts</p>
                     <div className="flex gap-2">
                       <Button size="sm" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
-                        Contact Now
+                        Contact Now For Bulk Order
                       </Button>
-                      <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
+                      {/* <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
                         Get a Quote
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </div>

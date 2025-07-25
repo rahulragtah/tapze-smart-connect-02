@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Package, Users, MessageCircle, FileText } from "lucide-react";
@@ -68,11 +68,11 @@ const ProductBulkOrder = () => {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-full font-semibold">
-                Contact Us for Pricing
+              <Link to="/contact">Contact Us For Bulk Order</Link>
               </Button>
-              <Button variant="outline" className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500/10 px-8 py-3 rounded-full font-semibold">
+              {/* <Button variant="outline" className="border-2 border-blue-500 text-blue-400 hover:bg-blue-500/10 px-8 py-3 rounded-full font-semibold">
                 Download Bulk Guide
-              </Button>
+              </Button> */}
             </div>
           </div>
 

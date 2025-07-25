@@ -140,15 +140,15 @@ const AboutCompany = () => {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">10K+</div>
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">7K+</div>
                 <div className="text-gray-300">Happy Customers</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">50K+</div>
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">5K+</div>
                 <div className="text-gray-300">Cards Delivered</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">25+</div>
+                <div className="text-3xl md:text-4xl font-bold text-purple-500 mb-2">3</div>
                 <div className="text-gray-300">Countries Served</div>
               </div>
               <div className="text-center">
