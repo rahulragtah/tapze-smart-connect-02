@@ -3,12 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
-
+import {Offer} from "../components/models/productInterface";
 
 const NFCCardSection = () => {
 
 const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [offer, setOffer] =useState<Offer[]>([]);
 
   useEffect(() => {
     fetch('https://tapze.in/tapzeservice/all_cards.php')
@@ -21,6 +22,19 @@ const [cards, setCards] = useState([]);
         console.error('Error fetching cards:', error);
         setLoading(false);
       });
+
+       console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
+          fetch('https://tapze.in//tapzeservice/productoffer.php')
+          .then(response => response.json())
+          .then(data => {
+            setOffer(data);
+           
+            console.log ('offers for current product  ', data);
+          })
+          .catch(error => {
+            console.error('Error fetching cards:', error);
+            
+          });
   }, []); // 👈 empty array means run once on page load
 
   if (loading) {
@@ -92,16 +106,35 @@ const [cards, setCards] = useState([]);
                         </div>
                       ))}
                     </div>
+
+                    { offer.find(o => o.productId === card.id) ? (
+
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                          <div className="text-2xl font-bold text-white">
+                            ₹{(card.price-offer.find(o => o.productId === card.id)?.value ).toLocaleString()}
+                          </div>
+                          <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
+                            View Details →
+                          </div>
+                        </div>
+
+
+                            )
+                            : (
+                              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                          <div className="text-2xl font-bold text-white">
+                            ₹{(card.price ).toLocaleString()}
+                          </div>
+                          <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
+                            View Details →
+                          </div>
+                        </div>  
+
+                             )  
+                      }
                     
                     {/* Price */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                      <div className="text-2xl font-bold text-white">
-                        ₹{(card.price )}
-                      </div>
-                      <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
-                        View Details →
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
               </Card>

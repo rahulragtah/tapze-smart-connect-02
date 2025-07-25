@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Flame } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import {Offer} from "../components/models/productInterface";
 
 
 const BuyNFCCard = () => {
@@ -12,7 +13,7 @@ const BuyNFCCard = () => {
 
     const [products, setProducts] = useState([]);
         const [loading, setLoading] = useState(true);
-      
+       const [offer, setOffer] =useState<Offer[]>([]);
         useEffect(() => {
           const url = 'https://tapze.in/tapzeservice/all_cards.php';
           fetch(url)
@@ -26,11 +27,26 @@ const BuyNFCCard = () => {
               console.error('Error fetching cards:', error);
               setLoading(false);
             });
+
+            console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
+          fetch('https://tapze.in//tapzeservice/productoffer.php')
+          .then(response => response.json())
+          .then(data => {
+            setOffer(data);
+           
+            console.log ('offers for current product  ', data);
+          })
+          .catch(error => {
+            console.error('Error fetching cards:', error);
+            
+          });
         }, []); // 👈 empty array means run once on page load
       
         if (loading) {
           return <p>Loading cards...</p>;
         }
+
+       
 
 
   return (
@@ -105,16 +121,35 @@ const BuyNFCCard = () => {
                             </div>
                           ))}
                         </div>
-                        
-                        {/* Price */}
+
+                      { offer.find(o => o.productId === product.id) ? (
+
                         <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                           <div className="text-2xl font-bold text-white">
-                            ₹{(product.price * 80).toLocaleString()}
+                            ₹{(product.price - offer.find(o => o.productId === product.id)?.value ).toLocaleString()}
                           </div>
                           <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                             View Details →
                           </div>
                         </div>
+
+
+                            )
+                            : (
+                              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                          <div className="text-2xl font-bold text-white">
+                            ₹{(product.price ).toLocaleString()}
+                          </div>
+                          <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
+                            View Details →
+                          </div>
+                        </div>  
+
+                             )  
+                      }
+                        
+                        {/* Price */}
+                        
                       </div>
                     </div>
                   </Card>
