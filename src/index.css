@@ -66,3 +66,12 @@ All colors MUST be HSL.
     background-clip: text;
   }
 }
+
+.two-line-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Number of lines to display */
+  line-clamp: 2; /* Fallback for other browsers */
+  -webkit-box-orient: vertical;
+}

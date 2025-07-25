@@ -20,7 +20,7 @@ const ProductDetails = () => {
   const { addItem } = useCart();
 
   
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState<any>(null);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
@@ -28,7 +28,7 @@ const ProductDetails = () => {
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          setProduct(data[0]);
+          setProduct(data[0] || null);
           setLoading(false);
           console.log ('current product ', data);
         })

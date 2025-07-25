@@ -7,7 +7,7 @@ const EcoFriendlySection = () => {
     {
       icon: "🌱",
       title: "Carbon Neutral",
-      description: "Our NFC cards reduce paper waste by 95% compared to traditional business cards"
+      description: "Our tapZe cards reduce paper waste by 95% compared to traditional business cards"
     },
     {
       icon: "♻️",

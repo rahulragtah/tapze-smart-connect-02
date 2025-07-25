@@ -233,7 +233,7 @@ const DigitalProfile = () => {
                 <CardTitle className="text-xl mb-3 text-white">Real-time Updates</CardTitle>
                 <p className="text-gray-300">
                   Update your information instantly. Changes reflect immediately 
-                  across all your shared profiles and NFC cards.
+                  across all your shared profiles and tapZe cards.
                 </p>
               </Card>
             </div>

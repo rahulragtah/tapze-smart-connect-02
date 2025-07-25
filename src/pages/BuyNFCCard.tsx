@@ -109,7 +109,7 @@ const BuyNFCCard = () => {
                       <div className="space-y-4">
                         <div>
                           <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
-                          <p className="text-gray-400 text-sm">{product.description}</p>
+                          <p className="text-gray-400 text-sm two-line-truncate">{product.description}</p>
                         </div>
                         
                         {/* Features */}
@@ -126,7 +126,7 @@ const BuyNFCCard = () => {
 
                         <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                           <div className="text-2xl font-bold text-white">
-                            ₹{(product.price - offer.find(o => o.productId === product.id)?.value ).toLocaleString()}
+                            ₹{(product.price - offer.find(o => o.productId === product.id)?.value).toLocaleString()}
                           </div>
                           <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                             View Details →

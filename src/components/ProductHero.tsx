@@ -54,13 +54,33 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
           {/* Left: Product Gallery */}
           <div>
             <ProductGallery heroImage={product.heroImage} name={product.name} />
+            <Card className="glass p-4 rounded-lg mt-5">
+              <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+                <Award className="w-4 h-4 text-purple-400" />
+                Available Offers
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400">•</span>
+                  <span className="text-gray-300">Get 15% off your first order with code <strong className="text-white">FIRST15</strong></span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400">•</span>
+                  <span className="text-gray-300">Buy 3 cards, get 1 free + free shipping</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400">•</span>
+                  <span className="text-gray-300">Free shipping on orders above ₹2,000</span>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Right: Product Info */}
           <div className="space-y-6">
             {/* Breadcrumb */}
             <div className="text-sm text-gray-400">
-              <span>Home</span> &gt; <span>NFC Cards</span> &gt; <span className="text-white">{product.name}</span>
+              <span>Home</span> &gt; <span>tapZe Cards</span> &gt; <span className="text-white">{product.name}</span>
             </div>
 
             {/* Title */}
@@ -71,6 +91,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
               <p className="text-lg text-gradient font-medium">
                 {product.tagline}
               </p>
+              <p className="text-gray-400 text-sm mt-3">{product.description}</p>
             </div>
 
             {/* Rating & Reviews */}
@@ -112,7 +133,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
 
 
             {/* Offers */}
-            <Card className="glass p-4 rounded-lg">
+            {/* <Card className="glass p-4 rounded-lg">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
                 <Award className="w-4 h-4 text-purple-400" />
                 Available Offers
@@ -131,7 +152,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                   <span className="text-gray-300">Free shipping on orders above ₹2,000</span>
                 </div>
               </div>
-            </Card>
+            </Card> */}
 
             {/* Color Switcher */}
             <ProductColorSwitcher />

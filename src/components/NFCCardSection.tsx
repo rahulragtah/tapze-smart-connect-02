@@ -3,13 +3,28 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
+<<<<<<< HEAD
 import {Offer} from "../components/models/productInterface";
+=======
+
+interface Offer {
+  productId: string;
+  offerId: number;
+  offerType: string;
+  value: number;
+  isActive: boolean;
+}
+>>>>>>> 16af78b16153a72bffe382d73e610e159da79ed5
+
 
 const NFCCardSection = () => {
-
-const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   const [offer, setOffer] =useState<Offer[]>([]);
+=======
+  const [offers, setOffers] = useState<{[key: string]: Offer}>({});
+>>>>>>> 16af78b16153a72bffe382d73e610e159da79ed5
 
   useEffect(() => {
     fetch('https://tapze.in/tapzeservice/all_cards.php')
@@ -17,11 +32,29 @@ const [cards, setCards] = useState([]);
       .then(data => {
         setCards(data);
         setLoading(false);
+        
+        // Fetch offers for each card
+        data.forEach((card: any) => {
+          fetch(`https://tapze.in/tapzeservice/productoffer.php?product_id=${card.id}`)
+            .then(response => response.json())
+            .then(offerData => {
+              if (offerData && offerData.length > 0) {
+                setOffers(prev => ({
+                  ...prev,
+                  [card.id]: offerData[0]
+                }));
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching offer for card:', card.id, error);
+            });
+        });
       })
       .catch(error => {
         console.error('Error fetching cards:', error);
         setLoading(false);
       });
+<<<<<<< HEAD
 
        console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
           fetch('https://tapze.in//tapzeservice/productoffer.php')
@@ -36,6 +69,9 @@ const [cards, setCards] = useState([]);
             
           });
   }, []); // 👈 empty array means run once on page load
+=======
+  }, []);
+>>>>>>> 16af78b16153a72bffe382d73e610e159da79ed5
 
   if (loading) {
     return <p>Loading cards...</p>;
@@ -68,12 +104,20 @@ const [cards, setCards] = useState([]);
               to={`/products/${card.id}`}
               className="group block"
             >
-              <Card className="glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden">
+              <Card className={`glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden ${
+                card.hotSelling ? 'scale-105 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
+              }`}>
                 {card.hotSelling && (
                   <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
                     <Flame className="w-3 h-3 mr-1" />
                     Hot Selling
                   </Badge>
+                )}
+                
+                {offers[card.id] && offers[card.id].isActive && (
+                  <div className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                    Save ₹{offers[card.id].value.toLocaleString()}
+                  </div>
                 )}
                 
                 <div className="space-y-6">
@@ -94,7 +138,7 @@ const [cards, setCards] = useState([]);
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">{card.name}</h3>
-                      <p className="text-gray-400 text-sm">{card.description}</p>
+                      <p className="text-gray-400 text-sm two-line-truncate">{card.description}</p>
                     </div>
                     
                     {/* Features */}
@@ -111,7 +155,7 @@ const [cards, setCards] = useState([]);
 
                         <div className="flex items-center justify-between pt-4 border-t border-gray-700">
                           <div className="text-2xl font-bold text-white">
-                            ₹{(card.price-offer.find(o => o.productId === card.id)?.value ).toLocaleString()}
+                            ₹{(card.price - offer.find(o => o.productId === card.id)?.value ).toLocaleString()}
                           </div>
                           <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                             View Details →

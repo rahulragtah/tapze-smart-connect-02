@@ -26,7 +26,7 @@ const CancellationPolicy = () => {
               <h2 className="text-2xl font-bold mb-4 text-white">Order Cancellation</h2>
               <div className="space-y-4 text-gray-300">
                 <p>
-                  You may cancel your order for Tapze NFC cards under the following conditions:
+                  You may cancel your order for Tapze cards under the following conditions:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Cancellation must be requested within 24 hours of placing the order</li>
@@ -68,7 +68,7 @@ const CancellationPolicy = () => {
               <div className="space-y-4 text-gray-300">
                 <p>The following items cannot be cancelled once ordered:</p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li>Custom engraved NFC cards</li>
+                  <li>Custom engraved tapZe cards</li>
                   <li>Personalized card designs</li>
                   <li>Orders that have shipped</li>
                   <li>Digital profile setups (can be modified instead)</li>
