@@ -60,7 +60,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
           <div className="space-y-6">
             {/* Breadcrumb */}
             <div className="text-sm text-gray-400">
-              <span>Home</span> &gt; <span>NFC Cards</span> &gt; <span className="text-white">{product.name}</span>
+              <span>Home</span> &gt; <span>tapZe Cards</span> &gt; <span className="text-white">{product.name}</span>
             </div>
 
             {/* Title */}

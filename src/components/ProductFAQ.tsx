@@ -13,7 +13,7 @@ const faqs = [
   },
   {
     question: "Will this work with my iPhone?",
-    answer: "Absolutely! Our NFC cards work with all iPhones from iPhone 7 onwards, and virtually all Android phones. The recipient doesn't need any special app - it just works."
+    answer: "Absolutely! Our tapZe cards work with all iPhones from iPhone 7 onwards, and virtually all Android phones. The recipient doesn't need any special app - it just works."
   },
   {
     question: "How do I program my card?",

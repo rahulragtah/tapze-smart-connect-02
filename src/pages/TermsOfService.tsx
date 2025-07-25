@@ -67,7 +67,7 @@ const TermsOfService = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-white">6. Payment and Refunds</h2>
               <div className="text-gray-300 space-y-4">
-                <p>Payment for NFC cards and services is required at the time of purchase. We accept major credit cards and other payment methods as indicated on our website.</p>
+                <p>Payment for tapZe cards and services is required at the time of purchase. We accept major credit cards and other payment methods as indicated on our website.</p>
                 <p>Refunds are available within 30 days of purchase for unopened, unused products. Digital services and customized products may not be eligible for refunds. See our Refund Policy for complete details.</p>
               </div>
             </section>

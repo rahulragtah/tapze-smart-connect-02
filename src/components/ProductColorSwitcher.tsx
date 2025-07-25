@@ -6,20 +6,27 @@ const cardVariants = [
     id: "black",
     name: "Black",
     color: "#000000",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop"
+    image: "/lovable-uploads/black-swatch.png"
   },
   {
     id: "silver",
     name: "Silver",
     color: "#C0C0C0",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop"
+    image: "/lovable-uploads/silver-swatch.png"
   },
   {
     id: "golden",
     name: "Golden",
     color: "#FFD700",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop"
+    image: "/lovable-uploads/golden-swatch.png"
+  },
+  {
+    id: "rosegold",
+    name: "Rose Gold",
+    color: "#DEA193",
+    image: "/lovable-uploads/rosegold-swatch.png"
   }
+  
 ];
 
 const ProductColorSwitcher = () => {
@@ -27,7 +34,7 @@ const ProductColorSwitcher = () => {
 
   return (
     <div className="space-y-3">
-      <h4 className="text-sm font-medium text-gray-700">Color: <span className="text-black">{cardVariants.find(v => v.id === productId)?.name}</span></h4>
+      <h4 className="text-sm font-medium text-gray-700">Color: <span className="text-gray-300">{cardVariants.find(v => v.id === productId)?.name}</span></h4>
       
       <div className="flex gap-2">
         {cardVariants.map((variant) => (

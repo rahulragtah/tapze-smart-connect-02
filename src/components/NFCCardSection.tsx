@@ -80,7 +80,7 @@ const NFCCardSection = () => {
               className="group block"
             >
               <Card className={`glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden ${
-                card.hotSelling ? 'scale-110 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
+                card.hotSelling ? 'scale-105 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
               }`}>
                 {card.hotSelling && (
                   <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">

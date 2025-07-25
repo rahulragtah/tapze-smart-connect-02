@@ -27,7 +27,7 @@ const BrandCarousel = () => {
     },
     {
       title: "Finance & Banking",
-      description: "Financial institutions use our secure NFC cards to maintain professional standards while embracing digital transformation.",
+      description: "Financial institutions use our secure tapZe cards to maintain professional standards while embracing digital transformation.",
       icon: TrendingUp,
       color: "text-green-400"
     },
@@ -39,7 +39,7 @@ const BrandCarousel = () => {
     },
     {
       title: "Real Estate",
-      description: "Real estate agents and firms use our NFC cards to instantly share property listings and contact information.",
+      description: "Real estate agents and firms use our tapZe cards to instantly share property listings and contact information.",
       icon: Home,
       color: "text-orange-400"
     }

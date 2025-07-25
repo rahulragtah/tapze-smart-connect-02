@@ -76,12 +76,12 @@ const Support = () => {
 
   const faqItems = [
     {
-      question: "How do I set up my NFC card?",
+      question: "How do I set up my tapZe card?",
       answer: "Simply tap your card on any NFC-enabled smartphone and follow the setup instructions. You can customize your profile through our web dashboard."
     },
     {
-      question: "What if my NFC card stops working?",
-      answer: "NFC cards are covered by our 1-year warranty. Contact support for a free replacement if your card malfunctions within the warranty period."
+      question: "What if my tapZe card stops working?",
+      answer: "tapZe cards are covered by our 1-year warranty. Contact support for a free replacement if your card malfunctions within the warranty period."
     },
     {
       question: "Can I update my information after setup?",

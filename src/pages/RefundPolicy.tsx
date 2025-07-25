@@ -38,7 +38,7 @@ const RefundPolicy = () => {
               <div className="text-gray-300 space-y-4">
                 <p>The following items are not eligible for refunds:</p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li>Customized or personalized NFC cards that have been engraved or printed</li>
+                  <li>Customized or personalized tapZe cards that have been engraved or printed</li>
                   <li>Digital profile services used for more than 7 days</li>
                   <li>Products damaged due to misuse or normal wear and tear</li>
                   <li>Bulk orders of 10 or more items (subject to special terms)</li>
@@ -102,7 +102,7 @@ const RefundPolicy = () => {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-white">Warranty Coverage</h2>
               <div className="text-gray-300 space-y-4">
-                <p>All NFC cards come with a 1-year warranty covering:</p>
+                <p>All tapZe cards come with a 1-year warranty covering:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Manufacturing defects</li>
                   <li>NFC chip functionality</li>

@@ -77,7 +77,7 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
         } transition-all duration-200`}
       >
         {/* Thumbnail Strip */}
-        <div className="order-2 lg:order-1 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-96 pb-2 lg:pb-0">
+        <div className="order-2 lg:order-1 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-100 pb-2 lg:pb-0">
           {galleryImages.map((image, index) => (
             <button
               key={index}
@@ -138,7 +138,7 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
             </Button>
 
             {/* Floating Card Mockup */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-48 h-32 bg-gradient-to-br from-gray-900 via-black to-gray-800 rounded-xl shadow-2xl border border-gray-700 flex items-center justify-center relative transform hover:rotate-6 transition-transform duration-300">
                 <div className="text-white font-bold text-lg">TAPZE</div>
                 <div className="absolute top-2 right-2 w-4 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
@@ -147,7 +147,7 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
                   TAP
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Image Counter */}
