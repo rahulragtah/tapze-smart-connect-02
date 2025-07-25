@@ -87,6 +87,12 @@ const NFCCardSection = () => {
                   </Badge>
                 )}
                 
+                {offers[card.id] && offers[card.id].isActive && (
+                  <div className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                    Save ₹{offers[card.id].value.toLocaleString()}
+                  </div>
+                )}
+                
                 <div className="space-y-6">
                   {/* Card Image */}
                   <div className="relative overflow-hidden rounded-2xl">
@@ -118,31 +124,26 @@ const NFCCardSection = () => {
                       ))}
                     </div>
                     
-                    {/* Price */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                      {offers[card.id] && offers[card.id].isActive ? (
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-2xl font-bold text-white">
-                              ₹{(parseFloat(card.price) - offers[card.id].value).toLocaleString()}
-                            </span>
-                            <span className="text-lg text-gray-400 line-through">
-                              ₹{parseFloat(card.price).toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium inline-block">
-                            Save ₹{offers[card.id].value.toLocaleString()}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-2xl font-bold text-white">
-                          ₹{parseFloat(card.price).toLocaleString()}
-                        </div>
-                      )}
-                      <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
-                        View Details →
-                      </div>
-                    </div>
+                     {/* Price */}
+                     <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+                       {offers[card.id] && offers[card.id].isActive ? (
+                         <div className="flex items-center gap-2">
+                           <span className="text-2xl font-bold text-white">
+                             ₹{(parseFloat(card.price) - offers[card.id].value).toLocaleString()}
+                           </span>
+                           <span className="text-lg text-gray-400 line-through">
+                             ₹{parseFloat(card.price).toLocaleString()}
+                           </span>
+                         </div>
+                       ) : (
+                         <div className="text-2xl font-bold text-white">
+                           ₹{parseFloat(card.price).toLocaleString()}
+                         </div>
+                       )}
+                       <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
+                         View Details →
+                       </div>
+                     </div>
                   </div>
                 </div>
               </Card>
