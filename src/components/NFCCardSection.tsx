@@ -19,7 +19,7 @@ const NFCCardSection = () => {
   const [offers, setOffers] = useState<{[key: string]: Offer}>({});
 
   useEffect(() => {
-    fetch('https://tapze.in/tapzeservice/all_cards.php')
+    fetch('https://tapze.in/tapzeservice/productapi.php?section=homePage')
       .then(response => response.json())
       .then(data => {
         setCards(data);

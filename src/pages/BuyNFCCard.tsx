@@ -15,7 +15,7 @@ const BuyNFCCard = () => {
         const [loading, setLoading] = useState(true);
        const [offer, setOffer] =useState<Offer[]>([]);
         useEffect(() => {
-          const url = 'https://tapze.in/tapzeservice/all_cards.php';
+          const url = 'https://tapze.in/tapzeservice//productapi.php';
           fetch(url)
             .then(response => response.json())
             .then(data => {
