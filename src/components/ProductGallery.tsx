@@ -1,14 +1,16 @@
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Play, ZoomIn } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface ProductGalleryProps {
   heroImage: string;
   name: string;
+  hotSelling?: boolean;
 }
 
-const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
+const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isSticky, setIsSticky] = useState(true);
   const galleryRef = useRef<HTMLDivElement>(null);
@@ -105,6 +107,14 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
         {/* Main Image */}
         <div className="order-1 lg:order-2 flex-1 relative">
           <div className="aspect-square bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden relative group">
+            {/* Hot Selling Badge */}
+            {hotSelling && (
+              <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
+                <Flame className="w-3 h-3 mr-1" />
+                Hot Selling
+              </Badge>
+            )}
+            
             <img
               src={galleryImages[selectedImage].url}
               alt={galleryImages[selectedImage].alt}
@@ -112,7 +122,7 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
             />
             
             {/* Zoom Icon */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <div className="bg-black/50 text-white p-2 rounded-full">
                 <ZoomIn className="w-4 h-4" />
               </div>

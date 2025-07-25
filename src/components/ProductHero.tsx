@@ -14,6 +14,7 @@ interface Product {
   heroImage: string;
   features: string[];
   price: number;
+  hotSelling?: boolean;
 }
 
 interface Offer {
@@ -53,7 +54,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left: Product Gallery */}
           <div>
-            <ProductGallery heroImage={product.heroImage} name={product.name} />
+            <ProductGallery heroImage={product.heroImage} name={product.name} hotSelling={product.hotSelling} />
             <Card className="glass p-4 rounded-lg mt-5">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
                 <Award className="w-4 h-4 text-purple-400" />
