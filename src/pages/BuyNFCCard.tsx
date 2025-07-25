@@ -89,15 +89,8 @@ const BuyNFCCard = () => {
                   <Card className={`glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden ${
                     product.hotSelling ? 'scale-110 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
                   }`}>
-                    {product.popular && (
-                      <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-purple-600 to-pink-600">
-                        <Star className="w-3 h-3 mr-1" />
-                        Popular
-                      </Badge>
-                    )}
-                    
                     {product.hotSelling && (
-                      <Badge className="absolute top-4 left-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
+                      <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
                         <Flame className="w-3 h-3 mr-1" />
                         Hot Selling
                       </Badge>
