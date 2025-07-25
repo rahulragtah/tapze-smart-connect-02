@@ -14,30 +14,30 @@ const ProductGallery = ({ heroImage, name }: ProductGalleryProps) => {
   const galleryRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Mock gallery images - in real app, these would come from props
+  // Different images for different product colors/variants
   const galleryImages = [
     {
-      url: heroImage,
+      url: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&h=800&fit=crop",
       alt: `${name} - Front view`,
       type: "image"
     },
     {
-      url: heroImage.replace("1200x800", "1200x800&blur=1"),
-      alt: `${name} - Back view`,
+      url: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1200&h=800&fit=crop",
+      alt: `${name} - Side view`,
       type: "image"
     },
     {
-      url: heroImage.replace("1200x800", "1200x800&sepia=1"),
-      alt: `${name} - Usage scenario`,
+      url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=800&fit=crop",
+      alt: `${name} - Premium finish`,
       type: "image"
     },
     {
-      url: heroImage.replace("1200x800", "1200x800&grayscale=1"),
+      url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&h=800&fit=crop",
       alt: `${name} - Packaging`,
       type: "image"
     },
     {
-      url: heroImage,
+      url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop",
       alt: `${name} - How it works`,
       type: "video"
     }
