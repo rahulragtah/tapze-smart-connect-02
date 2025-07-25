@@ -5,42 +5,52 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Flame } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {Offer} from "../components/models/productInterface";
+
+interface Offer {
+  productId: string;
+  offerId: number;
+  offerType: string;
+  value: number;
+  isActive: boolean;
+}
 
 
 const BuyNFCCard = () => {
 
 
-    const [products, setProducts] = useState([]);
-        const [loading, setLoading] = useState(true);
-       const [offer, setOffer] =useState<Offer[]>([]);
-        useEffect(() => {
-          const url = 'https://tapze.in/tapzeservice//productapi.php';
-          fetch(url)
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [offers, setOffers] = useState<{[key: string]: Offer}>({});
+
+  useEffect(() => {
+    fetch('https://tapze.in/tapzeservice/productapi.php')
+      .then(response => response.json())
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+        
+        // Fetch offers for each card
+        data.forEach((card: any) => {
+          fetch(`https://tapze.in/tapzeservice/productoffer.php?product_id=${card.id}`)
             .then(response => response.json())
-            .then(data => {
-              setProducts(data);
-              setLoading(false);
-              console.log ('current product ', data);
+            .then(offerData => {
+              if (offerData && offerData.length > 0) {
+                setOffers(prev => ({
+                  ...prev,
+                  [card.id]: offerData[0]
+                }));
+              }
             })
             .catch(error => {
-              console.error('Error fetching cards:', error);
-              setLoading(false);
+              console.error('Error fetching offer for card:', card.id, error);
             });
-
-            console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
-          fetch('https://tapze.in//tapzeservice/productoffer.php')
-          .then(response => response.json())
-          .then(data => {
-            setOffer(data);
-           
-            console.log ('offers for current product  ', data);
-          })
-          .catch(error => {
-            console.error('Error fetching cards:', error);
-            
-          });
-        }, []); // 👈 empty array means run once on page load
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching cards:', error);
+        setLoading(false);
+      });
+  }, []);
       
         if (loading) {
           return <p>Loading cards...</p>;
@@ -76,19 +86,20 @@ const BuyNFCCard = () => {
                   to={`/products/${product.id}`}
                   className="group block"
                 >
-                  <Card className="glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden">
-                    {product.popular && (
-                      <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-purple-600 to-pink-600">
-                        <Star className="w-3 h-3 mr-1" />
-                        Popular
-                      </Badge>
-                    )}
-                    
+                  <Card className={`glass p-6 rounded-3xl hover:scale-105 transition-all duration-300 cursor-pointer relative overflow-hidden ${
+                    product.hotSelling ? 'scale-110 shadow-2xl shadow-orange-500/20 border-2 border-orange-500/30' : ''
+                  }`}>
                     {product.hotSelling && (
-                      <Badge className="absolute top-4 left-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
+                      <Badge className="absolute top-4 right-4 z-10 bg-gradient-to-r from-red-500 to-orange-500">
                         <Flame className="w-3 h-3 mr-1" />
                         Hot Selling
                       </Badge>
+                    )}
+                    
+                    {offers[product.id] && offers[product.id].isActive && (
+                      <div className="absolute top-4 left-4 z-10 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
+                        Save ₹{offers[product.id].value.toLocaleString()}
+                      </div>
                     )}
                     
                     <div className="space-y-6">
@@ -122,33 +133,26 @@ const BuyNFCCard = () => {
                           ))}
                         </div>
 
-                      { offer.find(o => o.productId === product.id) ? (
-
+                        {/* Price */}
                         <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                          <div className="text-2xl font-bold text-white">
-                            ₹{(product.price - offer.find(o => o.productId === product.id)?.value).toLocaleString()}
-                          </div>
+                          {offers[product.id] && offers[product.id].isActive ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-2xl font-bold text-white">
+                                ₹{(parseFloat(product.price) - offers[product.id].value).toLocaleString()}
+                              </span>
+                              <span className="text-lg text-gray-400 line-through">
+                                ₹{parseFloat(product.price).toLocaleString()}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="text-2xl font-bold text-white">
+                              ₹{parseFloat(product.price).toLocaleString()}
+                            </div>
+                          )}
                           <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                             View Details →
                           </div>
                         </div>
-
-
-                            )
-                            : (
-                              <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                          <div className="text-2xl font-bold text-white">
-                            ₹{(product.price ).toLocaleString()}
-                          </div>
-                          <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
-                            View Details →
-                          </div>
-                        </div>  
-
-                             )  
-                      }
-                        
-                        {/* Price */}
                         
                       </div>
                     </div>
