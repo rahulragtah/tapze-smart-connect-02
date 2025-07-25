@@ -4,11 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
 
+interface Offer {
+  productId: string;
+  offerId: number;
+  offerType: string;
+  value: number;
+  isActive: boolean;
+}
+
 
 const NFCCardSection = () => {
-
-const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [offers, setOffers] = useState<{[key: string]: Offer}>({});
 
   useEffect(() => {
     fetch('https://tapze.in/tapzeservice/all_cards.php')
@@ -16,12 +24,29 @@ const [cards, setCards] = useState([]);
       .then(data => {
         setCards(data);
         setLoading(false);
+        
+        // Fetch offers for each card
+        data.forEach((card: any) => {
+          fetch(`https://tapze.in/tapzeservice/productoffer.php?product_id=${card.id}`)
+            .then(response => response.json())
+            .then(offerData => {
+              if (offerData && offerData.length > 0) {
+                setOffers(prev => ({
+                  ...prev,
+                  [card.id]: offerData[0]
+                }));
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching offer for card:', card.id, error);
+            });
+        });
       })
       .catch(error => {
         console.error('Error fetching cards:', error);
         setLoading(false);
       });
-  }, []); // 👈 empty array means run once on page load
+  }, []);
 
   if (loading) {
     return <p>Loading cards...</p>;
@@ -95,9 +120,25 @@ const [cards, setCards] = useState([]);
                     
                     {/* Price */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-700">
-                      <div className="text-2xl font-bold text-white">
-                        ₹{(card.price )}
-                      </div>
+                      {offers[card.id] && offers[card.id].isActive ? (
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl font-bold text-white">
+                              ₹{(parseFloat(card.price) - offers[card.id].value).toLocaleString()}
+                            </span>
+                            <span className="text-lg text-gray-400 line-through">
+                              ₹{parseFloat(card.price).toLocaleString()}
+                            </span>
+                          </div>
+                          <div className="bg-red-500 text-white px-2 py-1 rounded text-xs font-medium inline-block">
+                            Save ₹{offers[card.id].value.toLocaleString()}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-2xl font-bold text-white">
+                          ₹{parseFloat(card.price).toLocaleString()}
+                        </div>
+                      )}
                       <div className="text-purple-400 text-sm font-semibold group-hover:text-purple-300 transition-colors">
                         View Details →
                       </div>
