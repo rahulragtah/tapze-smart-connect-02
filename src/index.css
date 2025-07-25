@@ -89,3 +89,15 @@ opacity: 0.4;
 background: #D22885;
 filter: blur(157px);
 }
+@media only screen and (max-width: 480px) {
+  .custombg{
+    width: 260px;
+    height: 170px;
+    top: 62%;
+    right: 20%;
+    border-radius: 166px;
+    opacity: 0.4;
+    background: #D22885;
+    filter: blur(67px);
+}
+}
