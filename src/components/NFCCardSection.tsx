@@ -113,7 +113,7 @@ const NFCCardSection = () => {
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">{card.name}</h3>
-                      <p className="text-gray-400 text-sm">{card.description}</p>
+                      <p className="text-gray-400 text-sm two-line-truncate">{card.description}</p>
                     </div>
                     
                     {/* Features */}
