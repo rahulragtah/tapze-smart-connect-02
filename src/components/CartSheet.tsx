@@ -12,6 +12,8 @@ import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft } from 'lucide-reac
 import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
+import PaymentButton from '../components/PaymentButton';
+import{CheckoutDTO} from '../components/models/productInterface' ;
 
 interface CheckoutFormData {
   firstName: string;
@@ -27,29 +29,7 @@ interface CheckoutFormData {
   couponCode?: string;
 }
 
- interface CheckoutDTO  extends Record<string, unknown> {
-  personalInfo: {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-  };
-  address: {
-    line1: string;
-    line2?: string;
-    state: string;
-    city: string;
-    pinCode: string;
-  };
-  orderItems: CartItem[];
-  totalItems: number;
-  totalPrice:number;
-  couponDiscount:number;
-  couponCode:string;
-  gstAmount:number;
-  finalTotal:number;
-
-}
+ 
 const CartSheet = () => {
   const { items, totalItems, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
@@ -128,7 +108,7 @@ const CartSheet = () => {
       totalPrice: totalPrice,
       couponDiscount:couponDiscount,
       couponCode:couponCode ,
-      gstAmount:gstAmount,
+      gstAmount:100,
       finalTotal:finalTotal,
     }
 
@@ -137,6 +117,83 @@ const CartSheet = () => {
     console.log("total item ", totalItems);
 
     try {
+
+      const createOrderRazorpayResponse = await fetch(
+        'https://tapze.in/tapzeservice/create_order.php',
+        {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            amount: finalOrderDto.finalTotal
+            })
+        }
+        );
+
+        // ✅ Important: fetch does NOT auto-parse JSON like axios
+        const data = await createOrderRazorpayResponse.json();
+        console.log( "create order razorpay response", data);
+        const { id: order_id, amount, currency } = data;
+
+        // 2️⃣ Configure Razorpay options
+      const options = {
+        key: "rzp_test_OmyeGhZlBHqJUK", // Replace with your public key
+        amount: amount,
+        currency: currency,
+        name: "TapZe",
+        description: "Test Transaction",
+        order_id: order_id,
+        handler: async function (response) {
+            console.log(response);
+
+            // Prepare payload
+            const body = {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+            };
+
+            // POST to verify.php
+            const verifyResponse = await fetch(
+                'https://tapze.in/tapzeservice/verify.php',
+                {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+                }
+            );
+
+            const verifyResult = await verifyResponse.json();
+            console.log(verifyResult);
+
+            if (verifyResult.success) {
+                alert('Payment verified! ✅');
+                // Do your order fulfillment here!
+            } else {
+                alert('Payment verification failed! ❌');
+            }
+            },
+        prefill: {
+          name:  finalOrderDto.personalInfo.firstName +" "+finalOrderDto.personalInfo.lastName,
+          email: finalOrderDto.personalInfo.email,
+          contact: finalOrderDto.personalInfo.phone,
+        },
+        notes: {
+          address: finalOrderDto.address.line1 +" "+ finalOrderDto.address.line2+finalOrderDto.address.city ,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      // 3️⃣ Open Razorpay Checkout
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+
+
 
       const response = await fetch("https://tapze.in/tapzeservice/order.php", {
         method: "POST",
@@ -468,6 +525,7 @@ const CartSheet = () => {
 
       {/* Place Order Button - Fixed at bottom */}
       <div className="border-t bg-background p-4 mt-auto">
+        
         <Button 
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
