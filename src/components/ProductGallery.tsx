@@ -204,7 +204,7 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
             )}
 
             {/* Zoomed Image Container */}
-            <div className="w-full h-full flex items-center justify-center px-20 py-16">
+            <div className="w-full h-full flex items-center justify-center px-20 py-16 max-w-[50%]">
               <img
                 src={imageGallery[zoomImageIndex].url}
                 alt={imageGallery[zoomImageIndex].alt}
