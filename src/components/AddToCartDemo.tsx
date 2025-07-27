@@ -42,7 +42,7 @@ const AddToCartDemo = () => {
             <p className="text-2xl font-bold text-primary">₹{product.price}</p>
           </div>
           <Button 
-            onClick={() => addItem(product)}
+            onClick={() => addItem({...product, offerPrice: product.price})}
             className="w-full"
             variant="outline"
           >

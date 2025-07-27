@@ -78,7 +78,7 @@ const HeroSection = () => {
           </div>
 
           {/* Right side - Hero Visual */}
-          <img class="main-banner" src="/lovable-uploads/main-banner.png" alt></img>
+          <img className="main-banner" src="/lovable-uploads/main-banner.png" alt="Main Banner" />
           
           {/* Right side - Hero Visual */}
           {/* <div className="relative animate-fade-in" style={{ animationDelay: '0.2s' }}>
