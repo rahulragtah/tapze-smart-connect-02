@@ -174,8 +174,8 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
 
       {/* Zoom Modal */}
       <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
-        <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-black/95">
-          <div className="relative w-full h-full flex items-center justify-center">
+        <DialogContent className="max-w-none w-screen h-screen p-0 bg-black/95 border-0">
+          <div className="relative w-full h-full flex items-center justify-center p-16">
             {/* Close Button */}
             <button
               onClick={() => setIsZoomOpen(false)}
@@ -185,19 +185,23 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
             </button>
 
             {/* Navigation Buttons */}
-            <button
-              onClick={prevZoomImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
+            {imageGallery.length > 1 && (
+              <>
+                <button
+                  onClick={prevZoomImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
 
-            <button
-              onClick={nextZoomImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
+                <button
+                  onClick={nextZoomImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
 
             {/* Zoomed Image */}
             <img
@@ -207,9 +211,11 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
             />
 
             {/* Image Counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
-              {zoomImageIndex + 1} / {imageGallery.length}
-            </div>
+            {imageGallery.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+                {zoomImageIndex + 1} / {imageGallery.length}
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
