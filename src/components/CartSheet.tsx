@@ -110,6 +110,7 @@ const CartSheet = () => {
       couponCode:couponCode ,
       gstAmount:100,
       finalTotal:finalTotal,
+      shippingCharge:shippingCharge
     }
 
     console.log('current form data ', finalOrderDto);

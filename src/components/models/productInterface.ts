@@ -37,6 +37,7 @@ export interface CheckoutDTO  extends Record<string, unknown> {
   couponCode:string;
   gstAmount:number;
   finalTotal:number;
+  shippingCharge:number;
 
 }
 
