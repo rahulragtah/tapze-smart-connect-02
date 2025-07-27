@@ -175,7 +175,7 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
       {/* Zoom Modal */}
       <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
         <DialogContent className="max-w-none w-screen h-screen p-0 bg-black/95 border-0">
-          <div className="relative w-full h-full flex items-center justify-center p-16">
+          <div className="relative w-full h-full flex items-center justify-center p-4">
             {/* Close Button */}
             <button
               onClick={() => setIsZoomOpen(false)}
@@ -203,12 +203,14 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
               </>
             )}
 
-            {/* Zoomed Image */}
-            <img
-              src={imageGallery[zoomImageIndex].url}
-              alt={imageGallery[zoomImageIndex].alt}
-              className="max-w-full max-h-full object-contain"
-            />
+            {/* Zoomed Image Container */}
+            <div className="w-full h-full flex items-center justify-center px-20 py-16">
+              <img
+                src={imageGallery[zoomImageIndex].url}
+                alt={imageGallery[zoomImageIndex].alt}
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
 
             {/* Image Counter */}
             {imageGallery.length > 1 && (
