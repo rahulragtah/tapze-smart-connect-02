@@ -135,6 +135,7 @@ const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryP
               src={galleryImages[selectedImage].url}
               alt={galleryImages[selectedImage].alt}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 cursor-zoom-in"
+              onClick={openZoom}
             />
             
             {/* Zoom Icon */}
