@@ -1,8 +1,9 @@
 
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface ProductGalleryProps {
   heroImage: string;
@@ -13,6 +14,8 @@ interface ProductGalleryProps {
 const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isSticky, setIsSticky] = useState(true);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [zoomImageIndex, setZoomImageIndex] = useState(0);
   const galleryRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -70,6 +73,19 @@ const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryP
     setSelectedImage((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
   };
 
+  const openZoom = () => {
+    setZoomImageIndex(selectedImage);
+    setIsZoomOpen(true);
+  };
+
+  const nextZoomImage = () => {
+    setZoomImageIndex((prev) => (prev + 1) % galleryImages.length);
+  };
+
+  const prevZoomImage = () => {
+    setZoomImageIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+  };
+
   return (
     <div ref={containerRef} className="lg:flex lg:flex-col lg:gap-4">
       <div 
@@ -122,11 +138,12 @@ const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryP
             />
             
             {/* Zoom Icon */}
-            <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="bg-black/50 text-white p-2 rounded-full">
-                <ZoomIn className="w-4 h-4" />
-              </div>
-            </div>
+            <button
+              onClick={openZoom}
+              className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+            >
+              <ZoomIn className="w-4 h-4" />
+            </button>
             
             {/* Navigation Arrows */}
             <Button
@@ -166,6 +183,48 @@ const ProductGallery = ({ heroImage, name, hotSelling = false }: ProductGalleryP
           </div>
         </div>
       </div>
+
+      {/* Zoom Modal */}
+      <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
+        <DialogContent className="max-w-7xl w-full h-[90vh] p-0 bg-black/95">
+          <div className="relative w-full h-full flex items-center justify-center">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsZoomOpen(false)}
+              className="absolute top-4 right-4 z-20 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevZoomImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={nextZoomImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Zoomed Image */}
+            <img
+              src={galleryImages[zoomImageIndex].url}
+              alt={galleryImages[zoomImageIndex].alt}
+              className="max-w-full max-h-full object-contain"
+            />
+
+            {/* Image Counter */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+              {zoomImageIndex + 1} / {galleryImages.length}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
