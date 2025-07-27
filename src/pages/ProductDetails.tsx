@@ -24,7 +24,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
-      const url = 'https://tapze.in/tapzeservice/productapi.php?id=' + productId;
+      const url = 'https://tapze.in/tapzeservice/productapi.php?id=' + productId + '&section=product';
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -64,7 +64,8 @@ const ProductDetails = () => {
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image
+      image: product.image,
+      offerPrice:product.offerPrice
     });
   };
 
@@ -73,7 +74,8 @@ const ProductDetails = () => {
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image
+      image: product.image,
+      offerPrice:product.offerPrice
     });
     console.log("Redirecting to checkout with:", product.name);
   };

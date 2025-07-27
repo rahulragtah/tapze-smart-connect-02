@@ -1,9 +1,10 @@
-
+import  { useEffect, useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
+import {CartItem} from "../components/models/productInterface"
 
 const allProducts = [
   {
@@ -11,21 +12,24 @@ const allProducts = [
     name: "Classic Black",
     description: "Timeless elegance with matte finish",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop",
-    price: 49
+    price: 49,
+    offerPrice: 100
   },
   {
     id: "premium-metal",
     name: "Premium Metal",
     description: "Luxury steel with custom etching",
     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
-    price: 89
+    price: 89,
+    offerPrice: 100
   },
   {
     id: "transparent-glass",
     name: "Transparent Glass",
     description: "Modern frosted glass design",
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=250&fit=crop",
-    price: 129
+    price: 129,
+    offerPrice: 100
   }
 ];
 
@@ -35,15 +39,33 @@ interface ProductRecommendationsProps {
 
 const ProductRecommendations = ({ currentProductId }: ProductRecommendationsProps) => {
   const { addItem } = useCart();
-  
-  const recommendedProducts = allProducts.filter(product => product.id !== currentProductId);
+const [recommendedProduct, setRecommendedProduct] = useState<CartItem[]>([]);
 
-  const handleAddToCart = (product: typeof allProducts[0]) => {
+
+   useEffect(() => {
+        const url = 'https://tapze.in/tapzeservice/productapi.php?id=' + currentProductId +'&section=recommendations';
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            setRecommendedProduct(data);
+            
+          })
+          .catch(error => {
+            console.error('Error fetching cards:', error);
+           
+          });
+      }, []); // 👈 empty array means run once on page load
+    
+  
+  const recommendedProducts = recommendedProduct.filter(product => product.id !== currentProductId);
+
+  const handleAddToCart = (product: CartItem) => {
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image
+      image: product.image,
+      offerPrice: product.offerPrice
     });
   };
 

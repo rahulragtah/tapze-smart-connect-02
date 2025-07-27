@@ -39,3 +39,12 @@ export interface CheckoutDTO  extends Record<string, unknown> {
   finalTotal:number;
 
 }
+
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  offerPrice:number;
+  quantity: number;
+  image?: string;
+}

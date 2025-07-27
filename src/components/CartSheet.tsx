@@ -31,7 +31,7 @@ interface CheckoutFormData {
 
  
 const CartSheet = () => {
-  const { items, totalItems, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
+  const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
   const [step, setStep] = useState<'cart' | 'checkout'>('cart');
   const [couponDiscount, setCouponDiscount] = useState(0);
@@ -565,7 +565,7 @@ const CartSheet = () => {
                   )}
                   <div className="flex-1">
                     <h4 className="font-medium text-foreground">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">₹{item.price}</p>
+                    <p className="text-sm text-muted-foreground">₹{item.offerPrice}</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
@@ -602,7 +602,7 @@ const CartSheet = () => {
             <div className="border-t pt-6 space-y-4">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total</span>
-                <span>₹{totalPrice.toFixed(2)}</span>
+                <span>₹{totalPrice.toFixed(2)} </span>  <span>₹{totalOfferPrice.toFixed(2)} </span>
               </div>
               <Button 
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"

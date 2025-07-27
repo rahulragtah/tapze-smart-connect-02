@@ -5,6 +5,7 @@ export interface CartItem {
   id: string;
   name: string;
   price: number;
+  offerPrice:number;
   quantity: number;
   image?: string;
 }
@@ -16,6 +17,7 @@ interface CartContextType {
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
+  totalOfferPrice:number;
   totalPrice: number;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -76,6 +78,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalOfferPrice = items.reduce((sum, item) => sum + (item.offerPrice * item.quantity), 0);
 
   return (
     <CartContext.Provider
@@ -87,6 +90,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         clearCart,
         totalItems,
         totalPrice,
+        totalOfferPrice,
         isOpen,
         setIsOpen,
       }}
