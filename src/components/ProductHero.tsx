@@ -81,7 +81,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
           <div className="space-y-6">
             {/* Breadcrumb */}
             <div className="text-sm text-gray-400">
-              <span>Home</span> &gt; <span>tapZe Cards</span> &gt; <span className="text-white">{product.name}</span>
+              <span>Home</span> &gt; <span>Our Products</span> &gt; <span className="text-white">{product.name}</span>
             </div>
 
             {/* Title */}
@@ -164,7 +164,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
               <div className="grid grid-cols-1 gap-2">
                 {product.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
+                    {/* <div className="w-1.5 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" /> */}
                     <span className="text-gray-300">{feature}</span>
                   </div>
                 ))}
