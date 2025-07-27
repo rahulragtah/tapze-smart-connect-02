@@ -113,14 +113,14 @@ const NFCCardSection = () => {
                   <div className="space-y-4">
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">{card.name}</h3>
-                      <p className="text-gray-400 text-sm two-line-truncate">{card.description}</p>
+                      {/* <p className="text-gray-400 text-sm two-line-truncate">{card.description}</p> */}
                     </div>
                     
                     {/* Features */}
                     <div className="space-y-2">
                       {card.features.map((feature, featureIndex) => (
                         <div key={featureIndex} className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" />
+                          {/* <div className="w-1.5 h-1.5 bg-purple-500 rounded-full" /> */}
                           <span className="text-gray-300 text-sm">{feature}</span>
                         </div>
                       ))}

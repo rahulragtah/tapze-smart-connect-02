@@ -81,7 +81,7 @@ const PaymentButton : React.FC<Props> = ({ order }) => {
       };
 
       // 3️⃣ Open Razorpay Checkout
-      const rzp1 = new window.Razorpay(options);
+      const rzp1 = new (window as any).Razorpay(options);
       rzp1.open();
     } catch (error) {
       console.error(error);

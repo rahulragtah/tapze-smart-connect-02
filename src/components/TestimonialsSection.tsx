@@ -12,45 +12,45 @@ import { useRef } from "react";
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    role: "Marketing Director",
-    company: "TechFlow",
-    quote: "Tapze completely changed how I network. The analytics feature helps me understand which connections are most valuable.",
-    avatar: "SC"
+    name: "Tanuja G",
+    role: "Owner",
+    company: "Little Smiles Toy store",
+    quote: "Absolutely love this tapZe card! It's sleek, modern, and makes networking incredibly easy. Just a simple tap and all my contact details, social links, and portfolio are instantly shared.",
+    avatar: "TG"
   },
   {
-    name: "Michael Rodriguez", 
-    role: "Freelance Designer",
-    company: "Creative Studio",
+    name: "Nitish Pandey", 
+    role: "Head of Strategy",
+    company: "Workflow Catlyst",
     quote: "The card quality is exceptional and the app is so intuitive. My clients are always impressed when I share my details.",
-    avatar: "MR"
+    avatar: "NP"
   },
   {
-    name: "Emma Thompson",
-    role: "Business Consultant", 
-    company: "Growth Partners",
+    name: "Siddharth Chaturvedi",
+    role: "Direct Of Product", 
+    company: "Auriolus Finvest Private Limited",
     quote: "Real-time updates are a game changer. I can modify my profile for different events without reprinting cards.",
     avatar: "ET"
   },
   {
-    name: "David Park",
-    role: "Startup Founder",
-    company: "InnovateLab", 
-    quote: "Tapze gives me a professional edge. The seamless experience impresses investors and potential partners.",
+    name: "Rakesh Singh",
+    role: "Delivery Manager",
+    company: "FIS", 
+    quote: "Beautiful design meets practical functionality. Tapze card perfectly represents my personal brand in every interaction.",
     avatar: "DP"
   },
   {
-    name: "Lisa Wang",
-    role: "Sales Manager",
-    company: "SalesForce Pro",
+    name: "Manish Mishra",
+    role: "Director Engineering",
+    company: "Bird Eye",
     quote: "The lead capture feature has increased my follow-up rate by 300%. It's an essential tool for any sales professional.",
     avatar: "LW"
   },
   {
-    name: "James Miller",
-    role: "Creative Director", 
-    company: "Brand Studio",
-    quote: "Beautiful design meets practical functionality. Tapze perfectly represents my personal brand in every interaction.",
+    name: "R Narayan",
+    role: "CEO", 
+    company: "Power2SME",
+    quote: "Tapze card gives me a professional edge. The seamless experience impresses investors and potential partners.",
     avatar: "JM"
   }
 ];

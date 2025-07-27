@@ -31,22 +31,36 @@ interface ProductHeroProps {
 }
 
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
-  const [offer, setOffer] =useState<Offer>();
+  const [offer, setOffer] = useState<Offer>();
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  
   useEffect(() => {
-         console.log('ffdsfdsf ndsfds      hjdfdshkfjdshkfjdshkjfdshkjfhdsf')
-          fetch('https://tapze.in//tapzeservice/productoffer.php?product_id=' + product.id)
-          .then(response => response.json())
-          .then(data => {
-            setOffer(data[0]);
-           
-            console.log ('offers for current product  ', data);
-          })
-          .catch(error => {
-            console.error('Error fetching cards:', error);
-            
-          });
-      }, []
-    ); // 👈 empty array means run once on page load
+    // Fetch offers
+    fetch('https://tapze.in//tapzeservice/productoffer.php?product_id=' + product.id)
+      .then(response => response.json())
+      .then(data => {
+        setOffer(data[0]);
+        console.log('offers for current product', data);
+      })
+      .catch(error => {
+        console.error('Error fetching offers:', error);
+      });
+
+    // Fetch gallery images
+    fetch(`https://tapze.in/tapzeservice/productapi.php?id=${product.id}&section=gallery`)
+      .then(response => response.json())
+      .then(data => {
+        if (data && Array.isArray(data)) {
+          const images = data.map(item => item.image || item.heroImage).filter(Boolean);
+          setGalleryImages(images);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching gallery images:', error);
+        // Fallback to hero image
+        setGalleryImages([product.heroImage]);
+      });
+  }, [product.id]);
 
   return (
     <section className="px-4 pb-8">
@@ -54,7 +68,12 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Left: Product Gallery */}
           <div>
-            <ProductGallery heroImage={product.heroImage} name={product.name} hotSelling={product.hotSelling} />
+            <ProductGallery 
+              heroImage={product.heroImage} 
+              name={product.name} 
+              hotSelling={product.hotSelling} 
+              galleryImages={galleryImages}
+            />
             <Card className="glass p-4 rounded-lg mt-5">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
                 <Award className="w-4 h-4 text-purple-400" />
@@ -81,7 +100,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
           <div className="space-y-6">
             {/* Breadcrumb */}
             <div className="text-sm text-gray-400">
-              <span>Home</span> &gt; <span>tapZe Cards</span> &gt; <span className="text-white">{product.name}</span>
+              <span>Home</span> &gt; <span>Our Products</span> &gt; <span className="text-white">{product.name}</span>
             </div>
 
             {/* Title */}
@@ -164,7 +183,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
               <div className="grid grid-cols-1 gap-2">
                 {product.features.map((feature, index) => (
                   <div key={index} className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" />
+                    {/* <div className="w-1.5 h-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full" /> */}
                     <span className="text-gray-300">{feature}</span>
                   </div>
                 ))}
