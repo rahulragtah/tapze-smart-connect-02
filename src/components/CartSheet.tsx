@@ -200,7 +200,39 @@ const CartSheet = () => {
 
             if (verifyResult.success) {
                 alert('Payment verified! ✅');
-                // Do your order fulfillment here!
+
+
+                  const response = await fetch("https://tapze.in/tapzeservice/order.php", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify(finalOrderDto)
+                });
+
+                const responseData = await response.json();
+                console.log("Server response:", responseData);
+                if (!response.ok) {
+                  throw new Error("Order failed");
+                }
+
+
+
+                emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
+                (result) => {
+                  console.log(result.text);
+                  alert("Email sent successfully!");
+                },
+                (error) => {
+                  console.log(error.text);
+                  alert("Error sending email.");
+                }
+              );
+            alert(`Order placed! ID: ${responseData.order_id}`);
+            toast({
+                title: "Order Placed Successfully!",
+                description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
+              });
             } else {
                 alert('Payment verification failed! ❌');
             }
@@ -221,39 +253,7 @@ const CartSheet = () => {
       // 3️⃣ Open Razorpay Checkout
       const rzp1 = new (window as any).Razorpay(options);
       rzp1.open();
-
-
-
-      const response = await fetch("https://tapze.in/tapzeservice/order.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(finalOrderDto)
-      });
-
-      const responseData = await response.json();
-      console.log("Server response:", responseData);
-      if (!response.ok) {
-        throw new Error("Order failed");
-      }
-
-      emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
-      (result) => {
-        console.log(result.text);
-        alert("Email sent successfully!");
-      },
-      (error) => {
-        console.log(error.text);
-        alert("Error sending email.");
-      }
-    );
-
-      alert(`Order placed! ID: ${responseData.order_id}`);
-       toast({
-          title: "Order Placed Successfully!",
-          description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
-        });
+      
     } catch (error) {
       console.error(error);
       alert("Order failed. Try again.");
