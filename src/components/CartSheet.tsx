@@ -13,7 +13,8 @@ import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
 import PaymentButton from '../components/PaymentButton';
-import{CheckoutDTO} from '../components/models/productInterface' ;
+import{CheckoutDTO, OrderDTO} from '../components/models/productInterface' ;
+
 
 interface CheckoutFormData {
   firstName: string;
@@ -103,6 +104,25 @@ const CartSheet = () => {
         city: values.city,
         pinCode: values.zipCode,
       },
+      orderItems: items,
+      totalItems: totalItems,
+      totalPrice: totalPrice,
+      couponDiscount:couponDiscount,
+      couponCode:couponCode ,
+      gstAmount:100,
+      finalTotal:finalTotal,
+    }
+    const finalEmailDto: OrderDTO = {
+      
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phone: values.phone,
+      email: values.email,
+      line1: values.address,
+      line2: values.apartment,
+      state: values.state,
+      city: values.city,
+      pinCode: values.zipCode,
       orderItems: items,
       totalItems: totalItems,
       totalPrice: totalPrice,
@@ -209,7 +229,7 @@ const CartSheet = () => {
         throw new Error("Order failed");
       }
 
-      emailjs.send('tapzeEmailService','template_t4zx6o9',finalOrderDto,'Yc8keWHr9MEOI9SGg').then(
+      emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
       (result) => {
         console.log(result.text);
         alert("Email sent successfully!");

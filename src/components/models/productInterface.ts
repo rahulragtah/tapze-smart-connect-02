@@ -39,6 +39,25 @@ export interface CheckoutDTO  extends Record<string, unknown> {
   finalTotal:number;
 
 }
+export interface orderDTO  extends Record<string, unknown> {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  line1: string;
+  line2?: string;
+  state: string;
+  city: string;
+  pinCode: string;
+  orderItems: CartItem[];
+  totalItems: number;
+  totalPrice:number;
+  couponDiscount:number;
+  couponCode:string;
+  gstAmount:number;
+  finalTotal:number;
+
+}
 
 export interface CartItem {
   id: string;
