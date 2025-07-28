@@ -57,7 +57,7 @@ const CartSheet = () => {
   const subtotal = totalPrice;
   const discountAmount = appliedCoupon ? 
     (validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
-      ? (subtotal * couponDiscount) / 100 
+      ? (totalOfferPrice * couponDiscount) / 100 
       : couponDiscount) : 0;
   const afterDiscount = subtotal - discountAmount;
   // const gstAmount = (afterDiscount * 18) / 100; // 18% GST
@@ -519,18 +519,18 @@ const CartSheet = () => {
                 <span>Subtotal</span>
                 <span>₹{totalPrice.toFixed(2)}</span>
               </div>
-              {appliedCoupon && (
+              
+              
+                <div className="flex justify-between text-green-600">
+                  <span>Discount on MRP </span>
+                  <span>-₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>
+                </div>
+             {appliedCoupon && (
                 <div className="flex justify-between text-green-600">
                   <span>Coupon Discount ({appliedCoupon})</span>
                   <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
-              
-                <div className="flex justify-between text-green-600">
-                  <span>Discount on MPR </span>
-                  <span>-₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>
-                </div>
-             
               <div className="flex justify-between">
                 <span>Price includes 18% GST</span>
                 <span>-</span>
@@ -551,7 +551,7 @@ const CartSheet = () => {
               
               <div className="flex justify-between font-bold">
                 <span>Total</span>
-                <span>₹{totalOfferPrice.toFixed(2)}</span>
+                <span>₹{(totalOfferPrice-discountAmount).toFixed(2)}</span>
               </div>
             </div>
           </CardContent>
