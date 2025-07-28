@@ -14,32 +14,32 @@ interface Offer {
   isActive: boolean;
 }
 
-const allProducts = [
-  {
-    id: "classic-black",
-    name: "Classic Black",
-    description: "Timeless elegance with matte finish",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop",
-    price: 49,
-    offerPrice: 100
-  },
-  {
-    id: "premium-metal",
-    name: "Premium Metal",
-    description: "Luxury steel with custom etching",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
-    price: 89,
-    offerPrice: 100
-  },
-  {
-    id: "transparent-glass",
-    name: "Transparent Glass",
-    description: "Modern frosted glass design",
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=250&fit=crop",
-    price: 129,
-    offerPrice: 100
-  }
-];
+// const allProducts = [
+//   {
+//     id: "classic-black",
+//     name: "Classic Black",
+//     description: "Timeless elegance with matte finish",
+//     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop",
+//     price: 49,
+//     offerPrice: 100
+//   },
+//   {
+//     id: "premium-metal",
+//     name: "Premium Metal",
+//     description: "Luxury steel with custom etching",
+//     image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
+//     price: 89,
+//     offerPrice: 100
+//   },
+//   {
+//     id: "transparent-glass",
+//     name: "Transparent Glass",
+//     description: "Modern frosted glass design",
+//     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&h=250&fit=crop",
+//     price: 129,
+//     offerPrice: 100
+//   }
+// ];
 
 interface ProductRecommendationsProps {
   currentProductId: string;
