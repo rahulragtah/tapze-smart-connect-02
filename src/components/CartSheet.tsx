@@ -165,6 +165,9 @@ const CartSheet = () => {
         console.log( "create order razorpay response", data);
         const { id: order_id, amount, currency } = data;
 
+
+        console.log(" RazorpayResponse create order  ",  data);
+
         // 2️⃣ Configure Razorpay options
       const options = {
         key: "rzp_test_OmyeGhZlBHqJUK", // Replace with your public key
@@ -174,7 +177,7 @@ const CartSheet = () => {
         description: "TapZe Transaction",
         order_id: order_id,
         handler: async function (response) {
-            console.log(response);
+            console.log("  payment process response ",  response);
 
             // Prepare payload
             const body = {
