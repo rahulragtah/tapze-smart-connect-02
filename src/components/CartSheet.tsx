@@ -111,6 +111,7 @@ const CartSheet = () => {
       orderItems: items,
       totalItems: totalItems,
       totalPrice: totalPrice,
+      offerPrice: totalOfferPrice,
       couponDiscount:couponDiscount,
       couponCode:couponCode ,
       gstAmount:100,
@@ -132,6 +133,7 @@ const CartSheet = () => {
       orderItems: items,
       totalItems: totalItems,
       totalPrice: totalPrice,
+      offerPrice: totalOfferPrice,
       couponDiscount:couponDiscount,
       couponCode:couponCode ,
       gstAmount:100,
@@ -153,7 +155,7 @@ const CartSheet = () => {
             'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            amount: finalOrderDto.finalTotal
+            amount: finalOrderDto.offerPrice*100
             })
         }
         );
@@ -169,7 +171,7 @@ const CartSheet = () => {
         amount: amount,
         currency: currency,
         name: "TapZe",
-        description: "Test Transaction",
+        description: "TapZe Transaction",
         order_id: order_id,
         handler: async function (response) {
             console.log(response);
@@ -504,9 +506,9 @@ const CartSheet = () => {
                 )}
                 <div className="flex-1">
                   <h4 className="font-medium text-sm">{item.name}</h4>
-                  <p className="text-xs text-muted-foreground">₹{item.offerPrice} × {item.quantity}</p>
+                  <p className="text-xs text-muted-foreground">₹{item.price} × {item.quantity}</p>
                 </div>
-                <span className="text-sm font-medium">₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
             
@@ -515,14 +517,20 @@ const CartSheet = () => {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>₹{afterDiscount.toFixed(2)}</span>
+                <span>₹{totalPrice.toFixed(2)}</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount ({appliedCoupon})</span>
+                  <span>Coupon Discount ({appliedCoupon})</span>
                   <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
+              
+                <div className="flex justify-between text-green-600">
+                  <span>Discount on MPR </span>
+                  <span>-₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>
+                </div>
+             
               <div className="flex justify-between">
                 <span>Price includes 18% GST</span>
                 <span>-</span>
@@ -543,7 +551,7 @@ const CartSheet = () => {
               
               <div className="flex justify-between font-bold">
                 <span>Total</span>
-                <span>₹{finalTotal.toFixed(2)}</span>
+                <span>₹{totalOfferPrice.toFixed(2)}</span>
               </div>
             </div>
           </CardContent>
@@ -559,7 +567,7 @@ const CartSheet = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isProcessing}
         >
-          {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
+          {isProcessing ? 'Processing...' : `Place Order - ₹${totalOfferPrice.toFixed(2)}`}
         </Button>
       </div>
     </div>
@@ -629,7 +637,7 @@ const CartSheet = () => {
             <div className="border-t pt-6 space-y-4">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total</span>
-                {/* <span>₹{totalPrice.toFixed(2)} </span>  */}
+                {/* <span>₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>  */}
                  <span>₹{totalOfferPrice.toFixed(2)} </span>
               </div>
               <Button 
