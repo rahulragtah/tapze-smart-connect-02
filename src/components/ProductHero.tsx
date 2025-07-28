@@ -97,6 +97,10 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
   
   const [galleryImages, setGalleryImages] = useState<string[]>(getSampleImages(product.id));
   
+  // Update gallery images when product changes
+  useEffect(() => {
+    setGalleryImages(getSampleImages(product.id));
+  }, [product.id]);
   useEffect(() => {
     // Fetch offers
     fetch('https://tapze.in//tapzeservice/productoffer.php?product_id=' + product.id)
@@ -113,15 +117,17 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
     fetch(`https://tapze.in/tapzeservice/productapi.php?id=${product.id}&section=gallery`)
       .then(response => response.json())
       .then(data => {
-        if (data && Array.isArray(data)) {
+        if (data && Array.isArray(data) && data.length > 0) {
           const images = data.map(item => item.image || item.heroImage).filter(Boolean);
-          setGalleryImages(images);
+          if (images.length > 0) {
+            setGalleryImages(images);
+          }
+          // If no images from API, keep the sample images that were set initially
         }
       })
       .catch(error => {
         console.error('Error fetching gallery images:', error);
-        // Fallback to hero image
-        setGalleryImages([product.heroImage]);
+        // Keep the sample images that were set initially
       });
   }, [product.id]);
 
