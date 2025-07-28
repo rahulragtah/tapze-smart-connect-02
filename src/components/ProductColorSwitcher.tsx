@@ -1,5 +1,4 @@
-
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
 
 const cardVariants = [
   {
@@ -26,24 +25,32 @@ const cardVariants = [
     color: "#DEA193",
     image: "/lovable-uploads/rosegold-swatch.png"
   }
-  
 ];
 
 const ProductColorSwitcher = () => {
-  const { productId } = useParams();
+  const [selectedColor, setSelectedColor] = useState("black"); // Default color
+
+  const handleColorClick = (variant) => {
+    if (variant.id !== selectedColor) {
+      setSelectedColor(variant.id);
+      //alert(`You selected ${variant.name} color.`);
+    }
+  };
 
   return (
     <div className="space-y-3">
-      <h4 className="text-sm font-medium text-gray-700">Color: <span className="text-gray-300">{cardVariants.find(v => v.id === productId)?.name}</span></h4>
-      
+      <h4 className="text-sm font-medium text-gray-700">
+        Color: <span className="text-gray-300">{cardVariants.find(v => v.id === selectedColor)?.name}</span>
+      </h4>
+
       <div className="flex gap-2">
         {cardVariants.map((variant) => (
-          <Link
+          <button
             key={variant.id}
-            to={`/products/${variant.id}`}
+            onClick={() => handleColorClick(variant)}
             className={`relative w-12 h-12 rounded-lg border-2 overflow-hidden transition-all hover:scale-105 ${
-              productId === variant.id 
-                ? 'border-purple-500 ring-2 ring-purple-500/20' 
+              selectedColor === variant.id
+                ? 'border-purple-500 ring-2 ring-purple-500/20'
                 : 'border-gray-300 hover:border-gray-400'
             }`}
           >
@@ -52,12 +59,12 @@ const ProductColorSwitcher = () => {
               alt={variant.name}
               className="w-full h-full object-cover"
             />
-            {productId === variant.id && (
+            {selectedColor === variant.id && (
               <div className="absolute inset-0 bg-purple-500/10 flex items-center justify-center">
                 <div className="w-2 h-2 bg-purple-500 rounded-full" />
               </div>
             )}
-          </Link>
+          </button>
         ))}
       </div>
     </div>
