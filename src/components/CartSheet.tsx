@@ -29,7 +29,11 @@ interface CheckoutFormData {
   country: string;
   couponCode?: string;
 }
-
+const formattedDate = new Date().toLocaleDateString('en-IN', {
+  day: '2-digit',
+  month: 'short',
+  year: 'numeric',
+});
  
 const CartSheet = () => {
   const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
@@ -113,7 +117,8 @@ const CartSheet = () => {
       finalTotal:finalTotal,
     }
     const finalEmailDto: OrderDTO = {
-      
+      orderId : "#testid",
+      orderDate : formattedDate,
       firstName: values.firstName,
       lastName: values.lastName,
       phone: values.phone,
@@ -130,6 +135,7 @@ const CartSheet = () => {
       couponCode:couponCode ,
       gstAmount:100,
       finalTotal:finalTotal,
+      paymentMethod: "Credit card"
     }
 
     console.log('current form data ', finalOrderDto);
@@ -497,9 +503,9 @@ const CartSheet = () => {
                 )}
                 <div className="flex-1">
                   <h4 className="font-medium text-sm">{item.name}</h4>
-                  <p className="text-xs text-muted-foreground">₹{item.price} × {item.quantity}</p>
+                  <p className="text-xs text-muted-foreground">₹{item.offerPrice} × {item.quantity}</p>
                 </div>
-                <span className="text-sm font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
               </div>
             ))}
             
@@ -508,7 +514,7 @@ const CartSheet = () => {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+                <span>₹{afterDiscount.toFixed(2)}</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-green-600">
@@ -622,7 +628,8 @@ const CartSheet = () => {
             <div className="border-t pt-6 space-y-4">
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total</span>
-                <span>₹{totalPrice.toFixed(2)} </span>  <span>₹{totalOfferPrice.toFixed(2)} </span>
+                {/* <span>₹{totalPrice.toFixed(2)} </span>  */}
+                 <span>₹{totalOfferPrice.toFixed(2)} </span>
               </div>
               <Button 
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
