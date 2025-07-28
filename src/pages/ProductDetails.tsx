@@ -24,6 +24,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
+      setLoading(true);
       const url = 'https://tapze.in/tapzeservice/productapi.php?id=' + productId + '&section=product';
       fetch(url)
         .then(response => response.json())
@@ -36,7 +37,7 @@ const ProductDetails = () => {
           console.error('Error fetching cards:', error);
           setLoading(false);
         });
-    }, []); // 👈 empty array means run once on page load
+    }, [productId]); // 👈 now depends on productId so it refetches when product changes
   
     if (loading) {
       return <p>Loading cards...</p>;
