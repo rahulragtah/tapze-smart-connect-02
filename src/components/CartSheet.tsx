@@ -535,7 +535,7 @@ const CartSheet = () => {
                 <p className="text-xs text-green-600">Free shipping on orders above ₹1000!</p>
               )} */}
                
-                <p className="text-xs text-green-600">Free shipping on all orders above!</p>
+                {/* <p className="text-xs text-green-600">Free shipping on all orders above!</p> */}
              
               
               <Separator />
