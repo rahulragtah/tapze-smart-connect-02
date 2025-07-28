@@ -32,7 +32,13 @@ interface ProductHeroProps {
 
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
   const [offer, setOffer] = useState<Offer>();
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [galleryImages, setGalleryImages] = useState<string[]>([
+    product.heroImage,
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop", 
+    "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a?w=800&h=800&fit=crop"
+  ]);
   
   useEffect(() => {
     // Fetch offers
