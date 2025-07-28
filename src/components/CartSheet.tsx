@@ -520,13 +520,13 @@ const CartSheet = () => {
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount ({appliedCoupon})</span>
+                  <span>Coupon Discount ({appliedCoupon})</span>
                   <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
               
                 <div className="flex justify-between text-green-600">
-                  <span>Product Discount </span>
+                  <span>Discount on MPR </span>
                   <span>-₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>
                 </div>
              
