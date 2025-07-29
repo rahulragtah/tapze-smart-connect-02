@@ -22,7 +22,7 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   const containerRef = useRef<HTMLDivElement>(null);
   
 
-  console.log("dfffffffffffffffff",   galleryImages);
+  //console.log("dfffffffffffffffff",   galleryImages);
   // Build gallery images array from API data
   const imageGallery = galleryImages.length > 0 
     ? galleryImages.map((imageUrl, index) => ({
