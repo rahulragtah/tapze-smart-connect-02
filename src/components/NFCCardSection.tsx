@@ -1,6 +1,7 @@
 import  { useEffect, useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
 
@@ -49,7 +50,39 @@ const NFCCardSection = () => {
   }, []);
 
   if (loading) {
-    return <p>Loading cards...</p>;
+    return (
+      <section className="py-20 px-4 relative">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Skeleton className="h-10 w-48 mx-auto mb-6" />
+            <Skeleton className="h-12 w-96 mx-auto mb-6" />
+            <Skeleton className="h-6 w-80 mx-auto" />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, index) => (
+              <Card key={index} className="glass p-6 rounded-3xl">
+                <div className="space-y-6">
+                  <Skeleton className="w-full h-48 rounded-2xl" />
+                  <div className="space-y-4">
+                    <Skeleton className="h-6 w-3/4" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-5/6" />
+                      <Skeleton className="h-4 w-4/5" />
+                    </div>
+                    <div className="flex items-center justify-between pt-4">
+                      <Skeleton className="h-8 w-24" />
+                      <Skeleton className="h-4 w-20" />
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
   }
 
 

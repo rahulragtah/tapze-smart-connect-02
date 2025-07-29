@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -13,7 +12,7 @@ import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
 import PaymentButton from '../components/PaymentButton';
-import{CheckoutDTO, OrderDTO} from '../components/models/productInterface' ;
+import{CheckoutDTO, orderDTO} from '../components/models/productInterface' ;
 
 
 interface CheckoutFormData {
@@ -29,6 +28,93 @@ interface CheckoutFormData {
   country: string;
   couponCode?: string;
 }
+
+interface CouponCodeSectionProps {
+  appliedCoupon: string;
+  couponCode: string;
+  setCouponCode: (code: string) => void;
+  couponDiscount: number;
+  validCoupons: Record<string, { discount: number; type: string }>;
+  applyCoupon: () => void;
+  removeCoupon: () => void;
+}
+
+// Isolated component to prevent form re-rendering from affecting input focus
+const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
+  appliedCoupon,
+  couponCode,
+  setCouponCode,
+  couponDiscount,
+  validCoupons,
+  applyCoupon,
+  removeCoupon
+}) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Tag className="h-5 w-5" />
+          Coupon Code
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {appliedCoupon ? (
+          <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="bg-green-100 text-green-800">
+                {appliedCoupon}
+              </Badge>
+              <span className="text-sm text-green-700">
+                {validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
+                  ? `${couponDiscount}% off` 
+                  : `₹${couponDiscount} off`}
+              </span>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={removeCoupon}
+              className="h-8 w-8 p-0 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 hover:text-red-700"
+              title="Remove coupon"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                placeholder="Enter coupon code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyCoupon();
+                  }
+                }}
+                className="flex-1"
+                autoComplete="off"
+              />
+            </div>
+            <Button 
+              onClick={applyCoupon} 
+              variant="outline" 
+              size="sm"
+              disabled={!couponCode.trim()}
+            >
+              Apply
+            </Button>
+          </div>
+        )}
+        <p className="text-xs text-muted-foreground mt-2">
+          Try: SAVE10, SAVE50, or WELCOME15
+        </p>
+      </CardContent>
+    </Card>
+  );
+};
+
 const formattedDate = new Date().toLocaleDateString('en-IN', {
   day: '2-digit',
   month: 'short',
@@ -118,28 +204,6 @@ const CartSheet = () => {
       finalTotal:finalTotal,
       shippingCharge:shippingCharge
     }
-    const finalEmailDto: OrderDTO = {
-      orderId : "#testid",
-      orderDate : formattedDate,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      phone: values.phone,
-      email: values.email,
-      line1: values.address,
-      line2: values.apartment,
-      state: values.state,
-      city: values.city,
-      pinCode: values.zipCode,
-      orderItems: items,
-      totalItems: totalItems,
-      totalPrice: totalPrice,
-      offerPrice: totalOfferPrice,
-      couponDiscount:couponDiscount,
-      couponCode:couponCode ,
-      gstAmount:100,
-      finalTotal:finalTotal,
-      paymentMethod: "Credit card"
-    }
 
     console.log('current form data ', finalOrderDto);
     console.log ('car item ', items);
@@ -160,17 +224,15 @@ const CartSheet = () => {
         }
         );
 
-        // ✅ Important: fetch does NOT auto-parse JSON like axios
         const data = await createOrderRazorpayResponse.json();
         console.log( "create order razorpay response", data);
         const { id: order_id, amount, currency } = data;
-
 
         console.log(" RazorpayResponse create order  ",  data);
 
         // 2️⃣ Configure Razorpay options
       const options = {
-        key: "rzp_test_OmyeGhZlBHqJUK", // Replace with your public key
+        key: "rzp_test_OmyeGhZlBHqJUK",
         amount: amount,
         currency: currency,
         name: "TapZe",
@@ -202,10 +264,7 @@ const CartSheet = () => {
             console.log(verifyResult);
 
             if (verifyResult.success) {
-                alert('Payment verified! ✅');
-
-
-                  const response = await fetch("https://tapze.in/tapzeservice/order.php", {
+                const response = await fetch("https://tapze.in/tapzeservice/order.php", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
@@ -219,23 +278,57 @@ const CartSheet = () => {
                   throw new Error("Order failed");
                 }
 
-
+                const finalEmailDto: orderDTO = {
+                  orderId : responseData.order_id ? `#${responseData.order_id}` : "#testid",
+                  orderDate : formattedDate,
+                  firstName: values.firstName,
+                  lastName: values.lastName,
+                  phone: values.phone,
+                  email: values.email,
+                  line1: values.address,
+                  line2: values.apartment,
+                  state: values.state,
+                  city: values.city,
+                  pinCode: values.zipCode,
+                  orderItems: items,
+                  totalItems: totalItems,
+                  totalPrice: totalPrice,
+                  offerPrice: totalOfferPrice,
+                  couponDiscount:couponDiscount,
+                  couponCode:couponCode ,
+                  gstAmount:100,
+                  finalTotal:finalTotal,
+                  paymentMethod: "Credit card"
+                }
 
                 emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
                 (result) => {
                   console.log(result.text);
-                  alert("Email sent successfully!");
                 },
                 (error) => {
                   console.log(error.text);
-                  alert("Error sending email.");
                 }
-              );
-            alert(`Order placed! ID: ${responseData.order_id}`);
-            toast({
-                title: "Order Placed Successfully!",
-                description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
-              });
+                );
+
+                // Store order details in localStorage for the success page
+                const orderDetailsForSuccessPage = {
+                  ...finalOrderDto,
+                  orderId: responseData.order_id || "testid"
+                };
+                localStorage.setItem('orderDetails', JSON.stringify(orderDetailsForSuccessPage));
+
+                // Clear cart and reset form
+                clearCart();
+                reset();
+                setStep('cart');
+                setCouponDiscount(0);
+                setAppliedCoupon('');
+                setCouponCode('');
+                setIsProcessing(false);
+                setIsOpen(false);
+
+                // Redirect to order success page
+                window.location.href = '/order-success';
             } else {
                 alert('Payment verification failed! ❌');
             }
@@ -262,22 +355,7 @@ const CartSheet = () => {
       alert("Order failed. Try again.");
     }
 
-
-    
-    // Simulate order processing
-     //await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    
-    
-    // Clear cart and reset form
-    clearCart();
-    reset();
-    setStep('cart');
-    setCouponDiscount(0);
-    setAppliedCoupon('');
-    setCouponCode('');
     setIsProcessing(false);
-    setIsOpen(false);
   };
 
   const handleBackToCart = () => {
@@ -452,49 +530,16 @@ const CartSheet = () => {
           </CardContent>
         </Card>
 
-        {/* Coupon Code */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Tag className="h-5 w-5" />
-              Coupon Code
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {appliedCoupon ? (
-              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    {appliedCoupon}
-                  </Badge>
-                  <span className="text-sm text-green-700">
-                    {validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
-                      ? `${couponDiscount}% off` 
-                      : `₹${couponDiscount} off`}
-                  </span>
-                </div>
-                <Button variant="ghost" size="sm" onClick={removeCoupon}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Enter coupon code"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  className="flex-1"
-                />
-                <Button onClick={applyCoupon} variant="outline" size="sm">
-                  Apply
-                </Button>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground mt-2">
-              Try: SAVE10, SAVE50, or WELCOME15
-            </p>
-          </CardContent>
-        </Card>
+        {/* Coupon Code - Standalone component to prevent form interference */}
+        <CouponCodeSection 
+          appliedCoupon={appliedCoupon}
+          couponCode={couponCode}
+          setCouponCode={setCouponCode}
+          couponDiscount={couponDiscount}
+          validCoupons={validCoupons}
+          applyCoupon={applyCoupon}
+          removeCoupon={removeCoupon}
+        />
 
         {/* Order Summary */}
         <Card>
@@ -509,9 +554,17 @@ const CartSheet = () => {
                 )}
                 <div className="flex-1">
                   <h4 className="font-medium text-sm">{item.name}</h4>
-                  <p className="text-xs text-muted-foreground">₹{item.price} × {item.quantity}</p>
+                  {item.color && (
+                    <p className="text-xs text-muted-foreground">Color: {item.color}</p>
+                  )}
+                  <div className="flex items-center gap-2">
+                    {item.price !== item.offerPrice && (
+                      <span className="text-xs text-muted-foreground line-through">₹{item.price}</span>
+                    )}
+                    <span className="text-xs text-muted-foreground">₹{item.offerPrice} × {item.quantity}</span>
+                  </div>
                 </div>
-                <span className="text-sm font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
               </div>
             ))}
             
@@ -603,14 +656,22 @@ const CartSheet = () => {
                   )}
                   <div className="flex-1">
                     <h4 className="font-medium text-foreground">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">₹{item.offerPrice}</p>
+                    {item.color && (
+                      <p className="text-xs text-muted-foreground">Color: {item.color}</p>
+                    )}
+                    <div className="flex items-center gap-2">
+                      {item.price !== item.offerPrice && (
+                        <span className="text-sm text-muted-foreground line-through">₹{item.price}</span>
+                      )}
+                      <span className="text-sm text-foreground font-medium">₹{item.offerPrice}</span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.uniqueId, item.quantity - 1)}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
@@ -619,7 +680,7 @@ const CartSheet = () => {
                       variant="outline"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.uniqueId, item.quantity + 1)}
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -627,7 +688,7 @@ const CartSheet = () => {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-destructive hover:text-destructive"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.uniqueId)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

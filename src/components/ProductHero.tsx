@@ -27,85 +27,15 @@ interface Offer {
 }
 interface ProductHeroProps {
   product: Product;
-  onAddToCart: () => void;
-  onBuyNow: () => void;
+  onAddToCart: (color?: string) => void;
+  onBuyNow: (color?: string) => void;
 }
 
 
 
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
   const [offer, setOffer] = useState<Offer>();
-
-  const [currentGalleryImages, setCurrentGalleryImages] = useState<gImage[]>([]);
-
-  
-
-
-      
-  
-  // Different sample images for each product
-  const getSampleImages = (productId: string) => {
-    const imagesByProduct = {
-      'nextag-pvc': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1586936893354-362ad6ae47ba?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=800&fit=crop"
-      ],
-      'premium-metal': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1548094878-84ced0f6896d?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1534951009808-766178b47a4f?w=800&h=800&fit=crop"
-      ],
-      'wooden-eco': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1493932484895-752d1471eab5?w=800&h=800&fit=crop"
-      ],
-      'predesignedpvrcard': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1592496431122-2349e0fbc666?w=800&h=800&fit=crop"
-      ],
-      'wpgoogle-review-card': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=800&h=800&fit=crop"
-      ],
-      'ztap2rate': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1566933293069-b55c7f1b79ad?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1604719312429-3b3aec2b3296?w=800&h=800&fit=crop"
-      ],
-      'ztapsocial': [
-        product.heroImage,
-        "https://images.unsplash.com/photo-1611262588024-d12430b98920?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1607703703520-bb638e84caf2?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1521302200778-33500795e128?w=800&h=800&fit=crop",
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=800&fit=crop"
-      ]
-    };
-    
-    return imagesByProduct[productId as keyof typeof imagesByProduct] || [
-      product.heroImage,
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=800&fit=crop",
-      "https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=800&h=800&fit=crop"
-    ];
-  };
-  
-  //const [galleryImages, setGalleryImages] = useState<string[]>(getSampleImages(product.id));
+  const [selectedColor, setSelectedColor] = useState<string>("silver");
 
   const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
   // Update gallery images when product changes
@@ -116,15 +46,13 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
       .then(response => response.json())
       .then(data => {
         setGalleryImages(data);
-        console.log('offers for current product', data);
+        console.log('current product is  ', product.id );
+        console.log('Gallery image for current product ', data);
       })
       .catch(error => {
         console.error('Error fetching offers:', error);
       });
-
-
-
-    //setGalleryImages(getSampleImages(product.id));
+      //setGalleryImages(getSampleImages(product.id));
   }, [product.id]);
   useEffect(() => {
     // Fetch offers
@@ -269,7 +197,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             </Card> */}
 
             {/* Color Switcher */}
-            <ProductColorSwitcher />
+            <ProductColorSwitcher onColorChange={setSelectedColor} />
 
             {/* Key Features */}
             <div className="space-y-3">
@@ -288,7 +216,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button 
-                  onClick={onAddToCart}
+                  onClick={() => onAddToCart(selectedColor)}
                   className="flex-1 h-12 rounded-lg font-semibold border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 bg-transparent text-base"
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
@@ -296,7 +224,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                 </Button>
                 
                 <Button 
-                  onClick={onBuyNow}
+                  onClick={() => onBuyNow(selectedColor)}
                   className="flex-1 h-12 rounded-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-base"
                 >
                   <Zap className="w-5 h-5 mr-2" />

@@ -2,6 +2,7 @@ import  { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Star, Flame } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -53,7 +54,48 @@ const BuyNFCCard = () => {
   }, []);
       
         if (loading) {
-          return <p>Loading cards...</p>;
+          return (
+            <div className="min-h-screen bg-background text-foreground">
+              <Navigation />
+              <div className="pt-16">
+                {/* Hero Section Skeleton */}
+                <section className="pt-20 pb-8 px-4 text-center">
+                  <div className="max-w-4xl mx-auto">
+                    <Skeleton className="h-16 w-96 mx-auto mb-6" />
+                    <Skeleton className="h-6 w-80 mx-auto" />
+                  </div>
+                </section>
+
+                {/* Products Grid Skeleton */}
+                <section className="py-16 px-4">
+                  <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {[...Array(6)].map((_, index) => (
+                        <Card key={index} className="glass p-6 rounded-3xl">
+                          <div className="space-y-6">
+                            <Skeleton className="w-full h-48 rounded-2xl" />
+                            <div className="space-y-4">
+                              <Skeleton className="h-6 w-3/4" />
+                              <div className="space-y-2">
+                                <Skeleton className="h-4 w-full" />
+                                <Skeleton className="h-4 w-5/6" />
+                                <Skeleton className="h-4 w-4/5" />
+                              </div>
+                              <div className="flex items-center justify-between pt-4">
+                                <Skeleton className="h-8 w-24" />
+                                <Skeleton className="h-4 w-20" />
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <Footer />
+            </div>
+          );
         }
 
        

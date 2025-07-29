@@ -6,8 +6,8 @@ import { ShoppingCart, Zap } from "lucide-react";
 interface StickyAddToCartProps {
   productName: string;
   price: number;
-  onAddToCart: () => void;
-  onBuyNow: () => void;
+  onAddToCart: (color?: string) => void;
+  onBuyNow: (color?: string) => void;
 }
 
 const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAddToCartProps) => {
@@ -36,7 +36,7 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
         
         <div className="flex gap-2">
           <Button
-            onClick={onAddToCart}
+            onClick={() => onAddToCart()}
             variant="outline"
             size="sm"
             className="border-purple-500 text-purple-400 hover:bg-purple-500/10 rounded-full"
@@ -45,7 +45,7 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
           </Button>
           
           <Button
-            onClick={onBuyNow}
+            onClick={() => onBuyNow()}
             size="sm"
             className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-full"
           >

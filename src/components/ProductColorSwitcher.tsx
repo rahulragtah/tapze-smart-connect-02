@@ -4,35 +4,40 @@ const cardVariants = [
   {
     id: "black",
     name: "Black",
-    color: "#000000",
+    //color: "#000000",
     image: "/lovable-uploads/black-swatch.png"
   },
   {
     id: "silver",
     name: "Silver",
-    color: "#C0C0C0",
+    //color: "#C0C0C0",
     image: "/lovable-uploads/silver-swatch.png"
   },
   {
     id: "golden",
     name: "Golden",
-    color: "#FFD700",
+    //color: "#FFD700",
     image: "/lovable-uploads/golden-swatch.png"
   },
   {
     id: "rosegold",
     name: "Rose Gold",
-    color: "#DEA193",
+    //color: "#DEA193",
     image: "/lovable-uploads/rosegold-swatch.png"
   }
 ];
 
-const ProductColorSwitcher = () => {
-  const [selectedColor, setSelectedColor] = useState("black"); // Default color
+interface ProductColorSwitcherProps {
+  onColorChange?: (color: string) => void;
+}
+
+const ProductColorSwitcher = ({ onColorChange }: ProductColorSwitcherProps) => {
+  const [selectedColor, setSelectedColor] = useState("golden"); // Default color
 
   const handleColorClick = (variant) => {
     if (variant.id !== selectedColor) {
       setSelectedColor(variant.id);
+      onColorChange?.(variant.name);
       //alert(`You selected ${variant.name} color.`);
     }
   };
