@@ -21,7 +21,8 @@ const ProductDetails = () => {
 
   
   const [product, setProduct] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [offer, setOffer] = useState<any>(null);
   
     useEffect(() => {
       setLoading(true);
@@ -36,6 +37,17 @@ const ProductDetails = () => {
         .catch(error => {
           console.error('Error fetching cards:', error);
           setLoading(false);
+        });
+
+      // Fetch offers
+      fetch('https://tapze.in//tapzeservice/productoffer.php?product_id=' + productId)
+        .then(response => response.json())
+        .then(data => {
+          setOffer(data[0] || null);
+          console.log('offers for current product', data);
+        })
+        .catch(error => {
+          console.error('Error fetching offers:', error);
         });
     }, [productId]); // 👈 now depends on productId so it refetches when product changes
   
@@ -60,23 +72,27 @@ const ProductDetails = () => {
     );
   }
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (color?: string) => {
+    const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
-      offerPrice:product.offerPrice
+      offerPrice: offerPrice,
+      color: color || "Black"
     });
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = (color?: string) => {
+    const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
-      offerPrice:product.offerPrice
+      offerPrice: offerPrice,
+      color: color || "Black"
     });
     console.log("Redirecting to checkout with:", product.name);
   };

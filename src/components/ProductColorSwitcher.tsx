@@ -27,12 +27,17 @@ const cardVariants = [
   }
 ];
 
-const ProductColorSwitcher = () => {
+interface ProductColorSwitcherProps {
+  onColorChange?: (color: string) => void;
+}
+
+const ProductColorSwitcher = ({ onColorChange }: ProductColorSwitcherProps) => {
   const [selectedColor, setSelectedColor] = useState("black"); // Default color
 
   const handleColorClick = (variant) => {
     if (variant.id !== selectedColor) {
       setSelectedColor(variant.id);
+      onColorChange?.(variant.name);
       //alert(`You selected ${variant.name} color.`);
     }
   };

@@ -8,6 +8,7 @@ export interface CartItem {
   offerPrice:number;
   quantity: number;
   image?: string;
+  color?: string;
 }
 
 interface CartContextType {

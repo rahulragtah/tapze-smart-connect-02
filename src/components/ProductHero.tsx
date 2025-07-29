@@ -26,12 +26,13 @@ interface Offer {
 }
 interface ProductHeroProps {
   product: Product;
-  onAddToCart: () => void;
-  onBuyNow: () => void;
+  onAddToCart: (color?: string) => void;
+  onBuyNow: (color?: string) => void;
 }
 
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
   const [offer, setOffer] = useState<Offer>();
+  const [selectedColor, setSelectedColor] = useState<string>("Black");
   
   // Different sample images for each product
   const getSampleImages = (productId: string) => {
@@ -244,7 +245,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             </Card> */}
 
             {/* Color Switcher */}
-            <ProductColorSwitcher />
+            <ProductColorSwitcher onColorChange={setSelectedColor} />
 
             {/* Key Features */}
             <div className="space-y-3">
@@ -263,7 +264,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button 
-                  onClick={onAddToCart}
+                  onClick={() => onAddToCart(selectedColor)}
                   className="flex-1 h-12 rounded-lg font-semibold border-2 border-purple-500 text-purple-400 hover:bg-purple-500/10 bg-transparent text-base"
                 >
                   <ShoppingCart className="w-5 h-5 mr-2" />
@@ -271,7 +272,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                 </Button>
                 
                 <Button 
-                  onClick={onBuyNow}
+                  onClick={() => onBuyNow(selectedColor)}
                   className="flex-1 h-12 rounded-lg font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-base"
                 >
                   <Zap className="w-5 h-5 mr-2" />

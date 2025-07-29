@@ -42,6 +42,8 @@ export interface CheckoutDTO  extends Record<string, unknown> {
 
 }
 export interface orderDTO  extends Record<string, unknown> {
+  orderId: string;
+  orderDate: string;
   firstName: string;
   lastName: string;
   phone: string;
@@ -59,7 +61,7 @@ export interface orderDTO  extends Record<string, unknown> {
   couponCode:string;
   gstAmount:number;
   finalTotal:number;
-
+  paymentMethod:string;
 }
 
 export interface CartItem {
@@ -69,4 +71,5 @@ export interface CartItem {
   offerPrice:number;
   quantity: number;
   image?: string;
+  color?: string;
 }

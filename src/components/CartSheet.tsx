@@ -13,7 +13,7 @@ import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
 import PaymentButton from '../components/PaymentButton';
-import{CheckoutDTO, OrderDTO} from '../components/models/productInterface' ;
+import{CheckoutDTO, orderDTO} from '../components/models/productInterface' ;
 
 
 interface CheckoutFormData {
@@ -118,7 +118,7 @@ const CartSheet = () => {
       finalTotal:finalTotal,
       shippingCharge:shippingCharge
     }
-    const finalEmailDto: OrderDTO = {
+    const finalEmailDto: orderDTO = {
       orderId : "#testid",
       orderDate : formattedDate,
       firstName: values.firstName,
@@ -509,9 +509,17 @@ const CartSheet = () => {
                 )}
                 <div className="flex-1">
                   <h4 className="font-medium text-sm">{item.name}</h4>
-                  <p className="text-xs text-muted-foreground">₹{item.price} × {item.quantity}</p>
+                  {item.color && (
+                    <p className="text-xs text-muted-foreground">Color: {item.color}</p>
+                  )}
+                  <div className="flex items-center gap-2">
+                    {item.price !== item.offerPrice && (
+                      <span className="text-xs text-muted-foreground line-through">₹{item.price}</span>
+                    )}
+                    <span className="text-xs text-muted-foreground">₹{item.offerPrice} × {item.quantity}</span>
+                  </div>
                 </div>
-                <span className="text-sm font-medium">₹{(item.price * item.quantity).toFixed(2)}</span>
+                <span className="text-sm font-medium">₹{(item.offerPrice * item.quantity).toFixed(2)}</span>
               </div>
             ))}
             
@@ -603,7 +611,15 @@ const CartSheet = () => {
                   )}
                   <div className="flex-1">
                     <h4 className="font-medium text-foreground">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">₹{item.offerPrice}</p>
+                    {item.color && (
+                      <p className="text-xs text-muted-foreground">Color: {item.color}</p>
+                    )}
+                    <div className="flex items-center gap-2">
+                      {item.price !== item.offerPrice && (
+                        <span className="text-sm text-muted-foreground line-through">₹{item.price}</span>
+                      )}
+                      <span className="text-sm text-foreground font-medium">₹{item.offerPrice}</span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button
