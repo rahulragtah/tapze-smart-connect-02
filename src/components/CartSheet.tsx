@@ -572,7 +572,7 @@ const CartSheet = () => {
             
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Total MRP</span>
+                <span>Total MRP <i>( Inclusive GST )</i></span>
                 <span>₹{totalPrice.toFixed(2)}</span>
               </div>
               
@@ -587,10 +587,10 @@ const CartSheet = () => {
                   <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <span>Price includes 18% GST</span>
                 <span>-</span>
-              </div>
+              </div> */}
               <div className="flex justify-between">
                 <span>Shipping</span>
                 {/* <span>{shippingCharge === 0 ? 'Free' : `₹${shippingCharge}`}</span> */}

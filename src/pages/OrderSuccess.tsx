@@ -166,7 +166,7 @@ const OrderSuccess = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Amount</p>
-                  <p className="font-semibold text-lg">₹{orderDetails.totalOfferPrice.toFixed(2)}</p>
+                  <p className="font-semibold text-lg">₹{orderDetails.offerPrice.toFixed(2)}</p>
                 </div>
               </div>
 
@@ -257,7 +257,7 @@ const OrderSuccess = () => {
               <p className="text-muted-foreground">
                 To complete your Digital profile setup, you'll need to provide some details.
               </p>
-              <a href="" target="_blank">
+              <a href="https://form.typeform.com/to/QSpgT5zA" target="_blank">
                 <Button size="lg" className="w-full sm:w-auto mt-4">
                   Share your details 
                   <ArrowRight className="w-4 h-4 ml-2" />
