@@ -2,6 +2,7 @@ import  { useEffect, useState } from 'react';
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { Skeleton } from "@/components/ui/skeleton";
 import Navigation from "@/components/Navigation";
 import ProductHero from "@/components/ProductHero";
 import ProductOrderTimelineContainer from "@/components/ProductOrderTimelineContainer";
@@ -52,7 +53,54 @@ const ProductDetails = () => {
     }, [productId]); // 👈 now depends on productId so it refetches when product changes
   
     if (loading) {
-      return <p>Loading cards...</p>;
+      return (
+        <div className="min-h-screen bg-black text-white">
+          <Navigation />
+          
+          {/* Back Button Skeleton */}
+          <div className="pt-20 px-4 max-w-7xl mx-auto">
+            <Skeleton className="h-6 w-32 mb-8" />
+          </div>
+
+          {/* Product Hero Skeleton */}
+          <div className="px-4 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+              <div className="space-y-4">
+                <Skeleton className="w-full h-96 rounded-2xl" />
+                <div className="grid grid-cols-4 gap-2">
+                  {[...Array(4)].map((_, i) => (
+                    <Skeleton key={i} className="aspect-square rounded-lg" />
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-6">
+                <Skeleton className="h-8 w-3/4" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-6 w-5/6" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-4/5" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+                <Skeleton className="h-10 w-32" />
+                <div className="flex gap-4">
+                  <Skeleton className="h-12 w-32" />
+                  <Skeleton className="h-12 w-24" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional content skeletons */}
+          <div className="space-y-16 px-4 max-w-7xl mx-auto">
+            <Skeleton className="h-64 w-full rounded-2xl" />
+            <Skeleton className="h-48 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+          </div>
+
+          <Footer />
+        </div>
+      );
     }
   
        // const product = cardData[productId as keyof typeof cardData];
