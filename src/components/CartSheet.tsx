@@ -277,7 +277,11 @@ const CartSheet = () => {
                 if (!response.ok) {
                   throw new Error("Order failed");
                 }
-
+                // const orderSummary=items.map(item =>
+                // `${item.quantity} x ${item.name} (${item.color}) - ₹${item.offerPrice}`
+                //  ).join('\n')
+                // console.log(items);
+                // items.map()
                 const finalEmailDto: orderDTO = {
                   orderId : responseData.order_id ? `#${responseData.order_id}` : "#testid",
                   orderDate : formattedDate,
@@ -290,7 +294,10 @@ const CartSheet = () => {
                   state: values.state,
                   city: values.city,
                   pinCode: values.zipCode,
-                  orderItems: items,
+                  //orderItems: items,
+                  orderSummary : items.map(item =>
+                    `${item.quantity} x ${item.name} (${item.color}) - ₹${item.offerPrice}`
+                     ).join('\n'),
                   totalItems: totalItems,
                   totalPrice: totalPrice,
                   offerPrice: totalOfferPrice,
@@ -300,13 +307,18 @@ const CartSheet = () => {
                   finalTotal:finalTotal,
                   paymentMethod: "Credit card"
                 }
+                console.log("test: " + JSON.stringify(finalEmailDto));
+                console.log("test1: " + finalEmailDto);
+                alert("test: " + JSON.stringify(finalEmailDto));
 
-                emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
+                emailjs.send('tapzeEmailService','template_t4zx6o9',JSON.stringify(finalEmailDto),'Yc8keWHr9MEOI9SGg').then(
                 (result) => {
                   console.log(result.text);
+                  alert("mail sent");
                 },
                 (error) => {
                   console.log(error.text);
+                  alert("mail not sent");
                 }
                 );
 

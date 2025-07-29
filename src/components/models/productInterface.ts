@@ -53,7 +53,8 @@ export interface orderDTO  extends Record<string, unknown> {
   state: string;
   city: string;
   pinCode: string;
-  orderItems: CartItem[];
+  //orderItems: CartItem[];
+  orderSummary : string;
   totalItems: number;
   totalPrice:number;
   offerPrice:number;
@@ -71,13 +72,10 @@ export interface CartItem {
   offerPrice:number;
   quantity: number;
   image?: string;
-<<<<<<< HEAD
 }
 
 export interface gImage {
  image:string
-=======
   color?: string;
   uniqueId: string;
->>>>>>> a448e5608215c95c6d751757b737be327a613c5f
 }
