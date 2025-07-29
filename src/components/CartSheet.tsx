@@ -29,6 +29,93 @@ interface CheckoutFormData {
   country: string;
   couponCode?: string;
 }
+
+interface CouponCodeSectionProps {
+  appliedCoupon: string;
+  couponCode: string;
+  setCouponCode: (code: string) => void;
+  couponDiscount: number;
+  validCoupons: Record<string, { discount: number; type: string }>;
+  applyCoupon: () => void;
+  removeCoupon: () => void;
+}
+
+// Isolated component to prevent form re-rendering from affecting input focus
+const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
+  appliedCoupon,
+  couponCode,
+  setCouponCode,
+  couponDiscount,
+  validCoupons,
+  applyCoupon,
+  removeCoupon
+}) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Tag className="h-5 w-5" />
+          Coupon Code
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {appliedCoupon ? (
+          <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="bg-green-100 text-green-800">
+                {appliedCoupon}
+              </Badge>
+              <span className="text-sm text-green-700">
+                {validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
+                  ? `${couponDiscount}% off` 
+                  : `₹${couponDiscount} off`}
+              </span>
+            </div>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={removeCoupon}
+              className="h-8 w-8 p-0 border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300 hover:text-red-700"
+              title="Remove coupon"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <Input
+                placeholder="Enter coupon code"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    applyCoupon();
+                  }
+                }}
+                className="flex-1"
+                autoComplete="off"
+              />
+            </div>
+            <Button 
+              onClick={applyCoupon} 
+              variant="outline" 
+              size="sm"
+              disabled={!couponCode.trim()}
+            >
+              Apply
+            </Button>
+          </div>
+        )}
+        <p className="text-xs text-muted-foreground mt-2">
+          Try: SAVE10, SAVE50, or WELCOME15
+        </p>
+      </CardContent>
+    </Card>
+  );
+};
+
 const formattedDate = new Date().toLocaleDateString('en-IN', {
   day: '2-digit',
   month: 'short',
@@ -452,69 +539,16 @@ const CartSheet = () => {
           </CardContent>
         </Card>
 
-        {/* Coupon Code */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Tag className="h-5 w-5" />
-              Coupon Code
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {appliedCoupon ? (
-              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-md">
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    {appliedCoupon}
-                  </Badge>
-                  <span className="text-sm text-green-700">
-                    {validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
-                      ? `${couponDiscount}% off` 
-                      : `₹${couponDiscount} off`}
-                  </span>
-                </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={removeCoupon}
-                  className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
-                  title="Remove coupon"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Input
-                    placeholder="Enter coupon code"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        applyCoupon();
-                      }
-                    }}
-                    className="flex-1"
-                    autoComplete="off"
-                  />
-                </div>
-                <Button 
-                  onClick={applyCoupon} 
-                  variant="outline" 
-                  size="sm"
-                  disabled={!couponCode.trim()}
-                >
-                  Apply
-                </Button>
-              </div>
-            )}
-            <p className="text-xs text-muted-foreground mt-2">
-              Try: SAVE10, SAVE50, or WELCOME15
-            </p>
-          </CardContent>
-        </Card>
+        {/* Coupon Code - Standalone component to prevent form interference */}
+        <CouponCodeSection 
+          appliedCoupon={appliedCoupon}
+          couponCode={couponCode}
+          setCouponCode={setCouponCode}
+          couponDiscount={couponDiscount}
+          validCoupons={validCoupons}
+          applyCoupon={applyCoupon}
+          removeCoupon={removeCoupon}
+        />
 
         {/* Order Summary */}
         <Card>
