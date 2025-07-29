@@ -4,12 +4,13 @@ import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame, X } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { gImage} from "../components/models/productInterface";
 
 interface ProductGalleryProps {
   heroImage: string;
   name: string;
   hotSelling?: boolean;
-  galleryImages?: string[];
+  galleryImages?: gImage[];
 }
 
 const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [] }: ProductGalleryProps) => {
@@ -20,10 +21,12 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   const galleryRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   
+
+  console.log("dfffffffffffffffff",   galleryImages);
   // Build gallery images array from API data
   const imageGallery = galleryImages.length > 0 
     ? galleryImages.map((imageUrl, index) => ({
-        url: imageUrl,
+        url: imageUrl.image,
         alt: `${name} - View ${index + 1}`,
         type: "image"
       }))

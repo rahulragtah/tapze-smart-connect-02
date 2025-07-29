@@ -70,3 +70,7 @@ export interface CartItem {
   quantity: number;
   image?: string;
 }
+
+export interface gImage {
+ image:string
+}

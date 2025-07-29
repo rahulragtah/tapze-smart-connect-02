@@ -5,6 +5,7 @@ import { ShoppingCart, Zap, Star, Shield, Truck, Award, Users } from "lucide-rea
 import ProductGallery from "./ProductGallery";
 import ProductColorSwitcher from "./ProductColorSwitcher";
 import { Card } from "@/components/ui/card";
+import { gImage} from "../components/models/productInterface";
 
 interface Product {
   id: string;
@@ -30,8 +31,17 @@ interface ProductHeroProps {
   onBuyNow: () => void;
 }
 
+
+
 const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
   const [offer, setOffer] = useState<Offer>();
+
+  const [currentGalleryImages, setCurrentGalleryImages] = useState<gImage[]>([]);
+
+  
+
+
+      
   
   // Different sample images for each product
   const getSampleImages = (productId: string) => {
@@ -95,11 +105,26 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
     ];
   };
   
-  const [galleryImages, setGalleryImages] = useState<string[]>(getSampleImages(product.id));
-  
+  //const [galleryImages, setGalleryImages] = useState<string[]>(getSampleImages(product.id));
+
+  const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
   // Update gallery images when product changes
   useEffect(() => {
-    setGalleryImages(getSampleImages(product.id));
+
+    // Fetch offers
+    fetch('https://tapze.in/tapzeservice/productgallary.php?productId=' + product.id)
+      .then(response => response.json())
+      .then(data => {
+        setGalleryImages(data);
+        console.log('offers for current product', data);
+      })
+      .catch(error => {
+        console.error('Error fetching offers:', error);
+      });
+
+
+
+    //setGalleryImages(getSampleImages(product.id));
   }, [product.id]);
   useEffect(() => {
     // Fetch offers
