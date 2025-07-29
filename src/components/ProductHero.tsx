@@ -67,21 +67,21 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
       });
 
     // Fetch gallery images
-    fetch(`https://tapze.in/tapzeservice/productapi.php?id=${product.id}&section=gallery`)
-      .then(response => response.json())
-      .then(data => {
-        if (data && Array.isArray(data) && data.length > 0) {
-          const images = data.map(item => item.image || item.heroImage).filter(Boolean);
-          if (images.length > 0) {
-            setGalleryImages(images);
-          }
-          // If no images from API, keep the sample images that were set initially
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching gallery images:', error);
-        // Keep the sample images that were set initially
-      });
+    // fetch(`https://tapze.in/tapzeservice/productapi.php?id=${product.id}&section=gallery`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     if (data && Array.isArray(data) && data.length > 0) {
+    //       const images = data.map(item => item.image || item.heroImage).filter(Boolean);
+    //       if (images.length > 0) {
+    //         setGalleryImages(images);
+    //       }
+    //       // If no images from API, keep the sample images that were set initially
+    //     }
+    //   })
+      // .catch(error => {
+      //   console.error('Error fetching gallery images:', error);
+      //   // Keep the sample images that were set initially
+      // });
   }, [product.id]);
 
   return (
