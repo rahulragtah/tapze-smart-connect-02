@@ -166,7 +166,7 @@ const OrderSuccess = () => {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Amount</p>
-                  <p className="font-semibold text-lg">₹{orderDetails.finalTotal.toFixed(2)}</p>
+                  <p className="font-semibold text-lg">₹{orderDetails.totalOfferPrice.toFixed(2)}</p>
                 </div>
               </div>
 
@@ -255,16 +255,16 @@ const OrderSuccess = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">
-                To complete your NFC card setup, you'll need to provide details for your digital profile creation.
+                To complete your Digital profile setup, you'll need to provide some details.
               </p>
-              <Link to="/digital-profile">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Create Your Digital Profile
+              <a href="" target="_blank">
+                <Button size="lg" className="w-full sm:w-auto mt-4">
+                  Share your details 
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-              </Link>
+              </a>
               <p className="text-xs text-muted-foreground">
-                Don't worry, you can also do this later from your account dashboard.
+                Don't worry, you can also do this later from your email.
               </p>
             </CardContent>
           </Card>

@@ -531,7 +531,7 @@ const CartSheet = () => {
         </Card>
 
         {/* Coupon Code - Standalone component to prevent form interference */}
-        <CouponCodeSection 
+        {/* <CouponCodeSection 
           appliedCoupon={appliedCoupon}
           couponCode={couponCode}
           setCouponCode={setCouponCode}
@@ -539,7 +539,7 @@ const CartSheet = () => {
           validCoupons={validCoupons}
           applyCoupon={applyCoupon}
           removeCoupon={removeCoupon}
-        />
+        /> */}
 
         {/* Order Summary */}
         <Card>
@@ -572,7 +572,7 @@ const CartSheet = () => {
             
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>Total MRP</span>
                 <span>₹{totalPrice.toFixed(2)}</span>
               </div>
               
