@@ -473,19 +473,39 @@ const CartSheet = () => {
                       : `₹${couponDiscount} off`}
                   </span>
                 </div>
-                <Button variant="ghost" size="sm" onClick={removeCoupon}>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={removeCoupon}
+                  className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                  title="Remove coupon"
+                >
                   <X className="h-4 w-4" />
                 </Button>
               </div>
             ) : (
               <div className="flex gap-2">
-                <Input
-                  placeholder="Enter coupon code"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  className="flex-1"
-                />
-                <Button onClick={applyCoupon} variant="outline" size="sm">
+                <div className="relative flex-1">
+                  <Input
+                    placeholder="Enter coupon code"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyCoupon();
+                      }
+                    }}
+                    className="flex-1"
+                    autoComplete="off"
+                  />
+                </div>
+                <Button 
+                  onClick={applyCoupon} 
+                  variant="outline" 
+                  size="sm"
+                  disabled={!couponCode.trim()}
+                >
                   Apply
                 </Button>
               </div>
