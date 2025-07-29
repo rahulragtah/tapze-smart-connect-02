@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -205,28 +204,6 @@ const CartSheet = () => {
       finalTotal:finalTotal,
       shippingCharge:shippingCharge
     }
-    const finalEmailDto: orderDTO = {
-      orderId : "#testid",
-      orderDate : formattedDate,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      phone: values.phone,
-      email: values.email,
-      line1: values.address,
-      line2: values.apartment,
-      state: values.state,
-      city: values.city,
-      pinCode: values.zipCode,
-      orderItems: items,
-      totalItems: totalItems,
-      totalPrice: totalPrice,
-      offerPrice: totalOfferPrice,
-      couponDiscount:couponDiscount,
-      couponCode:couponCode ,
-      gstAmount:100,
-      finalTotal:finalTotal,
-      paymentMethod: "Credit card"
-    }
 
     console.log('current form data ', finalOrderDto);
     console.log ('car item ', items);
@@ -247,17 +224,15 @@ const CartSheet = () => {
         }
         );
 
-        // ✅ Important: fetch does NOT auto-parse JSON like axios
         const data = await createOrderRazorpayResponse.json();
         console.log( "create order razorpay response", data);
         const { id: order_id, amount, currency } = data;
-
 
         console.log(" RazorpayResponse create order  ",  data);
 
         // 2️⃣ Configure Razorpay options
       const options = {
-        key: "rzp_test_OmyeGhZlBHqJUK", // Replace with your public key
+        key: "rzp_test_OmyeGhZlBHqJUK",
         amount: amount,
         currency: currency,
         name: "TapZe",
@@ -289,10 +264,7 @@ const CartSheet = () => {
             console.log(verifyResult);
 
             if (verifyResult.success) {
-                alert('Payment verified! ✅');
-
-
-                  const response = await fetch("https://tapze.in/tapzeservice/order.php", {
+                const response = await fetch("https://tapze.in/tapzeservice/order.php", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json"
@@ -306,23 +278,57 @@ const CartSheet = () => {
                   throw new Error("Order failed");
                 }
 
-
+                const finalEmailDto: orderDTO = {
+                  orderId : responseData.order_id ? `#${responseData.order_id}` : "#testid",
+                  orderDate : formattedDate,
+                  firstName: values.firstName,
+                  lastName: values.lastName,
+                  phone: values.phone,
+                  email: values.email,
+                  line1: values.address,
+                  line2: values.apartment,
+                  state: values.state,
+                  city: values.city,
+                  pinCode: values.zipCode,
+                  orderItems: items,
+                  totalItems: totalItems,
+                  totalPrice: totalPrice,
+                  offerPrice: totalOfferPrice,
+                  couponDiscount:couponDiscount,
+                  couponCode:couponCode ,
+                  gstAmount:100,
+                  finalTotal:finalTotal,
+                  paymentMethod: "Credit card"
+                }
 
                 emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
                 (result) => {
                   console.log(result.text);
-                  alert("Email sent successfully!");
                 },
                 (error) => {
                   console.log(error.text);
-                  alert("Error sending email.");
                 }
-              );
-            alert(`Order placed! ID: ${responseData.order_id}`);
-            toast({
-                title: "Order Placed Successfully!",
-                description: `Your order for ₹${finalTotal.toFixed(2)} has been placed. You will receive a confirmation email shortly.`,
-              });
+                );
+
+                // Store order details in localStorage for the success page
+                const orderDetailsForSuccessPage = {
+                  ...finalOrderDto,
+                  orderId: responseData.order_id || "testid"
+                };
+                localStorage.setItem('orderDetails', JSON.stringify(orderDetailsForSuccessPage));
+
+                // Clear cart and reset form
+                clearCart();
+                reset();
+                setStep('cart');
+                setCouponDiscount(0);
+                setAppliedCoupon('');
+                setCouponCode('');
+                setIsProcessing(false);
+                setIsOpen(false);
+
+                // Redirect to order success page
+                window.location.href = '/order-success';
             } else {
                 alert('Payment verification failed! ❌');
             }
@@ -349,22 +355,7 @@ const CartSheet = () => {
       alert("Order failed. Try again.");
     }
 
-
-    
-    // Simulate order processing
-     //await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    
-    
-    // Clear cart and reset form
-    clearCart();
-    reset();
-    setStep('cart');
-    setCouponDiscount(0);
-    setAppliedCoupon('');
-    setCouponCode('');
     setIsProcessing(false);
-    setIsOpen(false);
   };
 
   const handleBackToCart = () => {

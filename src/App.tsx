@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -21,6 +20,7 @@ import BrandCarousel from "./pages/BrandCarousel";
 import AboutCompany from "./pages/AboutCompany";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import NotFound from "./pages/NotFound";
+import OrderSuccess from "./pages/OrderSuccess";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +41,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/brands" element={<BrandCarousel />} />
             <Route path="/about-company" element={<AboutCompany />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
             
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
