@@ -626,7 +626,7 @@ const CartSheet = () => {
                       variant="outline"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.uniqueId, item.quantity - 1)}
                     >
                       <Minus className="h-4 w-4" />
                     </Button>
@@ -635,7 +635,7 @@ const CartSheet = () => {
                       variant="outline"
                       size="icon"
                       className="h-8 w-8"
-                      onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.uniqueId, item.quantity + 1)}
                     >
                       <Plus className="h-4 w-4" />
                     </Button>
@@ -643,7 +643,7 @@ const CartSheet = () => {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-destructive hover:text-destructive"
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item.uniqueId)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

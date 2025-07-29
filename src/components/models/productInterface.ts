@@ -72,4 +72,5 @@ export interface CartItem {
   quantity: number;
   image?: string;
   color?: string;
+  uniqueId: string;
 }
