@@ -52,6 +52,20 @@ const Navigation = () => {
     closeMobileMenu();
   };
 
+
+  useEffect(() => {
+    fetch("https://tapze.in/tapzeservice/checkUser.php")
+  .then(res => res.json())
+  .then(data => {
+    if (data.loggedIn) {
+      setIsLoggedIn(true);
+      console.log("User is logged in");
+    } else {
+      console.log("User is not logged in");
+    }
+  });
+  }, []);
+
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
