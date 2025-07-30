@@ -19,7 +19,7 @@ import Footer from "@/components/Footer";
 
 const ProductDetails = () => {
   const { productId } = useParams();
-  const { addItem } = useCart();
+  const { addItem, setIsOpen } = useCart();
   const { toast } = useToast();
 
   
@@ -151,6 +151,7 @@ const ProductDetails = () => {
       offerPrice: offerPrice,
       color: color || "Black"
     });
+    setIsOpen(true); // Open cart drawer for Buy Now
     console.log("Redirecting to checkout with:", product.name);
   };
 
