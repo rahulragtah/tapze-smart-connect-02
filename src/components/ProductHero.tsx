@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Zap, Star, Shield, Truck, Award, Users } from "lucide-react";
 import ProductGallery from "./ProductGallery";
 import ProductColorSwitcher from "./ProductColorSwitcher";
+import ProductOrderTimeline from "./ProductOrderTimeline";
 import { Card } from "@/components/ui/card";
 import { gImage} from "../components/models/productInterface";
 
@@ -116,6 +117,13 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                 </div>
               </div>
             </Card>
+            
+            {/* Order & Customization Timeline - Desktop Only */}
+            <div className="hidden lg:block mt-8">
+              <div className="bg-gradient-to-b from-gray-900/50 to-black border border-gray-800 rounded-2xl p-6">
+                <ProductOrderTimeline />
+              </div>
+            </div>
           </div>
 
           {/* Right: Product Info */}

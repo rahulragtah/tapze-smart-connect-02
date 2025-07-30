@@ -163,8 +163,10 @@ const ProductDetails = () => {
       {/* Above the Fold */}
       <ProductHero product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
       
-      {/* Dedicated Order & Customization Timeline Container */}
-      <ProductOrderTimelineContainer />
+      {/* Dedicated Order & Customization Timeline Container - Mobile Only */}
+      <div className="lg:hidden">
+        <ProductOrderTimelineContainer />
+      </div>
       
       {/* Below the Fold Sections */}
       <div className="space-y-0">
