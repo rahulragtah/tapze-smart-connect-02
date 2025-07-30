@@ -121,9 +121,9 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
           {/* Right: Product Info */}
           <div className="space-y-6">
             {/* Breadcrumb */}
-            <div className="text-sm text-gray-400">
+            {/* <div className="text-sm text-gray-400">
               <span>Home</span> &gt; <span>Our Products</span> &gt; <span className="text-white">{product.name}</span>
-            </div>
+            </div> */}
 
             {/* Title */}
             <div>
