@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { gImage} from "../components/models/productInterface";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProductGalleryProps {
   heroImage: string;
@@ -20,6 +21,12 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   const [zoomImageIndex, setZoomImageIndex] = useState(0);
   const galleryRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const isMobile = useIsMobile();
+  
+  // Touch handling for swipe gestures
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
 
   //console.log("dfffffffffffffffff",   galleryImages);
@@ -76,6 +83,33 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
     setZoomImageIndex((prev) => (prev - 1 + imageGallery.length) % imageGallery.length);
   };
 
+  // Swipe gesture handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isMobile || !touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && imageGallery.length > 1) {
+      nextImage();
+    }
+    if (isRightSwipe && imageGallery.length > 1) {
+      prevImage();
+    }
+  };
+
   return (
     <div ref={containerRef} className="lg:flex lg:flex-col lg:gap-4">
       <div 
@@ -122,38 +156,50 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
             )}
             
             <img
+              ref={imageRef}
               src={imageGallery[selectedImage].url}
               alt={imageGallery[selectedImage].alt}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110 cursor-zoom-in"
-              onClick={openZoom}
+              className={`w-full h-full object-cover transition-transform duration-300 ${
+                !isMobile ? 'group-hover:scale-110 cursor-zoom-in' : 'cursor-default'
+              }`}
+              onClick={!isMobile ? openZoom : undefined}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             />
             
-            {/* Zoom Icon */}
-            <button
-              onClick={openZoom}
-              className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
-            >
-              <ZoomIn className="w-4 h-4" />
-            </button>
+            {/* Zoom Icon - Hidden on mobile */}
+            {!isMobile && (
+              <button
+                onClick={openZoom}
+                className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity bg-black/50 hover:bg-black/70 text-white p-2 rounded-full"
+              >
+                <ZoomIn className="w-4 h-4" />
+              </button>
+            )}
             
-            {/* Navigation Arrows */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prevImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={nextImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+            {/* Navigation Arrows - Hidden on mobile */}
+            {!isMobile && (
+              <>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+              </>
+            )}
 
             {/* Floating Card Mockup */}
             {/* <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
