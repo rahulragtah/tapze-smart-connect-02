@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -124,6 +125,8 @@ const formattedDate = new Date().toLocaleDateString('en-IN', {
 const CartSheet = () => {
   const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [step, setStep] = useState<'cart' | 'checkout'>('cart');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
@@ -388,7 +391,14 @@ const CartSheet = () => {
         Looks like you haven't added any items to your cart yet. Start shopping to fill it up!
       </p>
       <Button 
-        onClick={() => setIsOpen(false)}
+        onClick={() => {
+          setIsOpen(false);
+          // Only redirect if not on product listing or product detail page
+          const isOnProductPage = location.pathname.startsWith('/products/') || location.pathname === '/buy-nfc-card';
+          if (!isOnProductPage) {
+            navigate('/buy-nfc-card');
+          }
+        }}
         className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
       >
         Continue Shopping
@@ -650,17 +660,6 @@ const CartSheet = () => {
               <ShoppingBag className="w-5 h-5" />
               {step === 'cart' ? `Cart (${totalItems})` : 'Checkout'}
             </div>
-            {step === 'cart' && totalItems > 1 && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={clearCart}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <Trash2 className="h-4 w-4 mr-1" />
-                Clear Cart
-              </Button>
-            )}
           </SheetTitle>
         </SheetHeader>
 
@@ -724,6 +723,21 @@ const CartSheet = () => {
 
             {/* Cart Summary */}
             <div className="border-t pt-6 space-y-4">
+              {/* Clear Cart Button */}
+              {totalItems > 1 && (
+                <div className="flex justify-center mb-4">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={clearCart}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4 mr-1" />
+                    Clear Cart
+                  </Button>
+                </div>
+              )}
+              
               <div className="flex justify-between items-center text-lg font-semibold">
                 <span>Total</span>
                 {/* <span>₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>  */}

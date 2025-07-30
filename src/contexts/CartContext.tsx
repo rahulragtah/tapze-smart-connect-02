@@ -40,7 +40,15 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  // Load cart from localStorage on initial render
+  const [items, setItems] = useState<CartItem[]>(() => {
+    try {
+      const savedCart = localStorage.getItem('cartItems');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isOpen, setIsOpen] = useState(false);
 
   const addItem = (newItem: Omit<CartItem, 'quantity' | 'uniqueId'>) => {
@@ -49,20 +57,29 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       const existingItem = prev.find(item => 
         item.id === newItem.id && item.color === newItem.color
       );
+      let newItems;
       if (existingItem) {
-        return prev.map(item =>
+        newItems = prev.map(item =>
           item.uniqueId === existingItem.uniqueId
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
+      } else {
+        newItems = [...prev, { ...newItem, quantity: 1, uniqueId }];
       }
-      return [...prev, { ...newItem, quantity: 1, uniqueId }];
+      // Save to localStorage
+      localStorage.setItem('cartItems', JSON.stringify(newItems));
+      return newItems;
     });
     // Don't auto-open cart drawer - let components handle this
   };
 
   const removeItem = (uniqueId: string) => {
-    setItems(prev => prev.filter(item => item.uniqueId !== uniqueId));
+    setItems(prev => {
+      const newItems = prev.filter(item => item.uniqueId !== uniqueId);
+      localStorage.setItem('cartItems', JSON.stringify(newItems));
+      return newItems;
+    });
   };
 
   const updateQuantity = (uniqueId: string, quantity: number) => {
@@ -70,15 +87,18 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       removeItem(uniqueId);
       return;
     }
-    setItems(prev =>
-      prev.map(item =>
+    setItems(prev => {
+      const newItems = prev.map(item =>
         item.uniqueId === uniqueId ? { ...item, quantity } : item
-      )
-    );
+      );
+      localStorage.setItem('cartItems', JSON.stringify(newItems));
+      return newItems;
+    });
   };
 
   const clearCart = () => {
     setItems([]);
+    localStorage.removeItem('cartItems');
   };
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
