@@ -346,7 +346,7 @@ const CartSheet = () => {
                 }
                 console.log("test: " + JSON.stringify(finalEmailDto));
                 console.log("test1: " + finalEmailDto);
-                alert("test: " + JSON.stringify(finalEmailDto));
+                //alert("test: " + JSON.stringify(finalEmailDto));
 
                 // Send email confirmation
                 try {
