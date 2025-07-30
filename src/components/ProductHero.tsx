@@ -212,8 +212,8 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
               </div>
             </div>
 
-            {/* Main CTAs */}
-            <div className="space-y-4">
+            {/* Main CTAs - Hidden on mobile since they're in the sticky panel */}
+            <div className="space-y-4 hidden md:block">
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button 
                   onClick={() => onAddToCart(selectedColor)}

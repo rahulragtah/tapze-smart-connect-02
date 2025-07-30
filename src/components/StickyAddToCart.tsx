@@ -6,22 +6,32 @@ import { ShoppingCart, Zap } from "lucide-react";
 interface StickyAddToCartProps {
   productName: string;
   price: number;
+  originalPrice?: number;
+  offerPrice?: number;
   onAddToCart: (color?: string) => void;
   onBuyNow: (color?: string) => void;
 }
 
-const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAddToCartProps) => {
-  const [isVisible, setIsVisible] = useState(false);
+const StickyAddToCart = ({ productName, price, originalPrice, offerPrice, onAddToCart, onBuyNow }: StickyAddToCartProps) => {
+  const [isVisible, setIsVisible] = useState(true); // Always visible on mobile now
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show sticky bar when user scrolls past the hero section
+      // Show sticky bar when user scrolls past the hero section (for tablet/desktop)
       const heroHeight = window.innerHeight * 0.8;
-      setIsVisible(window.scrollY > heroHeight);
+      const isMobile = window.innerWidth < 768;
+      setIsVisible(isMobile || window.scrollY > heroHeight);
     };
 
+    // Set initial visibility
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   if (!isVisible) return null;
@@ -30,8 +40,17 @@ const StickyAddToCart = ({ productName, price, onAddToCart, onBuyNow }: StickyAd
     <div className="fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-md border-t border-gray-800 p-4 md:hidden">
       <div className="flex items-center justify-between gap-4">
         <div className="flex-1 min-w-0">
-          <p className="text-white font-medium truncate">{productName}</p>
-          <p className="text-purple-400 font-bold">₹{price}</p>
+          <p className="text-white font-medium truncate text-sm">{productName}</p>
+          <div className="flex items-center gap-2">
+            {offerPrice && originalPrice && offerPrice < originalPrice ? (
+              <>
+                <span className="text-purple-400 font-bold text-lg">₹{offerPrice}</span>
+                <span className="text-gray-400 line-through text-sm">₹{originalPrice}</span>
+              </>
+            ) : (
+              <span className="text-purple-400 font-bold text-lg">₹{price}</span>
+            )}
+          </div>
         </div>
         
         <div className="flex gap-2">
