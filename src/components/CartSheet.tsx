@@ -346,18 +346,24 @@ const CartSheet = () => {
                 }
                 console.log("test: " + JSON.stringify(finalEmailDto));
                 console.log("test1: " + finalEmailDto);
-                alert("test: " + JSON.stringify(finalEmailDto));
+                //alert("test: " + JSON.stringify(finalEmailDto));
 
-                emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
-                (result) => {
-                  console.log(result.text);
-                  alert("mail sent");
-                },
-                (error) => {
-                  console.log(error.text);
-                  alert("mail not sent");
+                // Send email confirmation
+                try {
+                  await emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg');
+                  console.log('Order confirmation email sent successfully');
+                  toast({
+                    title: "Order Confirmed!",
+                    description: "Order confirmation email has been sent to your email address.",
+                  });
+                } catch (emailError) {
+                  console.error('Failed to send email:', emailError);
+                  toast({
+                    title: "Order Placed Successfully",
+                    description: "Your order is confirmed but email notification failed. You can contact support for details.",
+                    variant: "destructive",
+                  });
                 }
-                );
 
                 // Store order details in localStorage for the success page
                 const orderDetailsForSuccessPage = {
@@ -397,6 +403,7 @@ const CartSheet = () => {
 
       // 3️⃣ Open Razorpay Checkout
       const rzp1 = new (window as any).Razorpay(razorpayPaymentOptions);
+      setIsOpen(false); // Close cart sheet immediately when payment opens
       rzp1.open();
       
     } catch (error) {

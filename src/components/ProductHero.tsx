@@ -102,13 +102,13 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
                 Limited Time Offers
               </h3>
               <div className="space-y-2 text-sm">
-                <div className="flex items-start gap-2">
+                {/* <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
                   <span className="text-gray-300">Get 10% festive Discount code <strong className="text-white">FESTIVE10</strong></span>
-                </div>
+                </div> */}
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
-                  <span className="text-gray-300">Buy 3 cards, get 1 free.</span>
+                  <span className="text-gray-300">Buy 3, Say Hello & We’ll Gift You 1 More!</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
