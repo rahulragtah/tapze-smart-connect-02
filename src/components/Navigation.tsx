@@ -144,8 +144,24 @@ const Navigation = () => {
               )}
             </div>
 
-            {/* Mobile Hamburger Menu */}
-            <div className="md:hidden">
+            {/* Mobile Navigation */}
+            <div className="md:hidden flex items-center gap-2">
+              {/* Mobile Cart Icon */}
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative rounded-full"
+                onClick={() => setIsOpen(true)}
+              >
+                <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Button>
+
+              {/* Hamburger Menu */}
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <Button 
@@ -188,19 +204,6 @@ const Navigation = () => {
                       <Link to="/about-company">About Us</Link>
                     </Button>
                     
-                    <Button 
-                      variant="ghost" 
-                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 relative w-full rounded-full"
-                      onClick={handleCartOpen}
-                    >
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Cart
-                      {totalItems > 0 && (
-                        <span className="absolute left-16 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                          {totalItems}
-                        </span>
-                      )}
-                    </Button>
                     
                     <div className="border-t border-border pt-4">
                       {isLoggedIn ? (

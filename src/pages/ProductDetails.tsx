@@ -159,8 +159,8 @@ const ProductDetails = () => {
     <div className="min-h-screen bg-black text-white">
       <Navigation />
       
-      {/* Breadcrumb Navigation */}
-      <div className="pt-20 px-4 max-w-7xl mx-auto">
+      {/* Breadcrumb Navigation - Hidden on mobile */}
+      <div className="pt-20 px-4 max-w-7xl mx-auto hidden md:block">
         <nav className="flex items-center gap-2 text-sm text-gray-400 mb-8">
           <Link 
             to="/" 
@@ -179,6 +179,9 @@ const ProductDetails = () => {
           <span className="text-white">{product?.name || 'Product'}</span>
         </nav>
       </div>
+
+      {/* Mobile spacing when breadcrumbs are hidden */}
+      <div className="pt-20 md:hidden"></div>
 
       {/* Above the Fold */}
       <ProductHero product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
