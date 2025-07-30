@@ -397,6 +397,7 @@ const CartSheet = () => {
 
       // 3️⃣ Open Razorpay Checkout
       const rzp1 = new (window as any).Razorpay(razorpayPaymentOptions);
+      setIsOpen(false); // Close cart sheet immediately when payment opens
       rzp1.open();
       
     } catch (error) {
