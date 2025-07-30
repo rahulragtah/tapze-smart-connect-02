@@ -102,11 +102,11 @@ const DigitalProfile = () => {
               Share your contact info, social links, and portfolio instantly.
             </p>
             
-            {/* Custom Carousel */}
+        {/* Custom Carousel */}
             <div className="mb-8 flex justify-center">
-              <div className="max-w-6xl mx-auto">
+              <div className="max-w-6xl mx-auto overflow-hidden">
                 <div 
-                  className="flex items-start justify-center gap-4 h-96"
+                  className="flex items-start justify-center gap-2 md:gap-4 h-80 md:h-96 overflow-x-auto md:overflow-visible px-4 md:px-0"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -115,10 +115,10 @@ const DigitalProfile = () => {
                     return (
                       <div
                         key={`${profile.id}-${currentIndex}`}
-                        className={`transition-all duration-500 ease-in-out ${
+                        className={`transition-all duration-500 ease-in-out flex-shrink-0 ${
                           isCenterImage 
-                            ? 'w-72 h-96 scale-110 z-10' 
-                            : 'w-56 h-80 scale-95 opacity-70'
+                            ? 'w-48 md:w-72 h-64 md:h-96 scale-105 md:scale-110 z-10' 
+                            : 'w-40 md:w-56 h-56 md:h-80 scale-95 opacity-70'
                         }`}
                       >
                         <Card className="glass rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 h-full">
@@ -129,9 +129,9 @@ const DigitalProfile = () => {
                               className="w-full h-full object-cover object-top"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                              <h3 className="font-semibold text-lg mb-1">{profile.name}</h3>
-                              <p className="text-sm text-gray-200 opacity-90">{profile.description}</p>
+                            <div className="absolute bottom-0 left-0 right-0 p-2 md:p-4 text-white">
+                              <h3 className="font-semibold text-sm md:text-lg mb-1">{profile.name}</h3>
+                              <p className="text-xs md:text-sm text-gray-200 opacity-90">{profile.description}</p>
                             </div>
                           </div>
                         </Card>
@@ -408,17 +408,17 @@ const DigitalProfile = () => {
         {/* CTA Section */}
         <section className="py-20 px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <Card className="glass p-12">
-              <h2 className="text-3xl font-bold mb-6 text-white">
+            <Card className="glass p-6 md:p-12">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6 text-white">
                 Ready to Go Digital?
               </h2>
-              <p className="text-xl text-gray-300 mb-8">
+              <p className="text-lg md:text-xl text-gray-300 mb-6 md:mb-8">
                 Join thousands of professionals who've transformed their networking with digital profiles.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col gap-4 justify-center">
                 <Button 
                   size="lg" 
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-12 py-4 text-xl font-semibold rounded-full"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 md:px-12 py-3 md:py-4 text-base md:text-xl font-semibold rounded-full w-full md:w-auto"
                   onClick={handleSignupOpen}>
                   Create Your Digital Profile Now
                 </Button>

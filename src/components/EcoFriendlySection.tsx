@@ -75,18 +75,18 @@ const EcoFriendlySection = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-3 md:grid-cols-3 gap-4 md:gap-8 mb-12">
           <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-green-400 mb-2">95%</div>
-            <p className="text-gray-300">Less Paper Waste</p>
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-green-400 mb-1 md:mb-2">95%</div>
+            <p className="text-gray-300 text-xs md:text-base">Less Paper Waste</p>
           </div>
           <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">5K+</div>
-            <p className="text-gray-300">Trees Saved</p>
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-emerald-400 mb-1 md:mb-2">5K+</div>
+            <p className="text-gray-300 text-xs md:text-base">Trees Saved</p>
           </div>
           <div className="text-center">
-            <div className="text-4xl md:text-5xl font-bold text-green-400 mb-2">100%</div>
-            <p className="text-gray-300">Recyclable Materials</p>
+            <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-green-400 mb-1 md:mb-2">100%</div>
+            <p className="text-gray-300 text-xs md:text-base">Recyclable Materials</p>
           </div>
         </div>
 

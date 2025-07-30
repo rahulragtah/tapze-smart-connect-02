@@ -50,19 +50,19 @@ const WhyChooseSection = () => {
         </div>
         
         <div className="text-center mt-16">
-          <Card className="glass p-8 rounded-3xl max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <Card className="glass p-4 md:p-8 rounded-3xl max-w-4xl mx-auto">
+            <div className="grid grid-cols-3 md:grid-cols-3 gap-4 md:gap-8 text-center">
               <div>
-                <div className="text-3xl font-bold text-gradient mb-2">5K+</div>
-                <div className="text-gray-400">Cards Delivered</div>
+                <div className="text-xl md:text-3xl font-bold text-gradient mb-1 md:mb-2">5K+</div>
+                <div className="text-gray-400 text-xs md:text-base">Cards Delivered</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gradient mb-2">50+</div>
-                <div className="text-gray-400">Businesses Trust Us</div>
+                <div className="text-xl md:text-3xl font-bold text-gradient mb-1 md:mb-2">50+</div>
+                <div className="text-gray-400 text-xs md:text-base">Businesses Trust Us</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-gradient mb-2">99%</div>
-                <div className="text-gray-400">Customer Satisfaction</div>
+                <div className="text-xl md:text-3xl font-bold text-gradient mb-1 md:mb-2">99%</div>
+                <div className="text-gray-400 text-xs md:text-base">Customer Satisfaction</div>
               </div>
             </div>
           </Card>
