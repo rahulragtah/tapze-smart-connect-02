@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
 import PaymentButton from '../components/PaymentButton';
 import{CheckoutDTO, orderDTO} from '../components/models/productInterface' ;
+import {registerUser} from '../components/user/registerUser'
 
 
 interface CheckoutFormData {
@@ -211,6 +212,27 @@ const CartSheet = () => {
     console.log('current form data ', finalOrderDto);
     console.log ('car item ', items);
     console.log("total item ", totalItems);
+
+    const user = {
+      _token: '36IM9Fg43IshazsomUypTaBscQYSpyuMWiFYYjJe',
+      first_name: 'little',
+      last_name: 'smile',
+      email: 'sunilbhucomp@gmail.com',
+      contact: '78282 83987',
+      region_code: '91',
+      password: 'Candy@2016!',
+      password_confirmation: 'Candy@20161',
+      term_policy_check: 'on',
+    };
+
+    try {
+      const result = await registerUser(user);
+      alert('Registration successful:\n' + result);
+    } catch (error) {
+      alert('Registration failed.' + error);
+    }
+
+
 
     try {
               // create order in tapzee table
