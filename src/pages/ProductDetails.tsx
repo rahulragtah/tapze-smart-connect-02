@@ -1,7 +1,8 @@
 import  { useEffect, useState } from 'react';
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import Navigation from "@/components/Navigation";
 import ProductHero from "@/components/ProductHero";
@@ -19,6 +20,7 @@ import Footer from "@/components/Footer";
 const ProductDetails = () => {
   const { productId } = useParams();
   const { addItem } = useCart();
+  const { toast } = useToast();
 
   
   const [product, setProduct] = useState<any>(null);
@@ -121,6 +123,7 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = (color?: string) => {
+    const selectedColor = color || "Black";
     const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
     addItem({
       id: product.id,
@@ -128,7 +131,13 @@ const ProductDetails = () => {
       price: product.price,
       image: product.image,
       offerPrice: offerPrice,
-      color: color || "Black"
+      color: selectedColor
+    });
+    
+    // Show toast notification
+    toast({
+      title: "Added to Cart",
+      description: `${product.name} (${selectedColor}) - Quantity: 1`,
     });
   };
 
@@ -149,15 +158,25 @@ const ProductDetails = () => {
     <div className="min-h-screen bg-black text-white">
       <Navigation />
       
-      {/* Back Button */}
+      {/* Breadcrumb Navigation */}
       <div className="pt-20 px-4 max-w-7xl mx-auto">
-        <Link 
-          to="/buy-nfc-card" 
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to products
-        </Link>
+        <nav className="flex items-center gap-2 text-sm text-gray-400 mb-8">
+          <Link 
+            to="/" 
+            className="hover:text-white transition-colors"
+          >
+            Home
+          </Link>
+          <ChevronRight className="w-4 h-4" />
+          <Link 
+            to="/buy-nfc-card" 
+            className="hover:text-white transition-colors"
+          >
+            Our Products
+          </Link>
+          <ChevronRight className="w-4 h-4" />
+          <span className="text-white">{product?.name || 'Product'}</span>
+        </nav>
       </div>
 
       {/* Above the Fold */}

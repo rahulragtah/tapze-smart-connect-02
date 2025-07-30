@@ -58,7 +58,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       }
       return [...prev, { ...newItem, quantity: 1, uniqueId }];
     });
-    setIsOpen(true);
+    // Don't auto-open cart drawer - let components handle this
   };
 
   const removeItem = (uniqueId: string) => {
