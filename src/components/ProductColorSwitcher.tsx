@@ -10,32 +10,32 @@ interface colorVariant {
   colorImage:string;
   colorId:string;
 }
-const cardVariants = [
-  {
-    id: "black",
-    name: "Black",
-    //color: "#000000",
-    image: "/lovable-uploads/black-swatch.png"
-  },
-  {
-    id: "silver",
-    name: "Silver",
-    //color: "#C0C0C0",
-    image: "/lovable-uploads/silver-swatch.png"
-  },
-  {
-    id: "golden",
-    name: "Golden",
-    //color: "#FFD700",
-    image: "/lovable-uploads/golden-swatch.png"
-  },
-  {
-    id: "rosegold",
-    name: "Rose Gold",
-    //color: "#DEA193",
-    image: "/lovable-uploads/rosegold-swatch.png"
-  }
-];
+// const cardVariants = [
+//   {
+//     id: "black",
+//     name: "Black",
+//     //color: "#000000",
+//     image: "/lovable-uploads/black-swatch.png"
+//   },
+//   {
+//     id: "silver",
+//     name: "Silver",
+//     //color: "#C0C0C0",
+//     image: "/lovable-uploads/silver-swatch.png"
+//   },
+//   {
+//     id: "golden",
+//     name: "Golden",
+//     //color: "#FFD700",
+//     image: "/lovable-uploads/golden-swatch.png"
+//   },
+//   {
+//     id: "rosegold",
+//     name: "Rose Gold",
+//     //color: "#DEA193",
+//     image: "/lovable-uploads/rosegold-swatch.png"
+//   }
+// ];
 
 interface ProductColorSwitcherProps {
   onColorChange?: (color: string) => void;
