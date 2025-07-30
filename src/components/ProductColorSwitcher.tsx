@@ -44,22 +44,17 @@ interface ProductColorSwitcherProps {
 const ProductColorSwitcher = ({ onColorChange }: ProductColorSwitcherProps) => {
 const { productId } = useParams();
  
-  const [selectedColor, setSelectedColor] = useState(""); // Will be set to first available color
-  const [productColor, setProductColor] = useState<colorVariant[]>([]);
+  const [selectedColor, setSelectedColor] = useState("golden"); // Default color
+  const [productColor, setProductColor] = useState<colorVariant[]>([]); // Default color
 
   useEffect(() => {
-     // Fetch colors
+     // Fetch offers
      console.log("current procide ", productId)
     fetch('https://tapze.in/tapzeservice/productColorApi.php?productId=' + productId)
       .then(response => response.json())
       .then(data => {
         setProductColor(data);
-        // Set first color as default if not already selected
-        if (data && data.length > 0 && !selectedColor) {
-          setSelectedColor(data[0].colorId);
-          onColorChange?.(data[0].colorName);
-        }
-        console.log('ProductColorSwitcher for all  product', data);
+        console.log('ProductColorSwitcher for all  product', productColor);
       })
       .catch(error => {
         console.error('Error fetching offers:', error);

@@ -311,7 +311,7 @@ const CartSheet = () => {
                 console.log("test1: " + finalEmailDto);
                 alert("test: " + JSON.stringify(finalEmailDto));
 
-                emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg').then(
+                emailjs.send('tapzeEmailService','template_t4zx6o9',JSON.stringify(finalEmailDto),'Yc8keWHr9MEOI9SGg').then(
                 (result) => {
                   console.log(result.text);
                   alert("mail sent");
