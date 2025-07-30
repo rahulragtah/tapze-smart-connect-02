@@ -182,6 +182,8 @@ const ProductDetails = () => {
       <StickyAddToCart
         productName={product.name}
         price={product.price}
+        originalPrice={offer?.isActive ? product.price : undefined}
+        offerPrice={offer?.isActive ? product.price - offer.value : undefined}
         onAddToCart={handleAddToCart}
         onBuyNow={handleBuyNow}
       />
