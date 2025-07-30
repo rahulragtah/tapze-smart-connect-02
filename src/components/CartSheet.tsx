@@ -650,7 +650,7 @@ const CartSheet = () => {
               <ShoppingBag className="w-5 h-5" />
               {step === 'cart' ? `Cart (${totalItems})` : 'Checkout'}
             </div>
-            {step === 'cart' && totalItems > 0 && (
+            {step === 'cart' && totalItems > 1 && (
               <Button 
                 variant="ghost" 
                 size="sm" 
