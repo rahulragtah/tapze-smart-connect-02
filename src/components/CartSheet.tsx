@@ -306,9 +306,9 @@ const CartSheet = () => {
                   offerPrice: totalOfferPrice,
                   couponDiscount:couponDiscount,
                   couponCode:couponCode ,
-                  gstAmount:100,
+                  //gstAmount:100,
                   finalTotal:finalTotal,
-                  paymentMethod: "Credit card"
+                  //paymentMethod: "Credit card"
                 }
                 console.log("test: " + JSON.stringify(finalEmailDto));
                 console.log("test1: " + finalEmailDto);

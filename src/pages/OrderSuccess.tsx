@@ -271,9 +271,9 @@ const OrderSuccess = () => {
 
           {/* Continue Shopping */}
           <div className="text-center">
-            <Link to="/">
+            <Link to="/buy-nfc-card">
               <Button variant="outline">
-                Continue Shopping
+                Explore more products
               </Button>
             </Link>
           </div>

@@ -60,9 +60,9 @@ export interface orderDTO  extends Record<string, unknown> {
   offerPrice:number;
   couponDiscount:number;
   couponCode:string;
-  gstAmount:number;
+  //gstAmount:number;
   finalTotal:number;
-  paymentMethod:string;
+  //paymentMethod:string;
 }
 
 export interface CartItem {
