@@ -59,7 +59,7 @@ export interface orderDTO  extends Record<string, unknown> {
   orderSummary : string;
   totalItems: number;
   totalPrice:number;
-  offerPrice:number;
+  discountOnMRP:number;
   couponDiscount:number;
   couponCode:string;
   //gstAmount:number;
