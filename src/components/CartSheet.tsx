@@ -192,10 +192,10 @@ const CartSheet = () => {
 
   const onSubmit = async (values: CheckoutFormData) => {
     
-      if (!captchaToken) {
-      alert("Please verify CAPTCHA");
-      return;
-    }
+    //   if (!captchaToken) {
+    //   alert("Please verify CAPTCHA");
+    //   return;
+    // }
 
 
     setIsProcessing(true);
@@ -245,7 +245,7 @@ const CartSheet = () => {
       const result = await registerUser(user);
       alert('Registration successful:\n' + result);
     } catch (error) {
-      alert('Registration failed.' + error);
+      //alert('Registration failed.' + error);
     }
 
 
@@ -353,7 +353,7 @@ const CartSheet = () => {
                      ).join('\n'),
                   totalItems: totalItems,
                   totalPrice: totalPrice,
-                  offerPrice: totalOfferPrice,
+                  discountOnMRP: totalPrice - totalOfferPrice,
                   couponDiscount:couponDiscount,
                   couponCode:couponCode ,
                   //gstAmount:100,
@@ -695,7 +695,7 @@ const CartSheet = () => {
       </div>
 
       {/* Place Order Button - Fixed at bottom   <ReCAPTCHA sitekey="6LfS1ZQrAAAAAOWPmKZRXxqCAjFkURJVYBpYY7Vh" onChange={handleCaptchaChange} /> */}
-      <div className="border-t bg-background p-4 mt-auto">
+      <div className="border-t bg-background p-4 mt-auto mb-4">
           
         
         <Button 
@@ -785,13 +785,11 @@ const CartSheet = () => {
                   </div>
                 </div>
               ))}
-            </div>
+           
 
-            {/* Cart Summary */}
-            <div className="border-t pt-6 space-y-4">
-              {/* Clear Cart Button */}
+               {/* Clear Cart Button - Inside scrollable area */}
               {totalItems > 1 && (
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center py-4">
                   <Button 
                     variant="ghost" 
                     size="sm" 
@@ -804,7 +802,11 @@ const CartSheet = () => {
                 </div>
               )}
               
-              <div className="flex justify-between items-center text-lg font-semibold">
+              </div>
+
+              {/* Cart Summary - Fixed at bottom */}
+                <div className="border-t bg-background p-4 mt-auto mb-4">
+                <div className="flex justify-between items-center text-lg font-semibold mb-4">
                 <span>Total</span>
                 {/* <span>₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>  */}
                  <span>₹{totalOfferPrice.toFixed(2)} </span>
