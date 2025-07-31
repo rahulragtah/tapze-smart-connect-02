@@ -767,13 +767,10 @@ const CartSheet = () => {
                   </div>
                 </div>
               ))}
-            </div>
 
-            {/* Cart Summary */}
-            <div className="border-t pt-6 space-y-4">
-              {/* Clear Cart Button */}
+              {/* Clear Cart Button - Inside scrollable area */}
               {totalItems > 1 && (
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center py-4">
                   <Button 
                     variant="ghost" 
                     size="sm" 
@@ -785,11 +782,13 @@ const CartSheet = () => {
                   </Button>
                 </div>
               )}
-              
-              <div className="flex justify-between items-center text-lg font-semibold">
+            </div>
+
+            {/* Cart Summary - Fixed at bottom */}
+            <div className="border-t bg-background p-4 mt-auto">
+              <div className="flex justify-between items-center text-lg font-semibold mb-4">
                 <span>Total</span>
-                {/* <span>₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>  */}
-                 <span>₹{totalOfferPrice.toFixed(2)} </span>
+                <span>₹{totalOfferPrice.toFixed(2)}</span>
               </div>
               <Button 
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
