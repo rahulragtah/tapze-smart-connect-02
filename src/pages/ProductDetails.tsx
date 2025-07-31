@@ -26,6 +26,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [offer, setOffer] = useState<any>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("Black");
   
     useEffect(() => {
       setLoading(true);
@@ -123,7 +124,7 @@ const ProductDetails = () => {
   }
 
   const handleAddToCart = (color?: string) => {
-    const selectedColor = color || "Black";
+    const colorToUse = color || selectedColor;
     const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
     addItem({
       id: product.id,
@@ -131,17 +132,18 @@ const ProductDetails = () => {
       price: product.price,
       image: product.image,
       offerPrice: offerPrice,
-      color: selectedColor
+      color: colorToUse
     });
     
     // Show toast notification
     toast({
       title: "Added to Cart",
-      description: `${product.name} (${selectedColor}) - Quantity: 1`,
+      description: `${product.name} (${colorToUse}) - Quantity: 1`,
     });
   };
 
   const handleBuyNow = (color?: string) => {
+    const colorToUse = color || selectedColor;
     const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
     addItem({
       id: product.id,
@@ -149,7 +151,7 @@ const ProductDetails = () => {
       price: product.price,
       image: product.image,
       offerPrice: offerPrice,
-      color: color || "Black"
+      color: colorToUse
     });
     setIsOpen(true); // Open cart drawer for Buy Now
     console.log("Redirecting to checkout with:", product.name);
@@ -184,7 +186,13 @@ const ProductDetails = () => {
       <div className="pt-20 md:hidden"></div>
 
       {/* Above the Fold */}
-      <ProductHero product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
+      <ProductHero 
+        product={product} 
+        onAddToCart={handleAddToCart} 
+        onBuyNow={handleBuyNow}
+        selectedColor={selectedColor}
+        onColorChange={setSelectedColor}
+      />
       
       {/* Dedicated Order & Customization Timeline Container */}
       <ProductOrderTimelineContainer />
