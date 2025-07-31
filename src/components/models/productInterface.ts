@@ -29,6 +29,7 @@ export interface CheckoutDTO  extends Record<string, unknown> {
     state: string;
     city: string;
     pinCode: string;
+    country:string;
   };
   orderItems: CartItem[];
   totalItems: number;

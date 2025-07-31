@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -14,7 +14,8 @@ import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
 import PaymentButton from '../components/PaymentButton';
 import{CheckoutDTO, orderDTO} from '../components/models/productInterface' ;
-import {registerUser} from '../components/user/registerUser'
+import {registerUser} from '../components/user/registerUser';
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 interface CheckoutFormData {
@@ -133,6 +134,9 @@ const CartSheet = () => {
   const [appliedCoupon, setAppliedCoupon] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(false);
+
+  const recaptchaRef = useRef(null);
   
   const { register, handleSubmit, formState: { errors }, reset } = useForm<CheckoutFormData>();
   
@@ -149,7 +153,7 @@ const CartSheet = () => {
     (validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
       ? (totalOfferPrice * couponDiscount) / 100 
       : couponDiscount) : 0;
-  const afterDiscount = subtotal - discountAmount;
+  const afterDiscount = totalOfferPrice - discountAmount;
   // const gstAmount = (afterDiscount * 18) / 100; // 18% GST
   // const finalTotal = afterDiscount + gstAmount + shippingCharge;
   const finalTotal = afterDiscount;
@@ -182,7 +186,18 @@ const CartSheet = () => {
     });
   };
 
+  const handleCaptchaChange = (value) => {
+  setCaptchaToken(value); // save it in state
+    };
+
   const onSubmit = async (values: CheckoutFormData) => {
+    
+      if (!captchaToken) {
+      alert("Please verify CAPTCHA");
+      return;
+    }
+
+
     setIsProcessing(true);
     const finalOrderDto: CheckoutDTO = {
       personalInfo: {
@@ -197,6 +212,7 @@ const CartSheet = () => {
         state: values.state,
         city: values.city,
         pinCode: values.zipCode,
+        country: values.country
       },
       orderItems: items,
       totalItems: totalItems,
@@ -204,7 +220,7 @@ const CartSheet = () => {
       offerPrice: totalOfferPrice,
       couponDiscount:couponDiscount,
       couponCode:couponCode ,
-      gstAmount:100,
+      gstAmount:0,
       finalTotal:finalTotal,
       shippingCharge:shippingCharge
     }
@@ -675,10 +691,12 @@ const CartSheet = () => {
             </div>
           </CardContent>
         </Card>
+        
       </div>
 
       {/* Place Order Button - Fixed at bottom */}
       <div className="border-t bg-background p-4 mt-auto">
+        <ReCAPTCHA sitekey="6LfS1ZQrAAAAAOWPmKZRXxqCAjFkURJVYBpYY7Vh" onChange={handleCaptchaChange} />
         
         <Button 
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
@@ -791,6 +809,9 @@ const CartSheet = () => {
                 {/* <span>₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>  */}
                  <span>₹{totalOfferPrice.toFixed(2)} </span>
               </div>
+
+              
+
               <Button 
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 size="lg"
