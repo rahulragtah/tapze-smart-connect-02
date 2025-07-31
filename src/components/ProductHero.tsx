@@ -29,13 +29,14 @@ interface ProductHeroProps {
   product: Product;
   onAddToCart: (color?: string) => void;
   onBuyNow: (color?: string) => void;
+  selectedColor: string;
+  onColorChange: (color: string) => void;
 }
 
 
 
-const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
+const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorChange }: ProductHeroProps) => {
   const [offer, setOffer] = useState<Offer>();
-  const [selectedColor, setSelectedColor] = useState<string>("silver");
 
   const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
   // Update gallery images when product changes
@@ -197,7 +198,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow }: ProductHeroProps) => {
             </Card> */}
 
             {/* Color Switcher */}
-            <ProductColorSwitcher onColorChange={setSelectedColor} />
+            <ProductColorSwitcher onColorChange={onColorChange} />
 
             {/* Key Features */}
             <div className="space-y-3">
