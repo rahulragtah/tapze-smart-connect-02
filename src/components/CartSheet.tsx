@@ -678,7 +678,7 @@ const CartSheet = () => {
       </div>
 
       {/* Place Order Button - Fixed at bottom */}
-      <div className="border-t bg-background p-4 mt-auto">
+      <div className="border-t bg-background p-4 mt-auto mb-4">
         
         <Button 
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
@@ -785,7 +785,7 @@ const CartSheet = () => {
             </div>
 
             {/* Cart Summary - Fixed at bottom */}
-            <div className="border-t bg-background p-4 mt-auto">
+            <div className="border-t bg-background p-4 mt-auto mb-4">
               <div className="flex justify-between items-center text-lg font-semibold mb-4">
                 <span>Total</span>
                 <span>₹{totalOfferPrice.toFixed(2)}</span>
