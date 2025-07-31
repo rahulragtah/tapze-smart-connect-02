@@ -40,6 +40,7 @@ export interface CheckoutDTO  extends Record<string, unknown> {
   gstAmount:number;
   finalTotal:number;
   shippingCharge:number;
+  paymentOrderId: string;
 
 }
 export interface orderDTO  extends Record<string, unknown> {

@@ -192,10 +192,10 @@ const CartSheet = () => {
 
   const onSubmit = async (values: CheckoutFormData) => {
     
-      if (!captchaToken) {
-      alert("Please verify CAPTCHA");
-      return;
-    }
+    // if (!captchaToken) {
+    // alert("Please verify CAPTCHA");
+    //return;
+    //}
 
 
     setIsProcessing(true);
@@ -222,7 +222,8 @@ const CartSheet = () => {
       couponCode:couponCode ,
       gstAmount:0,
       finalTotal:finalTotal,
-      shippingCharge:shippingCharge
+      shippingCharge:shippingCharge,
+      paymentOrderId :'notdefine'
     }
 
     console.log('current form data ', finalOrderDto);
@@ -241,30 +242,17 @@ const CartSheet = () => {
       term_policy_check: 'on',
     };
 
-    try {
-      const result = await registerUser(user);
-      alert('Registration successful:\n' + result);
-    } catch (error) {
-      alert('Registration failed.' + error);
-    }
+                   // try {
+                     // const result = await registerUser(user);
+                     // alert('Registration successful:\n' + result);
+                    //} catch (error) {
+                     // alert('Registration failed.' + error);
+                    //}
 
 
 
     try {
-              // create order in tapzee table
-        const response = await fetch("https://tapze.in/tapzeservice/order.php", {     
-          method: "POST",
-              headers: {
-                        "Content-Type": "application/json"
-                        },
-                  body: JSON.stringify(finalOrderDto)
-                });
-
-                const tapzeOrderResponce = await response.json();
-                console.log("Server response:", tapzeOrderResponce);
-                if (!response.ok) {
-                  throw new Error("Order failed");
-                }
+              
         // end of create order in tapZe & create razorpay order            
         const createOrderRazorpayResponse = await fetch(
         'https://tapze.in/tapzeservice/create_order.php',
@@ -274,14 +262,43 @@ const CartSheet = () => {
             'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-            amount: finalOrderDto.offerPrice*100
+            amount: finalOrderDto.finalTotal*100
             })
         }
         );
+
+
+        if (!createOrderRazorpayResponse.ok) {
+          const errorText = await createOrderRazorpayResponse.text();
+          console.error("Razorpay order creation failed:", errorText);
+          throw new Error("Failed to create Razorpay order");
+        }
         // end create of order in razorpay & Configure Razorpay options for payment
         const data = await createOrderRazorpayResponse.json();
         console.log( "create order razorpay response", data);
+        finalOrderDto.paymentOrderId= data.id;
+        console.log("tapxe order with prazorpay order id ", finalOrderDto)
         const { id: order_id, amount, currency } = data;
+
+        // create order in tapzee table
+        const response = await fetch("https://tapze.in/tapzeservice/order.php", {     
+          method: "POST",
+          headers: {
+                        "Content-Type": "application/json"
+                    },
+                  body: JSON.stringify(finalOrderDto)
+             });
+
+              if (!response.ok) {
+                throw new Error("Order failed");
+              }
+
+              const tapZeOrderResponse = await response.json();
+              console.log("Server response:", tapZeOrderResponse);
+                
+
+
+
         const razorpayPaymentOptions = {
           key: "rzp_test_OmyeGhZlBHqJUK",
           amount: amount,
@@ -296,11 +313,14 @@ const CartSheet = () => {
             const body = {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
-                razorpay_signature: response.razorpay_signature
+                razorpay_signature: response.razorpay_signature,
+                tapze_order_id: tapZeOrderResponse.order_id,
+                amount : amount,
+
             };
             // POST to verify.php
             const verifyResponse = await fetch(
-                'https://tapze.in/tapzeservice/verify.php',
+                'https://tapze.in/tapzeservice/verifypayment.php',
                 {
                   method: 'POST',
                   headers: {
@@ -310,24 +330,19 @@ const CartSheet = () => {
                 }
             );
             const verifyResult = await verifyResponse.json();
-            console.log(verifyResult);
+
+            
+            console.log( " verification result  "+ verifyResult);
 
             // Prepare tapze payment payload 
             const tapzePayment = {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
                 amount : amount,
-                tapze_order_id: tapzeOrderResponce.order_id
+                tapze_order_id: tapZeOrderResponse.order_id
             };
             if (verifyResult.success) {
-               const tapZePaymentRes = await fetch("https://tapze.in/tapzeservice/paymentDetail.php", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify(tapzePayment)
-                });
-
+               
 
                 
                 // const orderSummary=items.map(item =>
@@ -336,7 +351,7 @@ const CartSheet = () => {
                 // console.log(items);
                 // items.map()
                 const finalEmailDto: orderDTO = {
-                  orderId : tapzeOrderResponce.order_id ? `#${tapzeOrderResponce.order_id}` : "#testid",
+                  orderId : tapZeOrderResponse.order_id ? `#${tapZeOrderResponse.order_id}` : "#testid",
                   orderDate : formattedDate,
                   firstName: values.firstName,
                   lastName: values.lastName,
@@ -384,7 +399,7 @@ const CartSheet = () => {
                 // Store order details in localStorage for the success page
                 const orderDetailsForSuccessPage = {
                   ...finalOrderDto,
-                  orderId: tapzeOrderResponce.order_id || "testid"
+                  orderId: tapZeOrderResponse.order_id || "testid"
                 };
                 localStorage.setItem('orderDetails', JSON.stringify(orderDetailsForSuccessPage));
 
