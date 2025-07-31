@@ -385,7 +385,7 @@ const CartSheet = () => {
 
                 // Send email confirmation
                 try {
-                  await emailjs.send('tapzeEmailService','template_t4zx6o9',finalEmailDto,'Yc8keWHr9MEOI9SGg');
+                  await emailjs.send('tapzeEmailService','template_zk2gl62',finalEmailDto,'iwIaefaueRobx3b5j');
                   console.log('Order confirmation email sent successfully');
                   toast({
                     title: "Order Confirmed!",
