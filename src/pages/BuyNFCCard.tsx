@@ -112,7 +112,7 @@ const BuyNFCCard = () => {
               Your Card, <span className="text-gradient">Your Style</span>
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Premium NFC business cards designed to make lasting impressions. 
+              Premium Smart business cards designed to make lasting impressions. 
               Each card comes with our smart software to power your networking.
             </p>
           </div>

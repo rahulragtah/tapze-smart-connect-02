@@ -9,17 +9,16 @@ import type { CarouselApi } from "@/components/ui/carousel";
 
 const ClientLogosCarousel = () => {
   const logos = [
-    { name: "Google", url: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
+    { name: "Workflow catalyst", url: "/lovable-uploads/workflowcatelyst.png" },
     { name: "Microsoft", url: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" },
-    { name: "Apple", url: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" },
-    { name: "Amazon", url: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
-    { name: "Meta", url: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" },
-    { name: "Netflix", url: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
-    { name: "Spotify", url: "https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg" },
-    { name: "Uber", url: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" },
-    { name: "Tesla", url: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Tesla_T_symbol.svg" },
-    { name: "Adobe", url: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg" },
-    { name: "Intel", url: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Intel_logo_%282006-2020%29.svg" },
+    { name: "Bizfunds", url: "/lovable-uploads/bizfunds.png" },
+    { name: "ca", url: "/lovable-uploads/ca.png" },
+    { name: "LIC", url: "/lovable-uploads/lic.png" },
+    { name: "lnl", url: "/lovable-uploads/lnl.png" },
+    { name: "Uber", url: "/lovable-uploads/uber.png" },
+    { name: "little smile", url: "/lovable-uploads/littlesmiles.svg" },
+    { name: "Adobe", url: "/lovable-uploads/adobe-logo.svg" },
+    { name: "Intel", url: "/lovable-uploads/looks.jpeg" },
     { name: "Samsung", url: "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg" },
   ];
 
@@ -68,7 +67,7 @@ const ClientLogosCarousel = () => {
                   <img 
                     src={logo.url} 
                     alt={logo.name}
-                    className="max-h-8 max-w-full object-contain filter brightness-75 group-hover:brightness-100 transition-all duration-300"
+                    className="max-h-10 max-w-full object-contain filter brightness-75 group-hover:brightness-100 transition-all duration-300"
                   />
                 </div>
               </CarouselItem>

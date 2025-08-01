@@ -101,7 +101,7 @@ const NFCCardSection = () => {
           </h2>
           
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Premium NFC business cards designed for professionals who want to make lasting impressions
+            Premium Smart business cards designed for professionals who want to make lasting impressions
           </p>
         </div>
         

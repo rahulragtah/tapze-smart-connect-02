@@ -151,7 +151,7 @@ const BrandCarousel = () => {
           </section>
 
           {/* Partnership Benefits */}
-          <section className="mb-16">
+          {/* <section className="mb-16">
             <Card className="glass">
               <CardHeader>
                 <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
@@ -173,7 +173,7 @@ const BrandCarousel = () => {
                 </div>
               </CardContent>
             </Card>
-          </section>
+          </section> */}
 
           {/* CTA Section */}
           <section className="mb-16">

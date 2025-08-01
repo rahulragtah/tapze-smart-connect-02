@@ -29,7 +29,7 @@ const HeroSection = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-6 leading-relaxed">
-              Premium NFC business cards paired with intelligent software that transforms how you network and grow your professional presence.
+              Premium Smart business cards paired with intelligent software that transforms how you network and grow your professional presence.
             </p>
             
             <div className="flex flex-col gap-4 mb-8">

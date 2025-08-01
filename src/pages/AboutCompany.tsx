@@ -80,8 +80,64 @@ const AboutCompany = () => {
           </div>
         </section>
 
-        {/* Values */}
+       
+        {/* Team Section */}
         <section className="py-16 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                Meet Our <span className="text-gradient">Team</span>
+              </h2>
+              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                The passionate individuals behind Tapze's success
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="/lovable-uploads/brijesh.png" 
+                  alt="CEO"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">Brijesh Kannaujia</h3>
+                <p className="text-purple-400 mb-3">Product Excellance</p>
+                <p className="text-gray-300 text-sm">
+                Strategic product visionary with 15+ years of leading innovation and excellence.
+                </p>
+              </div>
+              
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="/lovable-uploads/sunil.png" 
+                  alt="CTO"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">Sunil Kumar</h3>
+                <p className="text-purple-400 mb-3">Chief Technology Officer</p>
+                <p className="text-gray-300 text-sm">
+                With over 15 years of experience, a technology expert focused on NFC innovation, scalable digital architectures, and strategic business development.
+                </p>
+              </div>
+              
+              <div className="text-center glass p-6 rounded-3xl">
+                <img 
+                  src="/lovable-uploads/rahul.png" 
+                  alt="Head of Design"
+                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                />
+                <h3 className="text-xl font-bold mb-2">Rahul Ragtah</h3>
+                <p className="text-purple-400 mb-3">Head of Design</p>
+                <p className="text-gray-300 text-sm">
+                Experienced Creative Director with over 12 years of crafting exceptional user experiences and forward-thinking product designs.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+         {/* Values */}
+         <section className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -159,60 +215,6 @@ const AboutCompany = () => {
           </div>
         </section>
 
-        {/* Team Section */}
-        <section className="py-16 px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Meet Our <span className="text-gradient">Team</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                The passionate individuals behind Tapze's success
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center glass p-6 rounded-3xl">
-                <img 
-                  src="/lovable-uploads/brijesh.png" 
-                  alt="CEO"
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold mb-2">Brijesh Kannaujia</h3>
-                <p className="text-purple-400 mb-3">Product Excellance</p>
-                <p className="text-gray-300 text-sm">
-                Strategic product visionary with 15+ years of leading innovation and excellence.
-                </p>
-              </div>
-              
-              <div className="text-center glass p-6 rounded-3xl">
-                <img 
-                  src="/lovable-uploads/sunil.png" 
-                  alt="CTO"
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold mb-2">Sunil Kumar</h3>
-                <p className="text-purple-400 mb-3">Chief Technology Officer</p>
-                <p className="text-gray-300 text-sm">
-                With over 15 years of experience, a technology expert focused on NFC innovation, scalable digital architectures, and strategic business development.
-                </p>
-              </div>
-              
-              <div className="text-center glass p-6 rounded-3xl">
-                <img 
-                  src="/lovable-uploads/rahul.png" 
-                  alt="Head of Design"
-                  className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                />
-                <h3 className="text-xl font-bold mb-2">Rahul Ragtah</h3>
-                <p className="text-purple-400 mb-3">Head of Design</p>
-                <p className="text-gray-300 text-sm">
-                Experienced Creative Director with over 12 years of crafting exceptional user experiences and forward-thinking product designs.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Contact CTA */}
         <section className="py-16 px-4 text-center">
