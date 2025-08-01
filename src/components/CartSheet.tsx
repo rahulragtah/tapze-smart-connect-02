@@ -366,13 +366,13 @@ const CartSheet = () => {
               setCouponDiscount(0);
               setAppliedCoupon('');
               setCouponCode('');
-              setIsProcessing(false);
               setIsOpen(false);
 
-              // Small delay to show completion stage
+              // Keep loader visible during navigation
               setTimeout(() => {
+                setIsProcessing(false);
                 window.location.href = '/order-success';
-              }, 1000);
+              }, 1500);
             } else {
               throw new Error('Payment verification failed. Please contact support if amount was debited.');
             }
