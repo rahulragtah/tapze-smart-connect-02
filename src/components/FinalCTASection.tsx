@@ -4,9 +4,11 @@ import { Card } from "@/components/ui/card";
 import { DollarSign, Users, TrendingUp } from "lucide-react";
 import { useState } from "react";
 import LoginModal from "./LoginModal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const FinalCTASection = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const isMobile = useIsMobile();
   const handleAffilation = () => {
     window.open('https://dashboard.tapze.in/sadmin/affiliate-users', '_blank');
     
@@ -16,6 +18,11 @@ const FinalCTASection = () => {
     console.log("Affiliate login with phone:", phone);
     setIsLoginModalOpen(false);
   };
+
+  // Hide on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>
