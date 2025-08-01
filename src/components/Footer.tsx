@@ -39,30 +39,33 @@ const Footer = () => {
             </div>
           </div>
           
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link to="/about-company" className="hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/buy-nfc-card" className="hover:text-white transition-colors">Our products</Link></li>
-              <li><Link to="/digital-profile" className="hover:text-white transition-colors">Digital Profile</Link></li>
-              <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
-              <li><Link to="/pricing" className="hover:text-white transition-colors">FAQ's</Link></li>
-              <li><Link to="/brands" className="hover:text-white transition-colors">Our Impact</Link></li>
-              <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-            </ul>
-          </div>
-          
-          {/* Legal */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link to="/refund-policy" className="hover:text-white transition-colors">Refund Policy</Link></li>
-              <li><Link to="/cancellation-policy" className="hover:text-white transition-colors">Cancellation Policy</Link></li>
-              <li><Link to="/support" className="hover:text-white transition-colors">Support</Link></li>
-            </ul>
+          {/* Quick Links and Legal - Side by side on mobile */}
+          <div className="col-span-1 md:col-span-2 grid grid-cols-2 gap-8">
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/about-company" className="hover:text-white transition-colors">About Us</Link></li>
+                <li><Link to="/buy-nfc-card" className="hover:text-white transition-colors">Our products</Link></li>
+                <li><Link to="/digital-profile" className="hover:text-white transition-colors">Digital Profile</Link></li>
+                <li><Link to="/how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
+                <li><Link to="/pricing" className="hover:text-white transition-colors">FAQ's</Link></li>
+                <li><Link to="/brands" className="hover:text-white transition-colors">Our Impact</Link></li>
+                <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+            
+            {/* Legal */}
+            <div>
+              <h3 className="text-white font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/refund-policy" className="hover:text-white transition-colors">Refund Policy</Link></li>
+                <li><Link to="/cancellation-policy" className="hover:text-white transition-colors">Cancellation Policy</Link></li>
+                <li><Link to="/support" className="hover:text-white transition-colors">Support</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
         
