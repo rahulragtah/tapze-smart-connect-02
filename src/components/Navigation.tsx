@@ -23,13 +23,13 @@ const Navigation = () => {
   const { totalItems, setIsOpen } = useCart();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: "Welcome User", phone: "" });
+  const [userInfo, setUserInfo] = useState({ name: "Hello 👋", phone: "" });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   const handleLogin = (phone: string) => {
     setIsLoggedIn(true);
-    setUserInfo({ name: "Welcome User", phone });
+    setUserInfo({ name: "Hello 👋", phone });
     setIsLoginModalOpen(false);
   };
 
@@ -143,7 +143,7 @@ const Navigation = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLoginOpen}>
                       <User className="w-4 h-4 mr-2" />
                       Dashboard
                     </DropdownMenuItem>
