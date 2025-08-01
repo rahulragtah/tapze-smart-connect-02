@@ -14,7 +14,13 @@ import {
   CheckCircle,
   Star,
   Globe,
-  Award
+  Award,
+  Utensils,
+  Scissors,
+  Gift,
+  Factory,
+  Building,
+  Cross
 } from "lucide-react";
 
 const BrandCarousel = () => {
@@ -42,6 +48,42 @@ const BrandCarousel = () => {
       description: "Real estate agents and firms use our tapZe cards to instantly share property listings and contact information.",
       icon: Home,
       color: "text-orange-400"
+    },
+    {
+      title: "Restaurants & Food",
+      description: "Restaurants, cafes, and food establishments use Tapze cards for seamless customer engagement and digital menu sharing.",
+      icon: Utensils,
+      color: "text-yellow-400"
+    },
+    {
+      title: "Beauty & Salons",
+      description: "Beauty salons, spas, and wellness centers leverage Tapze for appointment booking and service information sharing.",
+      icon: Scissors,
+      color: "text-pink-400"
+    },
+    {
+      title: "Gift Shops & Retail",
+      description: "Gift shops and retail stores use our tapZe cards to enhance customer experience and share product catalogs.",
+      icon: Gift,
+      color: "text-purple-400"
+    },
+    {
+      title: "Manufacturing",
+      description: "Manufacturing companies rely on Tapze for B2B networking, supplier connections, and industrial partnerships.",
+      icon: Factory,
+      color: "text-gray-400"
+    },
+    {
+      title: "Hotels & Hospitality",
+      description: "Hotels, resorts, and hospitality businesses use Tapze for guest services and staff networking solutions.",
+      icon: Building,
+      color: "text-indigo-400"
+    },
+    {
+      title: "Hospitals & Medical",
+      description: "Hospitals and medical facilities trust Tapze for secure, hygienic patient information and staff coordination.",
+      icon: Cross,
+      color: "text-emerald-400"
     }
   ];
 
