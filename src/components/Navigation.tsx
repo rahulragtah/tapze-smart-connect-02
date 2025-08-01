@@ -23,13 +23,13 @@ const Navigation = () => {
   const { totalItems, setIsOpen } = useCart();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState({ name: "John Doe", phone: "" });
+  const [userInfo, setUserInfo] = useState({ name: "Welcome User", phone: "" });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   const handleLogin = (phone: string) => {
     setIsLoggedIn(true);
-    setUserInfo({ name: "John Doe", phone });
+    setUserInfo({ name: "Welcome User", phone });
     setIsLoginModalOpen(false);
   };
 
@@ -62,8 +62,10 @@ const Navigation = () => {
   .then(data => {
     if (data.loggedIn) {
       console.log("✅ Logged in:", data);
+      setIsLoggedIn(true);
     } else {
       console.log("⛔ Not logged in:", data.message);
+      setIsLoggedIn(false);
     }
   });
 
@@ -252,7 +254,7 @@ const Navigation = () => {
                           <Button 
                             variant="ghost" 
                             className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
-                            onClick={closeMobileMenu}
+                            onClick={handleLoginOpen}
                           >
                             <User className="w-4 h-4 mr-2" />
                             Dashboard
