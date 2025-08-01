@@ -371,7 +371,7 @@ const CartSheet = () => {
               // Keep loader visible during navigation
               setTimeout(() => {
                 setIsProcessing(false);
-                window.location.href = '/order-success';
+                navigate('/order-success');
               }, 1500);
             } else {
               throw new Error('Payment verification failed. Please contact support if amount was debited.');
