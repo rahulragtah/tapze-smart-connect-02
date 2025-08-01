@@ -286,7 +286,8 @@ const CartSheet = () => {
       // Stage 3: Initialize payment
       setProcessingStage('payment');
       const razorpayPaymentOptions = {
-        key: "rzp_test_OmyeGhZlBHqJUK",
+        //key: "rzp_test_OmyeGhZlBHqJUK", //test key
+        key: "rzp_live_hS5lXcbNNUiAFa", //live key
         amount: amount,
         currency: currency,
         name: "TapZe",
