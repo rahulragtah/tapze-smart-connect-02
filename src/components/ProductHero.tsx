@@ -113,7 +113,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-400">•</span>
-                  <span className="text-gray-300">Free shipping on all.</span>
+                  <span className="text-gray-300">Free shipping on all orders.</span>
                 </div>
               </div>
             </Card>
