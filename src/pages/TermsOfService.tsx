@@ -111,7 +111,7 @@ const TermsOfService = () => {
               <h2 className="text-2xl font-semibold mb-4 text-white">12. Contact Information</h2>
               <div className="text-gray-300 space-y-4">
                 <p>For questions about these Terms of Service, please contact us at:</p>
-                <p>Email: legal@tapze.in<br />
+                <p>Email: contact@tapze.in<br />
                 Phone: +91 9990909789<br />
                 Registered Address: 3/1, Subhash Nagar, New Delhi, 110027</p>
               </div>

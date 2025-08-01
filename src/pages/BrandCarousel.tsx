@@ -113,7 +113,7 @@ const BrandCarousel = () => {
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold mb-6 text-gradient">Our Impact</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Join 100+ leading companies across India who trust Tapze for innovative NFC business card solutions
+              Join 50+ leading companies across India who trust Tapze for innovative, smart business card solutions
             </p>
           </div>
 
@@ -139,27 +139,6 @@ const BrandCarousel = () => {
             </Card>
           </div>
 
-          {/* Why Choose Section */}
-          <section className="mb-16">
-            <Card className="glass">
-              <CardHeader>
-                <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
-                  <Award className="w-8 h-8 text-primary" />
-                  Why Companies Choose Tapze
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {features.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                      <p className="text-gray-300">{feature}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </section>
 
           {/* Industries Section */}
           <section className="mb-16">
@@ -190,6 +169,28 @@ const BrandCarousel = () => {
                 );
               })}
             </div>
+          </section>
+
+          {/* Why Choose Section */}
+          <section className="mb-16">
+            <Card className="glass">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-center text-white flex items-center justify-center gap-3">
+                  <Award className="w-8 h-8 text-primary" />
+                  Why Companies Choose Tapze
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                      <p className="text-gray-300">{feature}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </section>
 
           {/* Partnership Benefits */}
@@ -231,7 +232,7 @@ const BrandCarousel = () => {
                   Join the companies that are transforming their networking. Contact our enterprise team to discuss bulk orders, custom branding, and partnership opportunities.
                 </p>
                 <div className="space-y-2 text-gray-300">
-                  <p><strong className="text-white">Email:</strong> enterprise@tapze.com</p>
+                  <p><strong className="text-white">Email:</strong> contacte@tapze.in</p>
                   <p><strong className="text-white">Phone:</strong> +91 9990909789</p>
                   <p>
                     <strong className="text-white">Schedule a demo:</strong>{" "}

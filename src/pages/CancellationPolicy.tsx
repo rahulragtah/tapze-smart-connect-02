@@ -42,7 +42,7 @@ const CancellationPolicy = () => {
               <div className="space-y-4 text-gray-300">
                 <p>To cancel your order, please:</p>
                 <ol className="list-decimal pl-6 space-y-2">
-                  <li>Contact our customer support team at support@tapze.in</li>
+                  <li>Contact our customer support team at contact@tapze.in</li>
                   <li>Provide your order number and cancellation reason</li>
                   <li>Our team will process your request within 2-4 business hours</li>
                   <li>You will receive email confirmation of the cancellation</li>
@@ -96,7 +96,7 @@ const CancellationPolicy = () => {
               <div className="space-y-4 text-gray-300">
                 <p>For cancellation requests or questions:</p>
                 <div className="bg-purple-900/20 p-4 rounded-xl">
-                  <p><strong>Email:</strong> support@tapze.in</p>
+                  <p><strong>Email:</strong> contact@tapze.in</p>
                   <p><strong>Phone:</strong> +91-9990909789</p>
                   <p><strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM</p>
                 </div>

@@ -116,7 +116,7 @@ const RefundPolicy = () => {
               <h2 className="text-2xl font-semibold mb-4 text-white">Contact for Refunds</h2>
               <div className="text-gray-300 space-y-4">
                 <p>To process a refund or exchange, contact our customer support team:</p>
-                <p>Email: refunds@tapze.in<br />
+                <p>Email: contact@tapze.in<br />
                 Phone: +91 9990909789<br />
                 Live Chat: Available on our website<br />
                 Support Hours: Monday-Friday, 9 AM - 6 PM</p>

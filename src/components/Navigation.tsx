@@ -187,9 +187,9 @@ const Navigation = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-80 bg-background/95 backdrop-blur-md border-l border-border">
-                  <SheetHeader>
+                  {/* <SheetHeader>
                     <SheetTitle className="text-left">Menu</SheetTitle>
-                  </SheetHeader>
+                  </SheetHeader> */}
                   
                   <div className="flex flex-col space-y-4 mt-8">
                     <Button 
@@ -216,6 +216,22 @@ const Navigation = () => {
                       asChild
                     >
                       <Link to="/about-company">About Us</Link>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                      onClick={closeMobileMenu}
+                      asChild
+                    >
+                      <Link to="/brands">Our Impact</Link>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                      onClick={closeMobileMenu}
+                      asChild
+                    >
+                      <Link to="/contact">Contact Us</Link>
                     </Button>
                     
                     
