@@ -1,8 +1,16 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const EcoFriendlySection = () => {
+  const isMobile = useIsMobile();
   const benefits = [
     {
       icon: "🌱",
@@ -63,16 +71,48 @@ const EcoFriendlySection = () => {
           </p>
         </div>
 
-        {/* Benefits Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {benefits.map((benefit, index) => (
-            <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300 text-center">
-              <div className="text-4xl mb-4">{benefit.icon}</div>
-              <h3 className="text-white font-semibold text-lg mb-3">{benefit.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
-            </Card>
-          ))}
-        </div>
+        {/* Benefits Grid - Desktop */}
+        {!isMobile && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            {benefits.map((benefit, index) => (
+              <Card key={index} className="glass p-6 rounded-2xl hover:scale-105 transition-all duration-300 text-center">
+                <div className="text-4xl mb-4">{benefit.icon}</div>
+                <h3 className="text-white font-semibold text-lg mb-3">{benefit.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Benefits Carousel - Mobile Only */}
+        {isMobile && (
+          <div className="mb-16">
+            <Carousel
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              plugins={[
+                Autoplay({
+                  delay: 3000,
+                }),
+              ]}
+              className="w-full"
+            >
+              <CarouselContent className="-ml-2 md:-ml-4">
+                {benefits.map((benefit, index) => (
+                  <CarouselItem key={index} className="pl-2 md:pl-4 basis-4/5">
+                    <Card className="glass p-6 rounded-2xl text-center">
+                      <div className="text-4xl mb-4">{benefit.icon}</div>
+                      <h3 className="text-white font-semibold text-lg mb-3">{benefit.title}</h3>
+                      <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-3 md:grid-cols-3 gap-4 md:gap-8 mb-12">

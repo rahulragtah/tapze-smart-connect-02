@@ -2,8 +2,10 @@ import  { useEffect, useState } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Flame } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Offer {
   productId: string;
@@ -18,6 +20,7 @@ const NFCCardSection = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState<{[key: string]: Offer}>({});
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     fetch('https://tapze.in/tapzeservice/productapi.php?section=homePage')
@@ -205,6 +208,17 @@ const NFCCardSection = () => {
             </div>
           </div>
         </div>
+        
+        {/* Mobile-only View All Products Button */}
+        {isMobile && (
+          <div className="text-center mt-8">
+            <Link to="/buy-nfc-card">
+              <Button className="w-full max-w-sm mx-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-full font-semibold text-lg">
+                View All Products
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

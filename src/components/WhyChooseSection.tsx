@@ -1,5 +1,12 @@
 
 import { Card } from "@/components/ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const benefits = [
   {
@@ -25,6 +32,8 @@ const benefits = [
 ];
 
 const WhyChooseSection = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="py-20 px-4 relative">
       <div className="max-w-6xl mx-auto">
@@ -37,17 +46,50 @@ const WhyChooseSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {benefits.map((benefit, index) => (
-            <Card key={index} className="glass p-6 rounded-2xl text-center hover:scale-105 transition-all duration-300 group">
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                {benefit.icon}
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-white">{benefit.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
-            </Card>
-          ))}
-        </div>
+        {/* Benefits Grid - Desktop */}
+        {!isMobile && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {benefits.map((benefit, index) => (
+              <Card key={index} className="glass p-6 rounded-2xl text-center hover:scale-105 transition-all duration-300 group">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {benefit.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-3 text-white">{benefit.title}</h3>
+                <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* Benefits Carousel - Mobile Only */}
+        {isMobile && (
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            plugins={[
+              Autoplay({
+                delay: 3000,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {benefits.map((benefit, index) => (
+                <CarouselItem key={index} className="pl-2 md:pl-4 basis-4/5">
+                  <Card className="glass p-6 rounded-2xl text-center">
+                    <div className="text-4xl mb-4">
+                      {benefit.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-white">{benefit.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        )}
         
         <div className="text-center mt-16">
           <Card className="glass p-4 md:p-8 rounded-3xl max-w-4xl mx-auto">
