@@ -53,19 +53,22 @@ const Navigation = () => {
   };
 
 
-  useEffect(() => {
-    fetch("https://tapze.in/tapzeservice/checkUser.php")
+  
+
+  fetch("https://tapze.in/tapzeservice/checkUser.php", {
+  credentials: "include",
+})
   .then(res => res.json())
   .then(data => {
     if (data.loggedIn) {
-      setIsLoggedIn(true);
-      console.log("User is logged in");
+      console.log("✅ Logged in:", data);
     } else {
-      console.log("User is not logged in");
+      console.log("⛔ Not logged in:", data.message);
     }
   });
-  }, []);
 
+
+  
   // Scroll to top on route change
   useEffect(() => {
     window.scrollTo(0, 0);
