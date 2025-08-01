@@ -101,7 +101,7 @@ const Support = () => {
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="py-12 lg:py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               How Can We <span className="text-gradient">Help?</span>
@@ -114,7 +114,7 @@ const Support = () => {
         </section>
 
         {/* Support Options */}
-        <section className="py-16 px-4">
+        <section className="py-8 lg:py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12 text-white">Choose Your Support Method</h2>
             

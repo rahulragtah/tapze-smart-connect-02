@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen px-4 py-20 overflow-hidden">
+    <section className="relative min-h-screen px-4 py-12 lg:py-20 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-radial from-purple-500/20 via-transparent to-transparent" />
       
