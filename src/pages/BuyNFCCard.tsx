@@ -106,7 +106,7 @@ const BuyNFCCard = () => {
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="pt-20 pb-8 px-4 text-center">
+        <section className="pt-16 lg:pt-20 pb-8 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Your Card, <span className="text-gradient">Your Style</span>
@@ -119,7 +119,7 @@ const BuyNFCCard = () => {
         </section>
 
         {/* Products Grid */}
-        <section className="py-16 px-4">
+        <section className="py-8 lg:py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (

@@ -21,6 +21,13 @@ import AboutCompany from "./pages/AboutCompany";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import NotFound from "./pages/NotFound";
 import OrderSuccess from "./pages/OrderSuccess";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import Account from "./pages/Account";
+import AccountOrders from "./pages/AccountOrders";
+import AccountAddresses from "./pages/AccountAddresses";
+import AccountInfo from "./pages/AccountInfo";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +49,17 @@ const App = () => (
             <Route path="/brands" element={<BrandCarousel />} />
             <Route path="/about-company" element={<AboutCompany />} />
             <Route path="/order-success" element={<OrderSuccess />} />
+            
+            {/* Authentication Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            
+            {/* Account Routes */}
+            <Route path="/account" element={<Account />} />
+            <Route path="/account/orders" element={<AccountOrders />} />
+            <Route path="/account/addresses" element={<AccountAddresses />} />
+            <Route path="/account/info" element={<AccountInfo />} />
             
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />

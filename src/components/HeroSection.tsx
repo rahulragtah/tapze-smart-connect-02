@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen px-4 py-20 overflow-hidden">
+    <section className="relative min-h-screen px-4 py-12 lg:py-20 overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-radial from-purple-500/20 via-transparent to-transparent" />
       
@@ -67,7 +67,7 @@ const HeroSection = () => {
                 <div className="text-gray-400">Happy Users</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-white">500K+</div>
+                <div className="text-2xl font-bold text-white">50K+</div>
                 <div className="text-gray-400">Connections Made</div>
               </div>
               <div>
@@ -130,7 +130,7 @@ const HeroSection = () => {
       </div>
       
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-0 lg:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-gray-600 rounded-full flex justify-center">
           <div className="w-1 h-3 bg-gray-400 rounded-full mt-2" />
         </div>

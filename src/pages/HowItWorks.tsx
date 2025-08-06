@@ -43,7 +43,7 @@ const HowItWorks = () => {
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="py-12 lg:py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               How <span className="text-gradient">Tapze Works</span>
@@ -56,7 +56,7 @@ const HowItWorks = () => {
         </section>
 
         {/* Steps Section - Redesigned */}
-        <section className="py-20 px-4 relative overflow-hidden">
+        <section className="py-12 lg:py-20 px-4 relative overflow-hidden">
           <div className="max-w-7xl mx-auto">
             {/* Background Elements */}
             <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-pink-900/10 rounded-3xl"></div>

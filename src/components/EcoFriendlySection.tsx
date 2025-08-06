@@ -35,7 +35,7 @@ const EcoFriendlySection = () => {
   ];
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-green-900/20 to-background relative overflow-hidden">
+    <section className="py-12 lg:py-20 px-4 bg-gradient-to-b from-green-900/20 to-background relative overflow-hidden">
       {/* Nature background image */}
       <div 
         className="absolute inset-0 opacity-10 bg-cover bg-center bg-no-repeat"

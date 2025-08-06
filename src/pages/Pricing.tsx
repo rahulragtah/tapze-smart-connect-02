@@ -81,7 +81,7 @@ const Pricing = () => {
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="py-12 lg:py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Frequently Asked <span className="text-gradient">Questions</span>
@@ -93,7 +93,7 @@ const Pricing = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 px-4">
+        <section className="py-8 lg:py-16 px-4">
           <div className="max-w-4xl mx-auto">
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (

@@ -10,7 +10,7 @@ const AboutCompany = () => {
       
       <div className="pt-16">
         {/* Hero Section */}
-        <section className="py-20 px-4 text-center">
+        <section className="py-12 lg:py-20 px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               About <span className="text-gradient">Tapze</span>
@@ -23,7 +23,7 @@ const AboutCompany = () => {
         </section>
 
         {/* Company Story */}
-        <section className="py-16 px-4">
+        <section className="py-8 lg:py-16 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
