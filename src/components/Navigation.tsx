@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, User, LogOut, UserCircle, Menu, X } from "lucide-react";
+import { ShoppingCart, User, LogOut, UserCircle, Menu, X, Package, MapPin } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
 import { 
@@ -142,11 +142,23 @@ const Navigation = () => {
                       {userInfo.name}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem asChild>
-                      <Link to="/account">
+                      <Link to="/account/orders">
+                        <Package className="w-4 h-4 mr-2" />
+                        My Orders
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/account/addresses">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        My Addresses
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/account/info">
                         <User className="w-4 h-4 mr-2" />
-                        My Account
+                        Account Info
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
@@ -259,9 +271,31 @@ const Navigation = () => {
                             onClick={closeMobileMenu}
                             asChild
                           >
-                            <Link to="/account">
+                            <Link to="/account/orders">
+                              <Package className="w-4 h-4 mr-2" />
+                              My Orders
+                            </Link>
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                            onClick={closeMobileMenu}
+                            asChild
+                          >
+                            <Link to="/account/addresses">
+                              <MapPin className="w-4 h-4 mr-2" />
+                              My Addresses
+                            </Link>
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                            onClick={closeMobileMenu}
+                            asChild
+                          >
+                            <Link to="/account/info">
                               <User className="w-4 h-4 mr-2" />
-                              My Account
+                              Account Info
                             </Link>
                           </Button>
                           <Button 

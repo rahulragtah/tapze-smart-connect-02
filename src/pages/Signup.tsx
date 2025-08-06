@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Check, X } from "lucide-react";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -84,14 +86,33 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
-          <CardDescription className="text-center">
-            Sign up to get started with Tapze
-          </CardDescription>
-        </CardHeader>
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      <div className="min-h-screen flex pt-16">
+        {/* Left side - Image */}
+        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-600 to-pink-600 items-center justify-center p-12">
+          <div className="max-w-md text-center">
+            <img 
+              src="/lovable-uploads/94594e9d-7a28-429f-a567-2117c0af204a.png" 
+              alt="Tapze Logo" 
+              className="h-16 w-auto mx-auto mb-8"
+            />
+            <h2 className="text-3xl font-bold text-white mb-4">Join Tapze Today!</h2>
+            <p className="text-purple-100 text-lg">
+              Create your account and start building your digital presence with our premium NFC cards.
+            </p>
+          </div>
+        </div>
+
+        {/* Right side - Form */}
+        <div className="flex-1 flex items-center justify-center p-4 lg:p-12">
+          <Card className="w-full max-w-md">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-bold text-center">Create Account</CardTitle>
+              <CardDescription className="text-center">
+                Sign up to get started with Tapze
+              </CardDescription>
+            </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -234,7 +255,10 @@ const Signup = () => {
             </p>
           </CardFooter>
         </form>
-      </Card>
+          </Card>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
