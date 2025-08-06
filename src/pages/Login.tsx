@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import authBackground from "@/assets/auth-background.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -47,15 +48,30 @@ const Login = () => {
       <Navigation />
       <div className="min-h-screen flex pt-16">
         {/* Left side - Image */}
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-600 to-pink-600 items-center justify-center p-12">
-          <div className="max-w-md text-center">
+        <div 
+          className="hidden lg:flex lg:w-1/2 relative items-center justify-center p-12 overflow-hidden"
+          style={{
+            backgroundImage: `linear-gradient(135deg, rgba(147, 51, 234, 0.9), rgba(219, 39, 119, 0.9)), url(${authBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          {/* Floating animation elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-20 w-12 h-12 border-2 border-white/20 rounded-full animate-pulse"></div>
+            <div className="absolute top-40 right-32 w-8 h-8 bg-white/10 rounded-lg animate-bounce delay-200"></div>
+            <div className="absolute bottom-32 left-16 w-6 h-6 border-2 border-white/30 rotate-45 animate-spin delay-500"></div>
+            <div className="absolute bottom-20 right-20 w-10 h-10 border-2 border-white/20 rounded-full animate-pulse delay-300"></div>
+          </div>
+          
+          <div className="max-w-md text-center relative z-10 animate-fade-in">
             <img 
               src="/lovable-uploads/94594e9d-7a28-429f-a567-2117c0af204a.png" 
               alt="Tapze Logo" 
-              className="h-16 w-auto mx-auto mb-8"
+              className="h-16 w-auto mx-auto mb-8 animate-scale-in"
             />
-            <h2 className="text-3xl font-bold text-white mb-4">Welcome Back!</h2>
-            <p className="text-purple-100 text-lg">
+            <h2 className="text-3xl font-bold text-white mb-4 animate-fade-in delay-200">Welcome Back!</h2>
+            <p className="text-purple-100 text-lg animate-fade-in delay-300">
               Access your digital profile and manage your NFC cards with ease.
             </p>
           </div>

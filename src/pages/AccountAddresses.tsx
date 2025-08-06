@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Edit, Plus } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import AddressForm from "@/components/AddressForm";
 
 // Mock data - replace with real data from your backend
 const mockAddresses = [
@@ -30,6 +33,40 @@ const mockAddresses = [
 ];
 
 const AccountAddresses = () => {
+  const [addresses, setAddresses] = useState(mockAddresses);
+  const [editingAddress, setEditingAddress] = useState<any>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleAddAddress = () => {
+    setEditingAddress(null);
+    setIsSheetOpen(true);
+  };
+
+  const handleEditAddress = (address: any) => {
+    setEditingAddress(address);
+    setIsSheetOpen(true);
+  };
+
+  const handleSaveAddress = (addressData: any) => {
+    if (editingAddress) {
+      // Update existing address
+      setAddresses(prev => prev.map(addr => 
+        addr.id === editingAddress.id ? { ...addressData, id: editingAddress.id } : addr
+      ));
+    } else {
+      // Add new address
+      const newAddress = { ...addressData, id: Date.now() };
+      setAddresses(prev => [...prev, newAddress]);
+    }
+    setIsSheetOpen(false);
+    setEditingAddress(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsSheetOpen(false);
+    setEditingAddress(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -41,7 +78,10 @@ const AccountAddresses = () => {
                 <h1 className="text-3xl font-bold text-foreground">My Addresses</h1>
                 <p className="text-muted-foreground mt-2">Manage your saved addresses</p>
               </div>
-              <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button 
+                onClick={handleAddAddress}
+                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Add New Address
               </Button>
@@ -49,7 +89,7 @@ const AccountAddresses = () => {
           </div>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {mockAddresses.map((address) => (
+            {addresses.map((address) => (
               <Card key={address.id}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
@@ -69,7 +109,12 @@ const AccountAddresses = () => {
                   </div>
                   
                   <div className="flex gap-2 pt-2">
-                    <Button variant="outline" size="sm" className="flex-1">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1"
+                      onClick={() => handleEditAddress(address)}
+                    >
                       <Edit className="h-3 w-3 mr-1" />
                       Edit
                     </Button>
@@ -83,6 +128,30 @@ const AccountAddresses = () => {
               </Card>
             ))}
           </div>
+
+          {/* Address Form Sheet */}
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetContent className="w-[400px] sm:w-[540px]">
+              <SheetHeader>
+                <SheetTitle>
+                  {editingAddress ? "Edit Address" : "Add New Address"}
+                </SheetTitle>
+                <SheetDescription>
+                  {editingAddress 
+                    ? "Update your address information below." 
+                    : "Add a new address to your account."
+                  }
+                </SheetDescription>
+              </SheetHeader>
+              <div className="mt-6">
+                <AddressForm
+                  address={editingAddress}
+                  onSave={handleSaveAddress}
+                  onCancel={handleCancelEdit}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
       <Footer />
