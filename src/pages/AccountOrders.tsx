@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Download, ExternalLink } from "lucide-react";
+import { Download, ExternalLink, Package } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -55,18 +55,28 @@ const AccountOrders = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Navigation />
       <div className="min-h-screen pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground">My Orders</h1>
-            <p className="text-muted-foreground mt-2">Track and manage your orders</p>
+          {/* Hero Section */}
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="flex items-center justify-center mb-4">
+              <div className="p-3 bg-primary/10 rounded-full">
+                <Package className="h-8 w-8 text-primary" />
+              </div>
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              My Orders
+            </h1>
+            <p className="text-muted-foreground mt-2 text-lg">
+              Track and manage your order history
+            </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6 animate-fade-in">
             {mockOrders.map((order) => (
-              <Card key={order.id}>
+              <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <CardHeader className="pb-3">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>

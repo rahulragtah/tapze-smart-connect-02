@@ -274,7 +274,7 @@ const AccountInfo = () => {
                     {isEditing && (
                       <Button 
                         type="submit" 
-                        className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02]"
+                        className="w-full"
                         disabled={isLoading}
                       >
                         {isLoading ? (
@@ -411,7 +411,8 @@ const AccountInfo = () => {
                     
                     <Button 
                       type="submit" 
-                      className="w-full bg-gradient-to-r from-destructive to-red-600 hover:from-destructive/90 hover:to-red-700 transition-all duration-300 transform hover:scale-[1.02]"
+                      variant="destructive"
+                      className="w-full"
                       disabled={isLoading}
                     >
                       {isLoading ? (

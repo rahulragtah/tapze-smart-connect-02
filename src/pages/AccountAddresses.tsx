@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Edit, Plus } from "lucide-react";
+import { Edit, Plus, MapPin } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
@@ -68,29 +68,38 @@ const AccountAddresses = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Navigation />
       <div className="min-h-screen pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-8">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">My Addresses</h1>
-                <p className="text-muted-foreground mt-2">Manage your saved addresses</p>
+          {/* Hero Section */}
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="flex items-center justify-center mb-4">
+              <div className="p-3 bg-primary/10 rounded-full">
+                <MapPin className="h-8 w-8 text-primary" />
               </div>
-              <Button 
-                onClick={handleAddAddress}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add New Address
-              </Button>
             </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              My Addresses
+            </h1>
+            <p className="text-muted-foreground mt-2 text-lg">
+              Manage your saved delivery addresses
+            </p>
+          </div>
+
+          <div className="flex justify-center mb-8">
+            <Button 
+              onClick={handleAddAddress}
+              className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02]"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add New Address
+            </Button>
           </div>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
             {addresses.map((address) => (
-              <Card key={address.id}>
+              <Card key={address.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{address.type}</CardTitle>
