@@ -143,9 +143,11 @@ const Navigation = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={handleLoginOpen}>
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
+                    <DropdownMenuItem asChild>
+                      <Link to="/account">
+                        <User className="w-4 h-4 mr-2" />
+                        My Account
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
@@ -156,9 +158,9 @@ const Navigation = () => {
               ) : (
                 <Button 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 rounded-full"
-                  onClick={handleLoginOpen}
+                  asChild
                 >
-                  Login
+                  <Link to="/login">Login</Link>
                 </Button>
               )}
             </div>
@@ -254,10 +256,13 @@ const Navigation = () => {
                           <Button 
                             variant="ghost" 
                             className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
-                            onClick={handleLoginOpen}
+                            onClick={closeMobileMenu}
+                            asChild
                           >
-                            <User className="w-4 h-4 mr-2" />
-                            Dashboard
+                            <Link to="/account">
+                              <User className="w-4 h-4 mr-2" />
+                              My Account
+                            </Link>
                           </Button>
                           <Button 
                             variant="ghost" 
@@ -274,9 +279,10 @@ const Navigation = () => {
                       ) : (
                         <Button 
                           className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 w-full rounded-full"
-                          onClick={handleLoginOpen}
+                          onClick={closeMobileMenu}
+                          asChild
                         >
-                          Login
+                          <Link to="/login">Login</Link>
                         </Button>
                       )}
                     </div>
