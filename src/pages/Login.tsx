@@ -9,6 +9,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
+import {loginUser} from '../sercices/login'
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,20 +25,26 @@ const Login = () => {
 
     try {
       // TODO: Replace with actual login API call
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
-      toast({
+      const response = await loginUser(email, password); 
+      if(response.success){
+        toast({
         title: "Login Successful",
         description: "Welcome back!",
       });
-      
       navigate("/account/orders");
+      }else {
+        toast({
+        title: "Login Failed",
+        description: "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+      }
     } catch (error) {
       toast({
         title: "Login Failed",
         description: "Please check your credentials and try again.",
         variant: "destructive",
-      });
+      });  
     } finally {
       setIsLoading(false);
     }

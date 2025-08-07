@@ -9,9 +9,11 @@ import { Eye, EyeOff, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
+import {signUp} from '../sercices/login';
+import {signUpDTO} from '../components/models/loginInterface';
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<signUpDTO>({
     firstName: "",
     lastName: "",
     email: "",
@@ -67,6 +69,8 @@ const Signup = () => {
 
     try {
       // TODO: Replace with actual signup API call
+        signUp(formData);
+      
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       
       toast({
