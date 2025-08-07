@@ -159,15 +159,21 @@ const OrderSuccess = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid md:grid-cols-3 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Order ID</p>
                   <p className="font-semibold text-lg">#{orderDetails.orderId}</p>
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Total Amount</p>
-                  <p className="font-semibold text-lg">₹{orderDetails.offerPrice.toFixed(2)}</p>
+                  <p className="font-semibold text-lg">₹{orderDetails.finalTotal.toFixed(2)}</p>
                 </div>
+                {orderDetails.couponDiscount > 0 && (
+                <div>
+                  <p className="text-sm text-muted-foreground">Coupen Discount</p>
+                  <p className="font-semibold text-lg">- ₹{orderDetails.couponDiscount.toFixed(2)}</p>
+                </div>
+                )}
               </div>
 
               <Separator />
