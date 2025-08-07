@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, LogOut, UserCircle, Menu, X, Package, MapPin } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
+import {logOut} from '../sercices/login'
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +36,7 @@ const Navigation = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    logOut();
     setUserInfo({ name: "", phone: "" });
   };
 
@@ -53,21 +55,18 @@ const Navigation = () => {
   };
 
 
-  
+  useEffect(() => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const user = JSON.parse(localStorage.getItem('user'));
 
-  fetch("https://tapze.in/tapzeservice/checkUser.php", {
-  credentials: "include",
-})
-  .then(res => res.json())
-  .then(data => {
-    if (data.loggedIn) {
-      console.log("✅ Logged in:", data);
-      setIsLoggedIn(true);
-    } else {
-      console.log("⛔ Not logged in:", data.message);
-      setIsLoggedIn(false);
-    }
-  });
+  if (isLoggedIn && user) {
+    setIsLoggedIn(true);
+
+    setUserInfo({name: user.first_name + ' '+ user.last_name, phone: user.phone })
+   // setLoginStatus(true, user);
+  }
+  }, []);
+
 
 
   

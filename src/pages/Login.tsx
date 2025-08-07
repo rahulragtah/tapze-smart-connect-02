@@ -27,6 +27,8 @@ const Login = () => {
       // TODO: Replace with actual login API call
       const response = await loginUser(email, password); 
       if(response.success){
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('user', JSON.stringify(response));
         toast({
         title: "Login Successful",
         description: "Welcome back!",

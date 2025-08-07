@@ -21,6 +21,7 @@ export const signUp = async (signupData: signUpDTO) => {
   console.log('form data ', signupData); 
   const response = await fetch("https://tapze.in/tapzeservice/user/user-api.php", {
     method: "POST",
+    credentials: 'include', // VERY IMPORTANT
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(signupData)
   });
@@ -29,6 +30,27 @@ export const signUp = async (signupData: signUpDTO) => {
   if (!response.ok) {
     throw new Error("Tapze order creation failed.");
   }
-
   return response.json();
 };
+
+export const logOut = async () => {
+
+  
+  const response = await fetch("https://tapze.in/tapzeservice/user/logout.php", {
+    method: 'GET',
+    credentials: 'include', // Important to send session cookies
+  });
+
+
+  const result = await response.json();
+  if (result.status === 'success') {
+    console.log('User logged out');
+    // Clear any local state or redirect
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
+    
+  } else {
+    console.error('Logout failed');
+  }
+};
+
