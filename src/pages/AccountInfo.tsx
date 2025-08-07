@@ -135,101 +135,92 @@ const AccountInfo = () => {
 
           {/* Profile Overview Card */}
           <div className="mb-8 animate-fade-in">
-            <Card className="border-0 shadow-xl overflow-hidden">
-              <CardContent className="p-0">
-                {/* Header Background */}
-                <div className="relative h-32 bg-gradient-to-r from-primary via-primary/90 to-purple-600 overflow-hidden">
-                  <div className="absolute inset-0 bg-dots-white/20 opacity-30"></div>
-                  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background/80 to-transparent"></div>
-                </div>
-
-                {/* Profile Content */}
-                <div className="relative px-6 pb-6 -mt-16">
-                  <div className="flex flex-col lg:flex-row items-center lg:items-end gap-6">
-                    {/* Profile Picture */}
-                    <div className="relative group animate-scale-in z-10">
-                      <div className="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-full opacity-75 group-hover:opacity-100 transition duration-300 blur-sm"></div>
-                      <div className="relative bg-background rounded-full p-1">
-                        <Avatar className="w-32 h-32 border-4 border-background shadow-2xl transition-all duration-500 group-hover:scale-105">
-                          <AvatarImage src={userInfo.profilePicture} alt="Profile" className="object-cover" />
-                          <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-purple-600 text-white font-bold">
-                            {userInfo.firstName[0]}{userInfo.lastName[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="absolute -bottom-1 -right-1">
-                          <Button
-                            onClick={handleProfilePictureUpload}
-                            className="rounded-full h-10 w-10 p-0 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 shadow-lg transition-all duration-300 hover:scale-110"
-                          >
-                            <Camera className="h-4 w-4" />
-                          </Button>
+            <Card className="border-0 shadow-xl overflow-hidden bg-gradient-to-br from-background to-muted/30">
+              <CardContent className="p-8">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+                  {/* Profile Picture */}
+                  <div className="relative group animate-scale-in">
+                    <div className="relative">
+                      <Avatar className="w-32 h-32 border-4 border-background shadow-xl transition-all duration-300 group-hover:shadow-2xl">
+                        <AvatarImage src={userInfo.profilePicture} alt="Profile" className="object-cover" />
+                        <AvatarFallback className="text-3xl bg-gradient-to-br from-muted-foreground to-foreground text-background font-bold">
+                          {userInfo.firstName[0]}{userInfo.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-2 -right-2">
+                        <Button
+                          onClick={handleProfilePictureUpload}
+                          size="icon"
+                          className="rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                        >
+                          <Camera className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </div>
+                  
+                  {/* User Info */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <div className="space-y-6">
+                      {/* Name and Status */}
+                      <div>
+                        <h2 className="text-3xl font-bold text-foreground mb-3">
+                          {userInfo.firstName} {userInfo.lastName}
+                        </h2>
+                        <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-sm text-muted-foreground font-medium">Active</span>
                         </div>
                       </div>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="hidden"
-                      />
-                    </div>
-                    
-                    {/* User Info */}
-                    <div className="flex-1 text-center lg:text-left">
-                      <div className="space-y-4">
-                        {/* Name and Status */}
-                        <div>
-                          <h2 className="text-3xl font-bold text-foreground mb-2">
-                            {userInfo.firstName} {userInfo.lastName}
-                          </h2>
-                          <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span className="text-sm text-muted-foreground">Online</span>
-                          </div>
-                        </div>
 
-                        {/* Contact Cards */}
-                        <div className="grid gap-3 sm:grid-cols-2 max-w-md mx-auto lg:mx-0">
-                          <div className="group relative overflow-hidden rounded-xl bg-muted/30 p-4 border hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-                            <div className="flex items-center gap-3">
-                              <div className="flex-shrink-0 p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
-                                <Mail className="h-4 w-4 text-primary" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Email</p>
-                                <p className="text-sm font-semibold text-foreground truncate">{userInfo.email}</p>
-                              </div>
+                      {/* Contact Information */}
+                      <div className="grid gap-4 sm:grid-cols-2 max-w-lg mx-auto lg:mx-0">
+                        <div className="group p-4 rounded-lg bg-muted/50 border hover:bg-muted/70 transition-all duration-200">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-background rounded-md shadow-sm">
+                              <Mail className="h-4 w-4 text-foreground" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Email</p>
+                              <p className="text-sm font-medium text-foreground truncate">{userInfo.email}</p>
                             </div>
                           </div>
-                          
-                          <div className="group relative overflow-hidden rounded-xl bg-muted/30 p-4 border hover:border-primary/30 transition-all duration-300 hover:shadow-md">
-                            <div className="flex items-center gap-3">
-                              <div className="flex-shrink-0 p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
-                                <Phone className="h-4 w-4 text-primary" />
-                              </div>
-                              <div className="min-w-0 flex-1">
-                                <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Phone</p>
-                                <p className="text-sm font-semibold text-foreground truncate">{userInfo.phoneNumber}</p>
-                              </div>
+                        </div>
+                        
+                        <div className="group p-4 rounded-lg bg-muted/50 border hover:bg-muted/70 transition-all duration-200">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-background rounded-md shadow-sm">
+                              <Phone className="h-4 w-4 text-foreground" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Phone</p>
+                              <p className="text-sm font-medium text-foreground truncate">{userInfo.phoneNumber}</p>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Quick Stats */}
-                    <div className="flex gap-6 lg:gap-8">
-                      <div className="text-center">
-                        <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-primary/10 to-purple-100/50 flex items-center justify-center">
-                          <span className="text-xl font-bold text-primary">5</span>
+                      {/* Quick Stats */}
+                      <div className="flex justify-center lg:justify-start gap-8 pt-4">
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-2 rounded-xl bg-muted border flex items-center justify-center shadow-sm">
+                            <span className="text-xl font-bold text-foreground">5</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground font-medium">Total Orders</p>
                         </div>
-                        <div className="text-xs text-muted-foreground font-medium">Orders</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-primary/10 to-purple-100/50 flex items-center justify-center">
-                          <span className="text-xl font-bold text-primary">2</span>
+                        <div className="text-center">
+                          <div className="w-16 h-16 mx-auto mb-2 rounded-xl bg-muted border flex items-center justify-center shadow-sm">
+                            <span className="text-xl font-bold text-foreground">2</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground font-medium">Saved Addresses</p>
                         </div>
-                        <div className="text-xs text-muted-foreground font-medium">Addresses</div>
                       </div>
                     </div>
                   </div>
