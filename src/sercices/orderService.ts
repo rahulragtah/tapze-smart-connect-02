@@ -41,6 +41,7 @@ export const verifyPayment = async (body: any) => {
 };
 
 export const sendConfirmationEmail = async (finalEmailDto: orderDTO) => {
+  // @ts-ignore - EmailJS is loaded externally
   return await window.emailjs.send(
     'tapzeEmailService',
     'template_zk2gl62',

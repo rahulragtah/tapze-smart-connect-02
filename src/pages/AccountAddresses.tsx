@@ -87,17 +87,20 @@ const AccountAddresses = () => {
             </p>
           </div>
 
-          <div className="flex justify-center mb-8">
-            <Button 
-              onClick={handleAddAddress}
-              className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02]"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add New Address
-            </Button>
-          </div>
-          
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
+            {/* Add New Address Card */}
+            <Card 
+              className="border-2 border-dashed border-primary/30 hover:border-primary/50 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-primary/5 to-purple-50/50"
+              onClick={handleAddAddress}
+            >
+              <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] text-center">
+                <div className="p-4 bg-primary/10 rounded-full mb-4">
+                  <Plus className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground mb-2">Add New Address</h3>
+                <p className="text-sm text-muted-foreground">Click to add a new delivery address</p>
+              </CardContent>
+            </Card>
             {addresses.map((address) => (
               <Card key={address.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
                 <CardHeader className="pb-3">

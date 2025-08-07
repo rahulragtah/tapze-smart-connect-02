@@ -12,10 +12,21 @@ const mockOrders = [
     id: "ORD-2024-001",
     date: "2024-01-15",
     status: "Delivered",
-    product: "Premium NFC Card - Black",
-    productImage: "/lovable-uploads/vcard27.png",
-    quantity: 2,
-    total: "$49.98",
+    products: [
+      {
+        name: "Premium NFC Card - Black",
+        image: "/lovable-uploads/vcard27.png",
+        quantity: 2,
+        price: "$24.99",
+      },
+      {
+        name: "Standard NFC Card - White",
+        image: "/lovable-uploads/vcard28.png",
+        quantity: 1,
+        price: "$19.99",
+      }
+    ],
+    total: "$69.97",
     trackingNumber: "1Z999AA1234567890",
     courierPartner: "UPS",
     courierWebsite: "https://www.ups.com",
@@ -26,10 +37,15 @@ const mockOrders = [
     id: "ORD-2024-002",
     date: "2024-01-20",
     status: "In Transit",
-    product: "Standard NFC Card - White",
-    productImage: "/lovable-uploads/vcard28.png",
-    quantity: 1,
-    total: "$24.99",
+    products: [
+      {
+        name: "Premium NFC Card - Rose Gold",
+        image: "/lovable-uploads/vcard29.png",
+        quantity: 3,
+        price: "$24.99",
+      }
+    ],
+    total: "$74.97",
     trackingNumber: "1Z999BB9876543210",
     courierPartner: "FedEx",
     courierWebsite: "https://www.fedex.com",
@@ -92,19 +108,25 @@ const AccountOrders = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Product Info */}
                     <div>
-                      <h4 className="font-medium mb-3">Product Details</h4>
-                      <div className="flex items-start gap-3">
-                        <img 
-                          src={order.productImage} 
-                          alt={order.product}
-                          className="w-16 h-16 object-cover rounded-lg border"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">{order.product}</p>
-                          <p className="text-sm text-muted-foreground">Quantity: {order.quantity}</p>
-                          <p className="text-sm font-medium text-primary">Total: {order.total}</p>
+                      <h4 className="font-medium mb-3">Product Details ({order.products.length} item{order.products.length > 1 ? 's' : ''})</h4>
+                      <div className="space-y-3">
+                        {order.products.map((product, index) => (
+                          <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-muted/20">
+                            <img 
+                              src={product.image} 
+                              alt={product.name}
+                              className="w-12 h-12 object-cover rounded-lg border"
+                            />
+                            <div className="flex-1">
+                              <p className="font-medium text-sm">{product.name}</p>
+                              <p className="text-xs text-muted-foreground">Qty: {product.quantity} × {product.price}</p>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="pt-2 border-t">
+                          <p className="text-sm font-medium text-primary">Order Total: {order.total}</p>
                           <Button size="sm" variant="outline" className="mt-2">
-                            Digital Profile
+                            View Digital Profiles
                           </Button>
                         </div>
                       </div>
