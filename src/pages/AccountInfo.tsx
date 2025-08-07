@@ -209,7 +209,7 @@ const AccountInfo = () => {
                     </div>
 
                     {/* Quick Stats */}
-                    <div className="grid grid-cols-3 gap-4 pt-3 border-t border-border/30">
+                    <div className="grid grid-cols-2 gap-4 pt-3 border-t border-border/30">
                       <div className="text-center">
                         <div className="text-xl font-bold text-primary">5</div>
                         <div className="text-xs text-muted-foreground">Orders</div>
@@ -217,10 +217,6 @@ const AccountInfo = () => {
                       <div className="text-center">
                         <div className="text-xl font-bold text-primary">2</div>
                         <div className="text-xs text-muted-foreground">Addresses</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-xl font-bold text-primary">★ 4.9</div>
-                        <div className="text-xs text-muted-foreground">Rating</div>
                       </div>
                     </div>
                   </div>

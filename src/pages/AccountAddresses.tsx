@@ -73,32 +73,45 @@ const AccountAddresses = () => {
       <div className="min-h-screen pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <div className="text-center mb-12 animate-fade-in">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-primary/10 rounded-full">
-                <MapPin className="h-8 w-8 text-primary" />
+          <div className="text-center mb-8 animate-fade-in">
+            <div className="flex items-center justify-center mb-3">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <MapPin className="h-6 w-6 text-primary" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               My Addresses
             </h1>
-            <p className="text-muted-foreground mt-2 text-lg">
+            <p className="text-muted-foreground mt-1">
               Manage your saved delivery addresses
             </p>
+            <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+              Total Addresses: {mockAddresses.length}
+            </div>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
             {/* Add New Address Card */}
             <Card 
-              className="border-2 border-dashed border-primary/30 hover:border-primary/50 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-primary/5 to-purple-50/50"
+              className="group border-2 border-dashed border-primary/40 hover:border-primary/60 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-primary/5 via-transparent to-purple-50/30 hover:from-primary/10 hover:to-purple-100/50 overflow-hidden relative"
               onClick={handleAddAddress}
             >
-              <CardContent className="flex flex-col items-center justify-center h-full min-h-[200px] text-center">
-                <div className="p-4 bg-primary/10 rounded-full mb-4">
-                  <Plus className="h-8 w-8 text-primary" />
+              {/* Subtle gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <CardContent className="relative flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
+                <div className="relative group-hover:scale-110 transition-transform duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 rounded-full opacity-20 animate-pulse group-hover:opacity-30" />
+                  <div className="relative p-4 bg-gradient-to-br from-primary/10 to-purple-100/50 rounded-full mb-4 border border-primary/20">
+                    <Plus className="h-8 w-8 text-primary group-hover:text-purple-600 transition-colors duration-300" />
+                  </div>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">Add New Address</h3>
-                <p className="text-sm text-muted-foreground">Click to add a new delivery address</p>
+                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Add New Address</h3>
+                <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">Click to add a new delivery address</p>
+                
+                {/* Decorative elements */}
+                <div className="absolute top-4 right-4 w-8 h-8 border-2 border-dashed border-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-4 left-4 w-6 h-6 border-2 border-dashed border-purple-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </CardContent>
             </Card>
             {addresses.map((address) => (
