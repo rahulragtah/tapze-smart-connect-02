@@ -69,16 +69,23 @@ const Signup = () => {
 
     try {
       // TODO: Replace with actual signup API call
-        signUp(formData);
+        const result = await signUp(formData);
       
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
-      toast({
+        if (result.success) {
+          toast({
         title: "Account Created Successfully",
         description: "Welcome to Tapze! You can now log in.",
+        });
+        navigate("/login");
+        } else {
+          toast({
+        title: "Signup Failed",
+        description: "Please try again or contact support.",
+        variant: "destructive",
       });
+
+      }
       
-      navigate("/login");
     } catch (error) {
       toast({
         title: "Signup Failed",

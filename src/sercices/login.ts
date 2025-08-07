@@ -21,7 +21,7 @@ export const signUp = async (signupData: signUpDTO) => {
   console.log('form data ', signupData); 
   const response = await fetch("https://tapze.in/tapzeservice/user/user-api.php", {
     method: "POST",
-    credentials: 'include', // VERY IMPORTANT
+    
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(signupData)
   });
