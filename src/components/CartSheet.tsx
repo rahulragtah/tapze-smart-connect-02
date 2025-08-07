@@ -112,6 +112,7 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
             </Button>
           </div>
         )}
+        
         <p className="text-xs text-muted-foreground mt-2">
           Try: SAVE10, SAVE50, or WELCOME15
         </p>
@@ -147,9 +148,7 @@ const CartSheet = () => {
   
   // Mock coupon codes for demo
   const validCoupons = {
-    'SAVE10': { discount: 10, type: 'percentage' },
-    'SAVE50': { discount: 50, type: 'fixed' },
-    'WELCOME15': { discount: 15, type: 'percentage' },
+    'COMEBACK10': { discount: 10, type: 'percentage' }
   };
   
   const shippingCharge = totalPrice > 1000 ? 0 : 50;
@@ -234,7 +233,7 @@ const CartSheet = () => {
       totalItems: totalItems,
       totalPrice: totalPrice,
       offerPrice: totalOfferPrice,
-      couponDiscount: couponDiscount,
+      couponDiscount: discountAmount,
       couponCode: couponCode,
       gstAmount: 0,
       finalTotal: finalTotal,
@@ -341,7 +340,7 @@ const CartSheet = () => {
                 totalItems: totalItems,
                 totalPrice: totalPrice,
                 discountOnMRP: totalPrice - totalOfferPrice,
-                couponDiscount: couponDiscount,
+                couponDiscount: discountAmount,
                 couponCode: couponCode,
                 finalTotal: finalTotal,
               };
@@ -596,7 +595,7 @@ const CartSheet = () => {
         </Card>
 
         {/* Coupon Code - Standalone component to prevent form interference */}
-        {/* <CouponCodeSection 
+        { <CouponCodeSection 
           appliedCoupon={appliedCoupon}
           couponCode={couponCode}
           setCouponCode={setCouponCode}
@@ -604,7 +603,7 @@ const CartSheet = () => {
           validCoupons={validCoupons}
           applyCoupon={applyCoupon}
           removeCoupon={removeCoupon}
-        /> */}
+        /> }
 
         {/* Order Summary */}
         <Card>
