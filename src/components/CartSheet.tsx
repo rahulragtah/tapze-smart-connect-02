@@ -113,9 +113,9 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
           </div>
         )}
         
-        <p className="text-xs text-muted-foreground mt-2">
+        {/* <p className="text-xs text-muted-foreground mt-2">
           Try: SAVE10, SAVE50, or WELCOME15
-        </p>
+        </p> */}
       </CardContent>
     </Card>
   );
@@ -689,7 +689,7 @@ const CartSheet = () => {
           onClick={handleSubmit(onSubmit)}
           disabled={isProcessing}
         >
-          {isProcessing ? 'Processing...' : `Place Order - ₹${totalOfferPrice.toFixed(2)}`}
+          {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
       </div>
     </div>
