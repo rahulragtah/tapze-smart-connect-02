@@ -76,18 +76,21 @@ const AccountOrders = () => {
       <div className="min-h-screen pt-20 pb-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <div className="text-center mb-12 animate-fade-in">
-            <div className="flex items-center justify-center mb-4">
-              <div className="p-3 bg-primary/10 rounded-full">
-                <Package className="h-8 w-8 text-primary" />
+          <div className="text-center mb-8 animate-fade-in">
+            <div className="flex items-center justify-center mb-3">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <Package className="h-6 w-6 text-primary" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               My Orders
             </h1>
-            <p className="text-muted-foreground mt-2 text-lg">
+            <p className="text-muted-foreground mt-1">
               Track and manage your order history
             </p>
+            <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+              Total Orders: {mockOrders.length}
+            </div>
           </div>
 
           <div className="space-y-6 animate-fade-in">
@@ -105,46 +108,50 @@ const AccountOrders = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Product Info */}
-                    <div>
-                      <h4 className="font-medium mb-3">Product Details ({order.products.length} item{order.products.length > 1 ? 's' : ''})</h4>
-                      <div className="space-y-3">
-                        {order.products.map((product, index) => (
-                          <div key={index} className="flex items-start gap-3 p-3 rounded-lg bg-muted/20">
-                            <img 
-                              src={product.image} 
-                              alt={product.name}
-                              className="w-12 h-12 object-cover rounded-lg border"
-                            />
-                            <div className="flex-1">
-                              <p className="font-medium text-sm">{product.name}</p>
-                              <p className="text-xs text-muted-foreground">Qty: {product.quantity} × {product.price}</p>
-                            </div>
+                  {/* Products Section - Flexible Grid */}
+                  <div className="space-y-4">
+                    <h4 className="font-medium text-base">
+                      Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
+                    </h4>
+                    <div className={`grid gap-3 ${order.products.length === 1 ? 'grid-cols-1' : order.products.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
+                      {order.products.map((product, index) => (
+                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="w-14 h-14 object-cover rounded-lg border-2"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm truncate">{product.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              Qty: {product.quantity} × {product.price}
+                            </p>
                           </div>
-                        ))}
-                        <div className="pt-2 border-t">
-                          <p className="text-sm font-medium text-primary">Order Total: {order.total}</p>
-                          <Button size="sm" variant="outline" className="mt-2">
-                            View Digital Profiles
-                          </Button>
                         </div>
-                      </div>
+                      ))}
                     </div>
+                    <div className="flex items-center justify-between pt-3 border-t">
+                      <p className="text-sm font-semibold text-primary">Order Total: {order.total}</p>
+                    </div>
+                  </div>
 
+                  <Separator />
+
+                  {/* Order Details */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Shipping Address */}
-                    <div>
-                      <h4 className="font-medium mb-3">Shipping Address</h4>
-                      <p className="text-sm text-muted-foreground">{order.shippingAddress}</p>
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">Shipping Address</h4>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
                     </div>
 
                     {/* Shipping Details */}
-                    <div>
-                      <h4 className="font-medium mb-3">Shipping Details</h4>
-                      <div className="space-y-2">
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-sm">Shipping Details</h4>
+                      <div className="space-y-1">
                         <div>
-                          <p className="text-sm font-medium">Tracking Number</p>
-                          <p className="text-sm text-muted-foreground">{order.trackingNumber}</p>
+                          <p className="text-xs text-muted-foreground">Tracking Number</p>
+                          <p className="text-sm font-mono">{order.trackingNumber}</p>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-sm">Courier: {order.courierPartner}</span>
@@ -169,14 +176,20 @@ const AccountOrders = () => {
                   
                   <Separator />
                   
-                  <div className="flex gap-3">
-                    <Button variant="outline" size="sm">
-                      <Download className="h-3 w-3 mr-2" />
-                      Download Invoice
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row justify-between gap-3">
+                    <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                      View Digital Profiles
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      Track Package
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm">
+                        <Download className="h-3 w-3 mr-2" />
+                        Download Invoice
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        Track Package
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
