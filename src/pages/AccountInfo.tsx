@@ -136,22 +136,27 @@ const AccountInfo = () => {
           {/* Profile Overview Card */}
           <div className="mb-8 animate-fade-in">
             <Card className="border-0 shadow-xl bg-gradient-to-r from-white to-muted/50 dark:from-card dark:to-muted/20">
-              <CardContent className="p-8">
-                <div className="flex flex-col md:flex-row items-center gap-8">
+              <CardContent className="p-8 bg-gradient-to-br from-primary/5 via-transparent to-purple-50/50 dark:from-primary/5 dark:via-transparent dark:to-purple-950/20">
+                <div className="flex flex-col xl:flex-row items-center gap-8">
                   {/* Profile Picture Section */}
-                  <div className="relative group">
-                    <Avatar className="w-32 h-32 border-4 border-white shadow-2xl transition-transform duration-300 group-hover:scale-105">
-                      <AvatarImage src={userInfo.profilePicture} alt="Profile" />
-                      <AvatarFallback className="text-2xl bg-gradient-to-br from-primary to-purple-600 text-white">
-                        {userInfo.firstName[0]}{userInfo.lastName[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <Button
-                      onClick={handleProfilePictureUpload}
-                      className="absolute -bottom-2 -right-2 rounded-full h-10 w-10 p-0 bg-primary hover:bg-primary/90 shadow-lg"
-                    >
-                      <Camera className="h-4 w-4" />
-                    </Button>
+                  <div className="relative group animate-scale-in">
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-purple-600 rounded-full opacity-75 group-hover:opacity-100 transition duration-300 animate-pulse"></div>
+                    <div className="relative">
+                      <Avatar className="w-36 h-36 border-4 border-white shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3">
+                        <AvatarImage src={userInfo.profilePicture} alt="Profile" className="object-cover" />
+                        <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-purple-600 text-white font-bold">
+                          {userInfo.firstName[0]}{userInfo.lastName[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="absolute -bottom-3 -right-3 bg-white dark:bg-card rounded-full p-1 shadow-lg">
+                        <Button
+                          onClick={handleProfilePictureUpload}
+                          className="rounded-full h-12 w-12 p-0 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 shadow-lg transition-all duration-300 hover:scale-105"
+                        >
+                          <Camera className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </div>
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -161,32 +166,93 @@ const AccountInfo = () => {
                     />
                   </div>
                   
-                  {/* User Info */}
-                  <div className="flex-1 text-center md:text-left">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">
-                      {userInfo.firstName} {userInfo.lastName}
-                    </h2>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
-                        <Mail className="h-4 w-4" />
-                        <span>{userInfo.email}</span>
+                  {/* User Info Section */}
+                  <div className="flex-1 text-center xl:text-left space-y-6 animate-fade-in">
+                    {/* Name and Status */}
+                    <div className="space-y-3">
+                      <div className="space-y-2">
+                        <h2 className="text-4xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                          {userInfo.firstName} {userInfo.lastName}
+                        </h2>
+                        <div className="flex items-center justify-center xl:justify-start gap-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-sm text-muted-foreground">Online</span>
+                        </div>
                       </div>
-                      <div className="flex items-center justify-center md:justify-start gap-2 text-muted-foreground">
-                        <Phone className="h-4 w-4" />
-                        <span>{userInfo.phoneNumber}</span>
+                    </div>
+
+                    {/* Contact Information Cards */}
+                    <div className="grid gap-3 md:grid-cols-2">
+                      <div className="group p-4 rounded-xl bg-white/50 dark:bg-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
+                            <Mail className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wider">Email</p>
+                            <p className="text-sm font-medium text-foreground">{userInfo.email}</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="group p-4 rounded-xl bg-white/50 dark:bg-card/50 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors duration-300">
+                            <Phone className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-muted-foreground uppercase tracking-wider">Phone</p>
+                            <p className="text-sm font-medium text-foreground">{userInfo.phoneNumber}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quick Stats */}
+                    <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border/30">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">5</div>
+                        <div className="text-xs text-muted-foreground">Orders</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">2</div>
+                        <div className="text-xs text-muted-foreground">Addresses</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-primary">★ 4.9</div>
+                        <div className="text-xs text-muted-foreground">Rating</div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Edit Toggle */}
-                  <Button
-                    onClick={() => setIsEditing(!isEditing)}
-                    variant={isEditing ? "default" : "outline"}
-                    className="flex items-center gap-2"
-                  >
-                    {isEditing ? <Save className="h-4 w-4" /> : <Edit2 className="h-4 w-4" />}
-                    {isEditing ? "Save Changes" : "Edit Profile"}
-                  </Button>
+                  {/* Action Section */}
+                  <div className="flex flex-col gap-3 animate-fade-in">
+                    <Button
+                      onClick={() => setIsEditing(!isEditing)}
+                      variant={isEditing ? "default" : "outline"}
+                      className="min-w-[140px] h-12 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    >
+                      {isEditing ? (
+                        <>
+                          <Save className="h-4 w-4 mr-2" />
+                          Save Changes
+                        </>
+                      ) : (
+                        <>
+                          <Edit2 className="h-4 w-4 mr-2" />
+                          Edit Profile
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      className="min-w-[140px] h-12 hover:bg-primary/10 transition-all duration-300"
+                    >
+                      <Upload className="h-4 w-4 mr-2" />
+                      Export Data
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
