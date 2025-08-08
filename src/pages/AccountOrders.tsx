@@ -73,8 +73,17 @@ const AccountOrders = () => {
 
   const [orders, setOrders] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('user'));
-  const currentUserEmail = user.email || ''; // Replace with logged-in user's email
+  // Safely read current user from localStorage
+  const rawUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+  let currentUserEmail = '';
+  try {
+    if (rawUser) {
+      const parsed = JSON.parse(rawUser);
+      currentUserEmail = parsed?.email ?? '';
+    }
+  } catch (e) {
+    console.warn('Invalid user in localStorage');
+  }
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -101,9 +110,12 @@ const AccountOrders = () => {
       }
     };
 
-    fetchOrders();
-  }, [currentUserEmail]
-);
+    if (currentUserEmail) {
+      fetchOrders();
+    } else {
+      setLoading(false);
+    }
+  }, [currentUserEmail]);
 
 
 
