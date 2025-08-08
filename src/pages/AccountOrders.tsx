@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Download, ExternalLink, Package } from "lucide-react";
+import { Download, ExternalLink, Package, ShoppingBag, Sparkles, CreditCard } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
@@ -196,8 +196,22 @@ const AccountOrders = () => {
               </Card>
             ) : displayOrders.length === 0 ? (
               <Card className="border-0 shadow-xl">
-                <CardContent className="py-10 text-center text-muted-foreground text-sm">
-                  You have no orders yet.
+                <CardContent className="py-12 text-center">
+                  <div className="flex flex-col items-center gap-4 animate-enter">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center hover-scale">
+                        <ShoppingBag className="w-10 h-10 text-primary pulse" />
+                      </div>
+                      <Sparkles className="w-5 h-5 text-primary absolute -top-2 -right-2 animate-fade-in" />
+                    </div>
+                    <h3 className="text-base font-semibold">No orders yet</h3>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                      Start your journey with a Smart Business Card — network faster and smarter.
+                    </p>
+                    <Button asChild>
+                      <a href="/buy-nfc-card">Get your Smart Business Card</a>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ) : (
@@ -259,8 +273,8 @@ const AccountOrders = () => {
                           <span className="text-green-600">- {formatPrice(getOrderBreakup(order).couponDiscount)}</span>
                         </div>
                         <div className="flex justify-between text-sm font-semibold">
-                          <span className="text-primary">Order Total</span>
-                          <span className="text-primary">{formatPrice(getOrderBreakup(order).orderTotal)}</span>
+                          <span>Order Total</span>
+                          <span>{formatPrice(getOrderBreakup(order).orderTotal)}</span>
                         </div>
                       </div>
                     </div>
