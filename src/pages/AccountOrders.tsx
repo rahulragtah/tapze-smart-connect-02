@@ -18,13 +18,15 @@ const mockOrders = [
         name: "Premium NFC Card - Black",
         image: "/lovable-uploads/vcard27.png",
         quantity: 2,
-        price: "$24.99",
+        originalPrice: "$29.99",
+        discountedPrice: "$24.99",
       },
       {
         name: "Standard NFC Card - White",
         image: "/lovable-uploads/vcard28.png",
         quantity: 1,
-        price: "$19.99",
+        originalPrice: "$22.99",
+        discountedPrice: "$19.99",
       }
     ],
     total: "$69.97",
@@ -32,7 +34,12 @@ const mockOrders = [
     courierPartner: "UPS",
     courierWebsite: "https://www.ups.com",
     invoiceUrl: "/invoices/ORD-2024-001.pdf",
-    shippingAddress: "123 Main Street, Apt 4B, New York, NY 10001",
+    shippingAddress: {
+      name: "John Doe",
+      phone: "+1 555-123-4567",
+      address: "123 Main Street, Apt 4B, New York, NY 10001",
+    },
+    couponDiscount: "$5.00",
   },
   {
     id: "ORD-2024-002",
@@ -43,7 +50,8 @@ const mockOrders = [
         name: "Premium NFC Card - Rose Gold",
         image: "/lovable-uploads/vcard29.png",
         quantity: 3,
-        price: "$24.99",
+        originalPrice: "$29.99",
+        discountedPrice: "$24.99",
       }
     ],
     total: "$74.97",
@@ -51,7 +59,12 @@ const mockOrders = [
     courierPartner: "FedEx",
     courierWebsite: "https://www.fedex.com",
     invoiceUrl: "/invoices/ORD-2024-002.pdf",
-    shippingAddress: "456 Business Ave, Suite 200, New York, NY 10002",
+    shippingAddress: {
+      name: "Jane Smith",
+      phone: "+1 555-987-6543",
+      address: "456 Business Ave, Suite 200, New York, NY 10002",
+    },
+    couponDiscount: "$0.00",
   },
 ];
 
@@ -121,6 +134,36 @@ const AccountOrders = () => {
 
 
 
+  // Helpers and derived data
+  const parsePrice = (s: any): number => {
+    if (typeof s === 'number') return s;
+    if (!s) return 0;
+    const n = parseFloat(String(s).replace(/[^0-9.-]+/g, ''));
+    return isNaN(n) ? 0 : n;
+  };
+
+  const formatPrice = (n: number): string => `$${n.toFixed(2)}`;
+
+  const getOrderBreakup = (order: any) => {
+    const products = order?.products || [];
+    let totalMRP = 0;
+    let totalMRPDiscount = 0;
+
+    products.forEach((p: any) => {
+      const qty = p?.quantity ?? 1;
+      const orig = parsePrice(p?.originalPrice ?? p?.price);
+      const disc = parsePrice(p?.discountedPrice ?? p?.price);
+      totalMRP += orig * qty;
+      totalMRPDiscount += Math.max(0, (orig - disc)) * qty;
+    });
+
+    const couponDiscount = parsePrice(order?.couponDiscount);
+    const orderTotal = Math.max(0, totalMRP - totalMRPDiscount - couponDiscount);
+    return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal };
+  };
+
+  const displayOrders: any[] = (orders as any[])?.length ? (orders as any[]) : mockOrders;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Navigation />
@@ -140,12 +183,12 @@ const AccountOrders = () => {
               Track and manage your order history
             </p>
             <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-              Total Orders: {mockOrders.length}
+              Total Orders: {displayOrders.length}
             </div>
           </div>
 
           <div className="space-y-6 animate-fade-in">
-            {mockOrders.map((order) => (
+            {displayOrders.map((order: any) => (
               <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <CardHeader className="pb-3">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -174,15 +217,38 @@ const AccountOrders = () => {
                           />
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-sm truncate">{product.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              Qty: {product.quantity} × {product.price}
-                            </p>
+                            <p className="text-xs text-muted-foreground">Qty: {product.quantity}</p>
+                            <div className="text-xs">
+                              {product.discountedPrice || product.originalPrice ? (
+                                <div className="space-x-1">
+                                  <span className="line-through text-muted-foreground/70">{product.originalPrice || product.price}</span>
+                                  <span className="font-semibold text-primary">{product.discountedPrice || product.price}</span>
+                                </div>
+                              ) : (
+                                <span className="font-semibold text-primary">{product.price}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ))}
                     </div>
-                    <div className="flex items-center justify-between pt-3 border-t">
-                      <p className="text-sm font-semibold text-primary">Order Total: {order.total}</p>
+                    <div className="pt-3 border-t space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Total MRP</span>
+                        <span className="font-medium">{formatPrice(getOrderBreakup(order).totalMRP)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Total MRP Discount</span>
+                        <span className="text-green-600">- {formatPrice(getOrderBreakup(order).totalMRPDiscount)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Coupon Discount</span>
+                        <span className="text-green-600">- {formatPrice(getOrderBreakup(order).couponDiscount)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm font-semibold">
+                        <span className="text-primary">Order Total</span>
+                        <span className="text-primary">{formatPrice(getOrderBreakup(order).orderTotal)}</span>
+                      </div>
                     </div>
                   </div>
 
@@ -193,7 +259,15 @@ const AccountOrders = () => {
                     {/* Shipping Address */}
                     <div className="space-y-2">
                       <h4 className="font-medium text-sm">Shipping Address</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
+                      {typeof order.shippingAddress === 'string' ? (
+                        <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
+                      ) : (
+                        <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
+                          <p className="font-medium text-foreground">{order.shippingAddress?.name}</p>
+                          <p>Phone: {order.shippingAddress?.phone}</p>
+                          <p>{order.shippingAddress?.address}</p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Shipping Details */}
