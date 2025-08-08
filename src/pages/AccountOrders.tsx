@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Download, ExternalLink, Package } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import  { useEffect, useState } from 'react';
 
 // Mock data - replace with real data from your backend
 const mockOrders = [
@@ -69,6 +70,44 @@ const AccountOrders = () => {
         return "bg-gray-100 text-gray-800";
     }
   };
+
+  const [orders, setOrders] = useState<[]>([]);
+  const [loading, setLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const currentUserEmail = user.email || ''; // Replace with logged-in user's email
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('https://tapze.in/tapzeservice/customerOrder.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: currentUserEmail }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch orders');
+        }
+
+        const data = await response.json();
+        setOrders(data.orders || []);
+        console.log('current user order is ', orders)
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [currentUserEmail]
+);
+
+
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
