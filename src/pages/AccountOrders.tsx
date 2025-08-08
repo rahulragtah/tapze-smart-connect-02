@@ -162,7 +162,7 @@ const AccountOrders = () => {
     return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal };
   };
 
-  const displayOrders: any[] = (orders as any[])?.length ? (orders as any[]) : mockOrders;
+  const displayOrders: any[] = Array.isArray(orders) ? (orders as any[]) : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -188,137 +188,151 @@ const AccountOrders = () => {
           </div>
 
           <div className="space-y-6 animate-fade-in">
-            {displayOrders.map((order: any) => (
-              <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <CardHeader className="pb-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <CardTitle className="text-base">Order {order.id}</CardTitle>
-                      <CardDescription>Placed on {order.date}</CardDescription>
-                    </div>
-                    <Badge className={getStatusColor(order.status)}>
-                      {order.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Products Section - Flexible Grid */}
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-base">
-                      Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
-                    </h4>
-                    <div className={`grid gap-3 ${order.products.length === 1 ? 'grid-cols-1' : order.products.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
-                      {order.products.map((product, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
-                          <img 
-                            src={product.image} 
-                            alt={product.name}
-                            className="w-14 h-14 object-cover rounded-lg border-2"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm truncate">{product.name}</p>
-                            <p className="text-xs text-muted-foreground">Qty: {product.quantity}</p>
-                            <div className="text-xs">
-                              {product.discountedPrice || product.originalPrice ? (
-                                <div className="space-x-1">
-                                  <span className="line-through text-muted-foreground/70">{product.originalPrice || product.price}</span>
-                                  <span className="font-semibold text-primary">{product.discountedPrice || product.price}</span>
-                                </div>
-                              ) : (
-                                <span className="font-semibold text-primary">{product.price}</span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="pt-3 border-t space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Total MRP</span>
-                        <span className="font-medium">{formatPrice(getOrderBreakup(order).totalMRP)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Total MRP Discount</span>
-                        <span className="text-green-600">- {formatPrice(getOrderBreakup(order).totalMRPDiscount)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Coupon Discount</span>
-                        <span className="text-green-600">- {formatPrice(getOrderBreakup(order).couponDiscount)}</span>
-                      </div>
-                      <div className="flex justify-between text-sm font-semibold">
-                        <span className="text-primary">Order Total</span>
-                        <span className="text-primary">{formatPrice(getOrderBreakup(order).orderTotal)}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Order Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Shipping Address */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Shipping Address</h4>
-                      {typeof order.shippingAddress === 'string' ? (
-                        <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
-                      ) : (
-                        <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
-                          <p className="font-medium text-foreground">{order.shippingAddress?.name}</p>
-                          <p>Phone: {order.shippingAddress?.phone}</p>
-                          <p>{order.shippingAddress?.address}</p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Shipping Details */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Shipping Details</h4>
-                      <div className="space-y-1">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Tracking Number</p>
-                          <p className="text-sm font-mono">{order.trackingNumber}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">Courier: {order.courierPartner}</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-0 text-primary"
-                            asChild
-                          >
-                            <a 
-                              href={order.courierWebsite} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row justify-between gap-3">
-                    <Button size="sm" variant="outline" className="w-full sm:w-auto">
-                      View Digital Profiles
-                    </Button>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Download className="h-3 w-3 mr-2" />
-                        Download Invoice
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        Track Package
-                      </Button>
-                    </div>
-                  </div>
+            {loading ? (
+              <Card className="border-0 shadow-xl">
+                <CardContent className="py-10 text-center text-muted-foreground text-sm">
+                  Loading your orders...
                 </CardContent>
               </Card>
-            ))}
+            ) : displayOrders.length === 0 ? (
+              <Card className="border-0 shadow-xl">
+                <CardContent className="py-10 text-center text-muted-foreground text-sm">
+                  You have no orders yet.
+                </CardContent>
+              </Card>
+            ) : (
+              displayOrders.map((order: any) => (
+                <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <CardHeader className="pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <CardTitle className="text-base">Order {order.id}</CardTitle>
+                        <CardDescription>Placed on {order.date}</CardDescription>
+                      </div>
+                      <Badge className={getStatusColor(order.status)}>
+                        {order.status}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Products Section - Flexible Grid */}
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-base">
+                        Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {order.products.map((product: any, index: number) => (
+                          <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
+                            <img 
+                              src={product.image} 
+                              alt={product.name}
+                              className="w-14 h-14 object-cover rounded-lg border-2"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm truncate">{product.name}</p>
+                              <p className="text-xs text-muted-foreground">Qty: {product.quantity}</p>
+                              <div className="text-xs">
+                                {product.discountedPrice || product.originalPrice ? (
+                                  <div className="space-x-1">
+                                    <span className="line-through text-muted-foreground/70">{product.originalPrice || product.price}</span>
+                                    <span className="font-semibold text-primary">{product.discountedPrice || product.price}</span>
+                                  </div>
+                                ) : (
+                                  <span className="font-semibold text-primary">{product.price}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="pt-3 border-t space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Total MRP</span>
+                          <span className="font-medium">{formatPrice(getOrderBreakup(order).totalMRP)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Total MRP Discount</span>
+                          <span className="text-green-600">- {formatPrice(getOrderBreakup(order).totalMRPDiscount)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Coupon Discount</span>
+                          <span className="text-green-600">- {formatPrice(getOrderBreakup(order).couponDiscount)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-semibold">
+                          <span className="text-primary">Order Total</span>
+                          <span className="text-primary">{formatPrice(getOrderBreakup(order).orderTotal)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Order Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Shipping Address */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Shipping Address</h4>
+                        {typeof order.shippingAddress === 'string' ? (
+                          <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
+                        ) : (
+                          <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
+                            <p className="font-medium text-foreground">{order.shippingAddress?.name}</p>
+                            <p>Phone: {order.shippingAddress?.phone}</p>
+                            <p>{order.shippingAddress?.address}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Shipping Details */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Shipping Details</h4>
+                        <div className="space-y-1">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Tracking Number</p>
+                            <p className="text-sm font-mono">{order.trackingNumber}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm">Courier: {order.courierPartner}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-auto p-0 text-primary"
+                              asChild
+                            >
+                              <a 
+                                href={order.courierWebsite} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row justify-between gap-3">
+                      <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                        View Digital Profiles
+                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Download className="h-3 w-3 mr-2" />
+                          Download Invoice
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          Track Package
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </div>
