@@ -28,6 +28,7 @@ import Account from "./pages/Account";
 import AccountOrders from "./pages/AccountOrders";
 import AccountAddresses from "./pages/AccountAddresses";
 import AccountInfo from "./pages/AccountInfo";
+import ResetPassword from "./pages/ResetPassword";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             
             {/* Account Routes */}
             <Route path="/account" element={<Account />} />

@@ -202,7 +202,7 @@ const AccountOrders = () => {
                   Loading your orders...
                 </CardContent>
               </Card>
-            ) : displayOrders.length === 0 ? (
+            ) : false ? (
               <Card className="border-0 shadow-xl">
                 <CardContent className="py-12 text-center">
                   <div className="flex flex-col items-center gap-4 animate-enter">
