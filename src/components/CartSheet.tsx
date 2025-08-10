@@ -146,7 +146,7 @@ const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false
 
   const recaptchaRef = useRef(null);
   
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<CheckoutFormData>();
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
   
   // Mock coupon codes for demo
   const validCoupons = {
@@ -874,9 +874,10 @@ const isUserExistValidate = async (event) => {
               setValue('email', '');
             }}>Close</AlertDialogCancel>
             <AlertDialogAction onClick={() => {
+              const emailVal = watch('email');
               setShowExistingAccountDialog(false);
               setIsOpen(false);
-              navigate('/login');
+              navigate('/login', { state: { prefillEmail: emailVal } });
             }}>
               Login
             </AlertDialogAction>

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,11 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const location = useLocation() as any;
+  useEffect(() => {
+    const prefill = location?.state?.prefillEmail;
+    if (prefill) setEmail(prefill);
+  }, [location?.state]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,7 +141,8 @@ const Login = () => {
                 </div>
                 <div className="text-right">
                   <Link 
-                    to="/forgot-password" 
+                    to="/forgot-password"
+                    state={{ prefillEmail: email }}
                     className="text-sm text-primary hover:underline"
                   >
                     Forgot Password?
