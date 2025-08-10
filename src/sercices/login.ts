@@ -52,7 +52,7 @@ export const resetPassword = async (email: string) => {
 };
 
 
-export const resetPassword111 = async (email: string) => {
+export const resetPassword111 = async (email: string, password: string ,confirmPassword : string ) => {
 
   const response = await fetch("https://tapze.in/tapzeservice/user/resetpassword.php", {
     method: "POST",
