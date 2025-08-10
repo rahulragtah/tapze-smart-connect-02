@@ -82,3 +82,39 @@ export const getUserAddress = async (): Promise<Address | null> => {
     return null;
   }
 };
+
+export const getUserOrders = async (): Promise<any | null> => {
+  try {
+    const response = await fetch(`${API_BASE}/order.php`, {
+      method: "GET",
+      credentials: "include", // send PHP session cookies
+    });
+
+    const data = await response.json();
+    return data;
+    
+  } catch (err) {
+    console.error("Network error:", err);
+    return null;
+  }
+};
+
+
+export const getOrders = async (userId: string) => {
+  try {
+    const response = await fetch(`${API_BASE}/order.php?userId=${userId}`, {
+      method: 'GET',
+      credentials: 'include', // ✅ sends cookies/session info
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data; // Expected: array of orders
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    return null;
+  }
+};

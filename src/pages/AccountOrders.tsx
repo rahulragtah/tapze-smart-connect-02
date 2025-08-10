@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
 
-import {getUserAddress} from '../sercices/orderService';
+import {getOrders} from '../sercices/orderService';
 
 // Mock data - replace with real data from your backend
 const mockOrders = [
@@ -101,39 +101,27 @@ const AccountOrders = () => {
   }
 
 
-  getUserAddress();
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch('https://tapze.in/tapzeservice/customerOrder.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            credentials: "include", // send cookies/session
-          },
-          body: JSON.stringify({ email: currentUserEmail }),
+ 
+
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId= user.email;
+        if (!userId) return;
+        getOrders(userId).then((data) => {
+          if (data) {
+            console.log("current user data", data.orders);
+            setOrders(data.orders || []);
+          }
+          setLoading(false);
         });
+      }, []);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch orders');
-        }
 
-        const data = await response.json();
-        setOrders(data.orders || []);
-        console.log('current user order is ', orders)
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    if (currentUserEmail) {
-      fetchOrders();
-    } else {
-      setLoading(false);
-    }
-  }, [currentUserEmail]);
+
+  
+
 
 
 
@@ -222,6 +210,7 @@ const AccountOrders = () => {
             ) : (
               displayOrders.map((order: any) => (
                 <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <p> {orders}</p>
                   <CardHeader className="pb-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div>
@@ -237,10 +226,10 @@ const AccountOrders = () => {
                     {/* Products Section - Flexible Grid */}
                     <div className="space-y-4">
                       <h4 className="font-medium text-base">
-                        Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
+                        Products ({order.items.length} item{order.items.length > 1 ? 's' : ''})
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {order.products.map((product: any, index: number) => (
+                        {order.items.map((product: any, index: number) => (
                           <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
                             <img 
                               src={product.image} 
