@@ -19,6 +19,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import OrderProcessingLoader from './OrderProcessingLoader';
 import OrderErrorModal from './OrderErrorModal';
 import {isUserExist} from '../sercices/login';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 
 interface CheckoutFormData {
@@ -141,10 +142,11 @@ const CartSheet = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [captchaToken, setCaptchaToken] = useState(false);
+const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
 
   const recaptchaRef = useRef(null);
   
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CheckoutFormData>();
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<CheckoutFormData>();
   
   // Mock coupon codes for demo
   const validCoupons = {
@@ -212,24 +214,20 @@ const CartSheet = () => {
     setErrorMessage('');
   };
 
-  const isUserExistValidate = async (event) => {
-    console.log('Input field lost focus!', event.target.value);
-    const email = event.target.value;
+const isUserExistValidate = async (event) => {
+    const email = event.target.value?.trim();
+    if (!email) return;
     try {
-        const response = await isUserExist(email); // Wait for API call to finish
+        const response = await isUserExist(email);
         console.log('User exists check response:', response);
 
-        if (response.success) {
-            alert("user exists with "+ email);
-            console.log("User already exists!");
-        } else {
-            console.log("User not found.");
+        if (response?.success) {
+            setShowExistingAccountDialog(true);
         }
     } catch (error) {
         console.error("Error checking user:", error);
     }
   };
-
   const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
     setProcessingStage('creating');
@@ -855,6 +853,36 @@ const CartSheet = () => {
         onRetry={handleRetryOrder}
         errorMessage={errorMessage}
       />
+
+      {/* Existing Account Prompt */}
+      <AlertDialog open={showExistingAccountDialog} onOpenChange={(open) => {
+        setShowExistingAccountDialog(open);
+        if (!open) {
+          setValue('email', '');
+        }
+      }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Account already exists</AlertDialogTitle>
+            <AlertDialogDescription>
+              You already have an account with us. Please log in for a seamless checkout & best offers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setShowExistingAccountDialog(false);
+              setValue('email', '');
+            }}>Close</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              setShowExistingAccountDialog(false);
+              setIsOpen(false);
+              navigate('/login');
+            }}>
+              Login
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
