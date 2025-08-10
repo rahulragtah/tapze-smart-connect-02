@@ -51,6 +51,24 @@ export const resetPassword = async (email: string) => {
   return response.json();
 };
 
+
+export const resetPassword111 = async (email: string) => {
+
+  const response = await fetch("https://tapze.in/tapzeservice/user/resetpassword.php", {
+    method: "POST",
+    
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ transactionId: email,password: email, confirmPassword:email})
+  });
+
+
+  if (!response.ok) {
+    throw new Error("Tapze order creation failed.");
+  }
+  return response.json();
+};
+
+
 export const logOut = async () => {
 
   
@@ -80,3 +98,5 @@ export const isUserExist = async (email: string) => {
   });
   return response.json();  
 };
+
+

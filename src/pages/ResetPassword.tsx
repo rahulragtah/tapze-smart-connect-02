@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import authBackground from "@/assets/auth-background.jpg";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { resetPassword111 } from "@/sercices/login";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -21,8 +23,11 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+
+
   // Optional: token from email link (if available later)
   const token = searchParams.get("token");
+  console.log("token   ", token);
 
   useEffect(() => {
     document.title = "Reset Password | Tapze";
@@ -37,6 +42,7 @@ const ResetPassword = () => {
     }
   }, []);
 
+    
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -47,13 +53,22 @@ const ResetPassword = () => {
       });
       return;
     }
-
     setIsSubmitting(true);
     try {
       // TODO: Integrate with backend using token when available
       // await confirmResetPassword({ token, password });
       await new Promise((r) => setTimeout(r, 800));
-      setIsSuccess(true);
+      const response = await resetPassword111(token, password, confirmPassword);
+       if (response.status=="success") {
+            setIsSuccess(true);
+        } else {
+            toast({
+            title: "Reset failed",
+            description: response.message ,
+            variant: "destructive",
+          });
+        }
+      
     } catch (err) {
       toast({
         title: "Reset failed",
