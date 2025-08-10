@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,6 +16,11 @@ const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
+  const location = useLocation() as any;
+  useEffect(() => {
+    const prefill = location?.state?.prefillEmail;
+    if (prefill) setEmail(prefill);
+  }, [location?.state]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -233,7 +233,24 @@ const AccountOrders = () => {
                                 <p className="font-medium text-sm truncate">{item.name}{item.color ? ` - ${item.color}` : ''}</p>
                                 <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                                 <div className="text-xs">
-                                  <span className="font-semibold text-primary">{formatPrice(parsePrice(item.price))}</span>
+                                  {(() => {
+                                    const qty = Number(item.quantity) || 1;
+                                    const unitPrice = parsePrice(item.price);
+                                    const orderMRP = parsePrice(order.total_price);
+                                    const coupon = parsePrice(order.coupon_discount);
+                                    const itemSubtotal = unitPrice * qty;
+                                    const discountShare = orderMRP > 0 ? (coupon * (itemSubtotal / orderMRP)) : 0;
+                                    const unitDiscounted = qty > 0 ? (itemSubtotal - discountShare) / qty : unitPrice;
+                                    const hasDiscount = unitDiscounted < unitPrice;
+                                    return hasDiscount ? (
+                                      <span>
+                                        <span className="line-through text-muted-foreground mr-1">{formatPrice(unitPrice)}</span>
+                                        <span className="font-semibold text-primary">{formatPrice(unitDiscounted)}</span>
+                                      </span>
+                                    ) : (
+                                      <span className="font-semibold text-primary">{formatPrice(unitPrice)}</span>
+                                    );
+                                  })()}
                                 </div>
                               </div>
                             </div>

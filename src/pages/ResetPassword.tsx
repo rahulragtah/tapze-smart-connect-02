@@ -58,7 +58,7 @@ const ResetPassword = () => {
       // TODO: Integrate with backend using token when available
       // await confirmResetPassword({ token, password });
       await new Promise((r) => setTimeout(r, 800));
-      const response = await resetPassword111(token, password, confirmPassword);
+      const response = await resetPassword111(String(token || ''));
        if (response.status=="success") {
             setIsSuccess(true);
         } else {
