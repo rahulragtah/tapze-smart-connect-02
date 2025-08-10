@@ -212,6 +212,24 @@ const CartSheet = () => {
     setErrorMessage('');
   };
 
+  const isUserExistValidate = async (event) => {
+    console.log('Input field lost focus!', event.target.value);
+    const email = event.target.value;
+    try {
+        const response = await isUserExist(email); // Wait for API call to finish
+        console.log('User exists check response:', response);
+
+        if (response.success) {
+            alert("user exists with "+ email);
+            console.log("User already exists!");
+        } else {
+            console.log("User not found.");
+        }
+    } catch (error) {
+        console.error("Error checking user:", error);
+    }
+  };
+
   const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
     setProcessingStage('creating');
@@ -494,27 +512,22 @@ const CartSheet = () => {
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
+                
                 type="email"
                 {...register('email', { 
                   required: 'Email is required',
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message: 'Please enter a valid email'
-                  }, 
-                  validate: async (value) => {
-                  try {
-                    const response =  await  isUserExist(value)  ;
-                    const data = await response.json();
+                  }})}
+                    onBlur={(e) => {
+                    // call React Hook Form's onBlur
+                    register('email').onBlur(e);
+                    // call your function
+                    isUserExistValidate(e);
+                  }}
 
-                    if (data.success) {
-                      return 'This email already exists';
-                    }
-                    return true; // ✅ Email is valid (does not exist)
-                  } catch (error) {
-                    console.error(error);
-                    return 'Error checking email';
-                  }
-                }})}
+
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
