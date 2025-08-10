@@ -223,6 +223,217 @@ const AccountInfo = () => {
                           <p className="text-xs text-muted-foreground font-medium">Saved Addresses</p>
                         </div>
                       </div>
+
+                      {/* Actions on profile panel */}
+                      <div className="flex flex-wrap gap-3 pt-6 justify-center lg:justify-start">
+                        {/* Edit Personal Details Modal */}
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button size="lg" className="px-6">Edit Personal Details</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-lg">
+                            <DialogHeader>
+                              <DialogTitle>Edit Personal Details</DialogTitle>
+                              <DialogDescription>Update your personal information.</DialogDescription>
+                            </DialogHeader>
+                            <form onSubmit={handleUserInfoUpdate} className="space-y-6">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                  <Label htmlFor="firstName" className="flex items-center gap-2">
+                                    <User className="h-4 w-4" />
+                                    First Name
+                                  </Label>
+                                  <Input
+                                    id="firstName"
+                                    value={userInfo.firstName}
+                                    onChange={(e) => setUserInfo(prev => ({ ...prev, firstName: e.target.value }))}
+                                    required
+                                  />
+                                </div>
+                                <div className="space-y-2">
+                                  <Label htmlFor="lastName" className="flex items-center gap-2">
+                                    <User className="h-4 w-4" />
+                                    Last Name
+                                  </Label>
+                                  <Input
+                                    id="lastName"
+                                    value={userInfo.lastName}
+                                    onChange={(e) => setUserInfo(prev => ({ ...prev, lastName: e.target.value }))}
+                                    required
+                                  />
+                                </div>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="email" className="flex items-center gap-2">
+                                  <Mail className="h-4 w-4" />
+                                  Email Address
+                                </Label>
+                                <Input
+                                  id="email"
+                                  type="email"
+                                  value={userInfo.email}
+                                  onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
+                                  required
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="phoneNumber" className="flex items-center gap-2">
+                                  <Phone className="h-4 w-4" />
+                                  Phone Number
+                                </Label>
+                                <Input
+                                  id="phoneNumber"
+                                  value={userInfo.phoneNumber}
+                                  onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
+                                  required
+                                />
+                              </div>
+                              <DialogFooter>
+                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                  {isLoading ? (
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                      Saving...
+                                    </div>
+                                  ) : (
+                                    "Save Changes"
+                                  )}
+                                </Button>
+                              </DialogFooter>
+                            </form>
+                          </DialogContent>
+                        </Dialog>
+
+                        {/* Change Password Modal */}
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="lg" className="px-6">Change Password</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-lg">
+                            <DialogHeader>
+                              <DialogTitle>Change Password</DialogTitle>
+                              <DialogDescription>Update your account password.</DialogDescription>
+                            </DialogHeader>
+                            <form onSubmit={handlePasswordChange} className="space-y-6">
+                              <div className="space-y-2">
+                                <Label htmlFor="currentPassword" className="flex items-center gap-2">
+                                  <Lock className="h-4 w-4" />
+                                  Current Password
+                                </Label>
+                                <div className="relative">
+                                  <Input
+                                    id="currentPassword"
+                                    type={showPasswords.current ? "text" : "password"}
+                                    value={passwordData.currentPassword}
+                                    onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                                    className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    required
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                    onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
+                                  >
+                                    {showPasswords.current ? (
+                                      <EyeOff className="h-4 w-4" />
+                                    ) : (
+                                      <Eye className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                </div>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="newPassword" className="flex items-center gap-2">
+                                  <Lock className="h-4 w-4" />
+                                  New Password
+                                </Label>
+                                <div className="relative">
+                                  <Input
+                                    id="newPassword"
+                                    type={showPasswords.new ? "text" : "password"}
+                                    value={passwordData.newPassword}
+                                    onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                                    className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    required
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                    onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
+                                  >
+                                    {showPasswords.new ? (
+                                      <EyeOff className="h-4 w-4" />
+                                    ) : (
+                                      <Eye className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                </div>
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="confirmPassword" className="flex items-center gap-2">
+                                  <Lock className="h-4 w-4" />
+                                  Confirm New Password
+                                </Label>
+                                <div className="relative">
+                                  <Input
+                                    id="confirmPassword"
+                                    type={showPasswords.confirm ? "text" : "password"}
+                                    value={passwordData.confirmPassword}
+                                    onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                                    className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                                    required
+                                  />
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                    onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
+                                  >
+                                    {showPasswords.confirm ? (
+                                      <EyeOff className="h-4 w-4" />
+                                    ) : (
+                                      <Eye className="h-4 w-4" />
+                                    )}
+                                  </Button>
+                                </div>
+                              </div>
+
+                              <div className="p-4 bg-muted/50 rounded-lg border border-muted">
+                                <h4 className="text-sm font-medium mb-2">Password Requirements:</h4>
+                                <ul className="text-xs text-muted-foreground space-y-1">
+                                  <li>• At least 8 characters long</li>
+                                  <li>• Contains at least one number</li>
+                                  <li>• Contains at least one special character</li>
+                                  <li>• Contains both uppercase and lowercase letters</li>
+                                </ul>
+                              </div>
+
+                              <DialogFooter>
+                                <Button 
+                                  type="submit" 
+                                  variant="destructive"
+                                  className="w-full"
+                                  disabled={isLoading}
+                                >
+                                  {isLoading ? (
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                      Changing Password...
+                                    </div>
+                                  ) : (
+                                    "Change Password"
+                                  )}
+                                </Button>
+                              </DialogFooter>
+                            </form>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -230,218 +441,6 @@ const AccountInfo = () => {
             </Card>
           </div>
 
-          {/* Actions */}
-          <div className="animate-fade-in">
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-              {/* Edit Personal Details Modal */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="lg" className="px-6">Edit Personal Details</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Edit Personal Details</DialogTitle>
-                    <DialogDescription>Update your personal information.</DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handleUserInfoUpdate} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName" className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          First Name
-                        </Label>
-                        <Input
-                          id="firstName"
-                          value={userInfo.firstName}
-                          onChange={(e) => setUserInfo(prev => ({ ...prev, firstName: e.target.value }))}
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastName" className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          Last Name
-                        </Label>
-                        <Input
-                          id="lastName"
-                          value={userInfo.lastName}
-                          onChange={(e) => setUserInfo(prev => ({ ...prev, lastName: e.target.value }))}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="flex items-center gap-2">
-                        <Mail className="h-4 w-4" />
-                        Email Address
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={userInfo.email}
-                        onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phoneNumber" className="flex items-center gap-2">
-                        <Phone className="h-4 w-4" />
-                        Phone Number
-                      </Label>
-                      <Input
-                        id="phoneNumber"
-                        value={userInfo.phoneNumber}
-                        onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <DialogFooter>
-                      <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            Saving...
-                          </div>
-                        ) : (
-                          "Save Changes"
-                        )}
-                      </Button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
-
-              {/* Change Password Modal */}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="outline" size="lg" className="px-6">Change Password</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-lg">
-                  <DialogHeader>
-                    <DialogTitle>Change Password</DialogTitle>
-                    <DialogDescription>Update your account password.</DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={handlePasswordChange} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="currentPassword" className="flex items-center gap-2">
-                        <Lock className="h-4 w-4" />
-                        Current Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="currentPassword"
-                          type={showPasswords.current ? "text" : "password"}
-                          value={passwordData.currentPassword}
-                          onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
-                          className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                          required
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowPasswords(prev => ({ ...prev, current: !prev.current }))}
-                        >
-                          {showPasswords.current ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="newPassword" className="flex items-center gap-2">
-                        <Lock className="h-4 w-4" />
-                        New Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="newPassword"
-                          type={showPasswords.new ? "text" : "password"}
-                          value={passwordData.newPassword}
-                          onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
-                          className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                          required
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowPasswords(prev => ({ ...prev, new: !prev.new }))}
-                        >
-                          {showPasswords.new ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="flex items-center gap-2">
-                        <Lock className="h-4 w-4" />
-                        Confirm New Password
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          id="confirmPassword"
-                          type={showPasswords.confirm ? "text" : "password"}
-                          value={passwordData.confirmPassword}
-                          onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                          className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-                          required
-                        />
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                          onClick={() => setShowPasswords(prev => ({ ...prev, confirm: !prev.confirm }))}
-                        >
-                          {showPasswords.confirm ? (
-                            <EyeOff className="h-4 w-4" />
-                          ) : (
-                            <Eye className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-muted/50 rounded-lg border border-muted">
-                      <h4 className="text-sm font-medium mb-2">Password Requirements:</h4>
-                      <ul className="text-xs text-muted-foreground space-y-1">
-                        <li>• At least 8 characters long</li>
-                        <li>• Contains at least one number</li>
-                        <li>• Contains at least one special character</li>
-                        <li>• Contains both uppercase and lowercase letters</li>
-                      </ul>
-                    </div>
-
-                    <DialogFooter>
-                      <Button 
-                        type="submit" 
-                        variant="destructive"
-                        className="w-full"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? (
-                          <div className="flex items-center gap-2">
-                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            Changing Password...
-                          </div>
-                        ) : (
-                          "Change Password"
-                        )}
-                      </Button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </div>
         </div>
       </div>
       <Footer />
