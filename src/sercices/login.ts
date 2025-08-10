@@ -4,6 +4,7 @@ import {signUpDTO} from '../components/models/loginInterface';
 export const loginUser = async (email: string, password : string ) => {
   const response = await fetch('https://tapze.in/tapzeservice/user/login.php', {
     method: 'POST',
+    credentials: 'include', 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email , password:  password})
   });
@@ -24,6 +25,23 @@ export const signUp = async (signupData: signUpDTO) => {
     
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(signupData)
+  });
+
+
+  if (!response.ok) {
+    throw new Error("Tapze order creation failed.");
+  }
+  return response.json();
+};
+
+
+export const resetPassword = async (email: string) => {
+
+  const response = await fetch("https://tapze.in/tapzeservice/user/userTransaction.php", {
+    method: "POST",
+    
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email})
   });
 
 
@@ -54,3 +72,11 @@ export const logOut = async () => {
   }
 };
 
+
+export const isUserExist = async (email: string) => {
+  const response = await fetch("https://tapze.in/tapzeservice/user/user-api.php?email=" +encodeURIComponent(email), {
+    method: 'GET'
+    
+  });
+  return response.json();  
+};

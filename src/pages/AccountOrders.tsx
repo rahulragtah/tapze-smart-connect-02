@@ -7,6 +7,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
 
+import {getUserAddress} from '../sercices/orderService';
+
 // Mock data - replace with real data from your backend
 const mockOrders = [
   {
@@ -76,6 +78,8 @@ const AccountOrders = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const currentUserEmail = user.email || ''; // Replace with logged-in user's email
 
+
+  getUserAddress();
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -83,6 +87,7 @@ const AccountOrders = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            credentials: "include", // send cookies/session
           },
           body: JSON.stringify({ email: currentUserEmail }),
         });

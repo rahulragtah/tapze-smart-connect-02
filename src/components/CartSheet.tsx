@@ -18,6 +18,7 @@ import {registerUser} from '../components/user/registerUser';
 import ReCAPTCHA from "react-google-recaptcha";
 import OrderProcessingLoader from './OrderProcessingLoader';
 import OrderErrorModal from './OrderErrorModal';
+import {isUserExist} from '../sercices/login';
 
 
 interface CheckoutFormData {
@@ -499,8 +500,21 @@ const CartSheet = () => {
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message: 'Please enter a valid email'
+                  }, 
+                  validate: async (value) => {
+                  try {
+                    const response =  await  isUserExist(value)  ;
+                    const data = await response.json();
+
+                    if (data.success) {
+                      return 'This email already exists';
+                    }
+                    return true; // ✅ Email is valid (does not exist)
+                  } catch (error) {
+                    console.error(error);
+                    return 'Error checking email';
                   }
-                })}
+                }})}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (

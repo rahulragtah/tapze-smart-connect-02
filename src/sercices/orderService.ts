@@ -49,3 +49,36 @@ export const sendConfirmationEmail = async (finalEmailDto: orderDTO) => {
     'iwIaefaueRobx3b5j'
   );
 };
+
+
+
+export interface Address {
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
+
+const API_BASE = "https://tapze.in/tapzeservice/user";
+
+export const getUserAddress = async (): Promise<Address | null> => {
+  try {
+    const response = await fetch(`${API_BASE}/userAddress.php`, {
+      method: "GET",
+      credentials: "include", // send PHP session cookies
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return data.address as Address;
+    } else {
+      console.error("Error:", data.message);
+      return null;
+    }
+  } catch (err) {
+    console.error("Network error:", err);
+    return null;
+  }
+};

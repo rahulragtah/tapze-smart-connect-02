@@ -9,6 +9,7 @@ import { ArrowLeft, Mail } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
+import {resetPassword} from '../sercices/login'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -22,13 +23,22 @@ const ForgotPassword = () => {
 
     try {
       // TODO: Replace with actual forgot password API call
+      const response = await resetPassword(email);
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
-      setIsEmailSent(true);
+      if (response.success) {
+        setIsEmailSent(true);
       toast({
         title: "Reset Email Sent",
         description: "Please check your email for password reset instructions.",
       });
+      } else {
+        toast({
+        title: "Error",
+        description: "Failed to send reset email. Please try again.",
+        variant: "destructive",
+      });
+      }
+      
     } catch (error) {
       toast({
         title: "Error",
