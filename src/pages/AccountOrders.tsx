@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Download, ExternalLink, Package } from "lucide-react";
+import { Download, ExternalLink, Package, ShoppingBag, Sparkles, CreditCard } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
@@ -20,13 +20,15 @@ const mockOrders = [
         name: "Premium NFC Card - Black",
         image: "/lovable-uploads/vcard27.png",
         quantity: 2,
-        price: "$24.99",
+        originalPrice: "$29.99",
+        discountedPrice: "$24.99",
       },
       {
         name: "Standard NFC Card - White",
         image: "/lovable-uploads/vcard28.png",
         quantity: 1,
-        price: "$19.99",
+        originalPrice: "$22.99",
+        discountedPrice: "$19.99",
       }
     ],
     total: "$69.97",
@@ -34,7 +36,12 @@ const mockOrders = [
     courierPartner: "UPS",
     courierWebsite: "https://www.ups.com",
     invoiceUrl: "/invoices/ORD-2024-001.pdf",
-    shippingAddress: "123 Main Street, Apt 4B, New York, NY 10001",
+    shippingAddress: {
+      name: "John Doe",
+      phone: "+1 555-123-4567",
+      address: "123 Main Street, Apt 4B, New York, NY 10001",
+    },
+    couponDiscount: "$5.00",
   },
   {
     id: "ORD-2024-002",
@@ -45,7 +52,8 @@ const mockOrders = [
         name: "Premium NFC Card - Rose Gold",
         image: "/lovable-uploads/vcard29.png",
         quantity: 3,
-        price: "$24.99",
+        originalPrice: "$29.99",
+        discountedPrice: "$24.99",
       }
     ],
     total: "$74.97",
@@ -53,7 +61,12 @@ const mockOrders = [
     courierPartner: "FedEx",
     courierWebsite: "https://www.fedex.com",
     invoiceUrl: "/invoices/ORD-2024-002.pdf",
-    shippingAddress: "456 Business Ave, Suite 200, New York, NY 10002",
+    shippingAddress: {
+      name: "Jane Smith",
+      phone: "+1 555-987-6543",
+      address: "456 Business Ave, Suite 200, New York, NY 10002",
+    },
+    couponDiscount: "$0.00",
   },
 ];
 
@@ -75,8 +88,17 @@ const AccountOrders = () => {
 
   const [orders, setOrders] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem('user'));
-  const currentUserEmail = user.email || ''; // Replace with logged-in user's email
+  // Safely read current user from localStorage
+  const rawUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+  let currentUserEmail = '';
+  try {
+    if (rawUser) {
+      const parsed = JSON.parse(rawUser);
+      currentUserEmail = parsed?.email ?? '';
+    }
+  } catch (e) {
+    console.warn('Invalid user in localStorage');
+  }
 
 
   getUserAddress();
@@ -106,13 +128,46 @@ const AccountOrders = () => {
       }
     };
 
-    fetchOrders();
-  }, [currentUserEmail]
-);
+    if (currentUserEmail) {
+      fetchOrders();
+    } else {
+      setLoading(false);
+    }
+  }, [currentUserEmail]);
 
 
 
 
+
+  // Helpers and derived data
+  const parsePrice = (s: any): number => {
+    if (typeof s === 'number') return s;
+    if (!s) return 0;
+    const n = parseFloat(String(s).replace(/[^0-9.-]+/g, ''));
+    return isNaN(n) ? 0 : n;
+  };
+
+  const formatPrice = (n: number): string => `$${n.toFixed(2)}`;
+
+  const getOrderBreakup = (order: any) => {
+    const products = order?.products || [];
+    let totalMRP = 0;
+    let totalMRPDiscount = 0;
+
+    products.forEach((p: any) => {
+      const qty = p?.quantity ?? 1;
+      const orig = parsePrice(p?.originalPrice ?? p?.price);
+      const disc = parsePrice(p?.discountedPrice ?? p?.price);
+      totalMRP += orig * qty;
+      totalMRPDiscount += Math.max(0, (orig - disc)) * qty;
+    });
+
+    const couponDiscount = parsePrice(order?.couponDiscount);
+    const orderTotal = Math.max(0, totalMRP - totalMRPDiscount - couponDiscount);
+    return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal };
+  };
+
+  const displayOrders: any[] = Array.isArray(orders) ? (orders as any[]) : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -133,111 +188,170 @@ const AccountOrders = () => {
               Track and manage your order history
             </p>
             <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-              Total Orders: {mockOrders.length}
+              Total Orders: {displayOrders.length}
             </div>
           </div>
 
           <div className="space-y-6 animate-fade-in">
-            {mockOrders.map((order) => (
-              <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <CardHeader className="pb-3">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <CardTitle className="text-base">Order {order.id}</CardTitle>
-                      <CardDescription>Placed on {order.date}</CardDescription>
-                    </div>
-                    <Badge className={getStatusColor(order.status)}>
-                      {order.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Products Section - Flexible Grid */}
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-base">
-                      Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
-                    </h4>
-                    <div className={`grid gap-3 ${order.products.length === 1 ? 'grid-cols-1' : order.products.length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`}>
-                      {order.products.map((product, index) => (
-                        <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
-                          <img 
-                            src={product.image} 
-                            alt={product.name}
-                            className="w-14 h-14 object-cover rounded-lg border-2"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm truncate">{product.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              Qty: {product.quantity} × {product.price}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex items-center justify-between pt-3 border-t">
-                      <p className="text-sm font-semibold text-primary">Order Total: {order.total}</p>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  {/* Order Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Shipping Address */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Shipping Address</h4>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
-                    </div>
-
-                    {/* Shipping Details */}
-                    <div className="space-y-2">
-                      <h4 className="font-medium text-sm">Shipping Details</h4>
-                      <div className="space-y-1">
-                        <div>
-                          <p className="text-xs text-muted-foreground">Tracking Number</p>
-                          <p className="text-sm font-mono">{order.trackingNumber}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm">Courier: {order.courierPartner}</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-auto p-0 text-primary"
-                            asChild
-                          >
-                            <a 
-                              href={order.courierWebsite} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                            >
-                              <ExternalLink className="h-3 w-3" />
-                            </a>
-                          </Button>
-                        </div>
+            {loading ? (
+              <Card className="border-0 shadow-xl">
+                <CardContent className="py-10 text-center text-muted-foreground text-sm">
+                  Loading your orders...
+                </CardContent>
+              </Card>
+            ) : displayOrders.length === 0 ? (
+              <Card className="border-0 shadow-xl">
+                <CardContent className="py-12 text-center">
+                  <div className="flex flex-col items-center gap-4 animate-enter">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center hover-scale">
+                        <ShoppingBag className="w-10 h-10 text-primary pulse" />
                       </div>
+                      <Sparkles className="w-5 h-5 text-primary absolute -top-2 -right-2 animate-fade-in" />
                     </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row justify-between gap-3">
-                    <Button size="sm" variant="outline" className="w-full sm:w-auto">
-                      View Digital Profiles
+                    <h3 className="text-base font-semibold">No orders yet</h3>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                      Start your journey with a Smart Business Card — network faster and smarter.
+                    </p>
+                    <Button asChild>
+                      <a href="/buy-nfc-card">Get your Smart Business Card</a>
                     </Button>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Download className="h-3 w-3 mr-2" />
-                        Download Invoice
-                      </Button>
-                      <Button variant="ghost" size="sm">
-                        Track Package
-                      </Button>
-                    </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
+            ) : (
+              displayOrders.map((order: any) => (
+                <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
+                  <CardHeader className="pb-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <CardTitle className="text-base">Order {order.id}</CardTitle>
+                        <CardDescription>Placed on {order.date}</CardDescription>
+                      </div>
+                      <Badge className={getStatusColor(order.status)}>
+                        {order.status}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Products Section - Flexible Grid */}
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-base">
+                        Products ({order.products.length} item{order.products.length > 1 ? 's' : ''})
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {order.products.map((product: any, index: number) => (
+                          <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
+                            <img 
+                              src={product.image} 
+                              alt={product.name}
+                              className="w-14 h-14 object-cover rounded-lg border-2"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm truncate">{product.name}</p>
+                              <p className="text-xs text-muted-foreground">Qty: {product.quantity}</p>
+                              <div className="text-xs">
+                                {product.discountedPrice || product.originalPrice ? (
+                                  <div className="space-x-1">
+                                    <span className="line-through text-muted-foreground/70">{product.originalPrice || product.price}</span>
+                                    <span className="font-semibold text-primary">{product.discountedPrice || product.price}</span>
+                                  </div>
+                                ) : (
+                                  <span className="font-semibold text-primary">{product.price}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="pt-3 border-t space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Total MRP</span>
+                          <span className="font-medium">{formatPrice(getOrderBreakup(order).totalMRP)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Total MRP Discount</span>
+                          <span className="text-green-600">- {formatPrice(getOrderBreakup(order).totalMRPDiscount)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Coupon Discount</span>
+                          <span className="text-green-600">- {formatPrice(getOrderBreakup(order).couponDiscount)}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-semibold">
+                          <span>Order Total</span>
+                          <span>{formatPrice(getOrderBreakup(order).orderTotal)}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Separator />
+
+                    {/* Order Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Shipping Address */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Shipping Address</h4>
+                        {typeof order.shippingAddress === 'string' ? (
+                          <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
+                        ) : (
+                          <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
+                            <p className="font-medium text-foreground">{order.shippingAddress?.name}</p>
+                            <p>Phone: {order.shippingAddress?.phone}</p>
+                            <p>{order.shippingAddress?.address}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Shipping Details */}
+                      <div className="space-y-2">
+                        <h4 className="font-medium text-sm">Shipping Details</h4>
+                        <div className="space-y-1">
+                          <div>
+                            <p className="text-xs text-muted-foreground">Tracking Number</p>
+                            <p className="text-sm font-mono">{order.trackingNumber}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm">Courier: {order.courierPartner}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-auto p-0 text-primary"
+                              asChild
+                            >
+                              <a 
+                                href={order.courierWebsite} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                              >
+                                <ExternalLink className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <Separator />
+                    
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row justify-between gap-3">
+                      <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                        View Digital Profiles
+                      </Button>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Download className="h-3 w-3 mr-2" />
+                          Download Invoice
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          Track Package
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </div>
