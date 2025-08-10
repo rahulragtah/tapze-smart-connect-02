@@ -92,16 +92,18 @@ const AccountOrders = () => {
   const rawUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   let currentUserEmail = '';
   try {
-    if (rawUser) {
+    if (rawUser && rawUser !== 'null' && rawUser !== 'undefined') {
       const parsed = JSON.parse(rawUser);
-      currentUserEmail = parsed?.email ?? '';
+      if (parsed && typeof parsed === 'object') {
+        currentUserEmail = parsed.email ?? '';
+      }
     }
   } catch (e) {
     console.warn('Invalid user in localStorage');
   }
 
 
-  getUserAddress();
+  // getUserAddress will be invoked after email is available inside useEffect
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -129,6 +131,7 @@ const AccountOrders = () => {
     };
 
     if (currentUserEmail) {
+      try { getUserAddress?.(); } catch (e) { console.warn('getUserAddress failed', e); }
       fetchOrders();
     } else {
       setLoading(false);
