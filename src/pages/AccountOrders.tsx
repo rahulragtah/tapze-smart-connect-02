@@ -86,15 +86,17 @@ const AccountOrders = () => {
     }
   };
 
-  const [orders, setOrders] = useState<[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   // Safely read current user from localStorage
   const rawUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
   let currentUserEmail = '';
   try {
-    if (rawUser) {
+    if (rawUser && rawUser !== 'null' && rawUser !== 'undefined') {
       const parsed = JSON.parse(rawUser);
-      currentUserEmail = parsed?.email ?? '';
+      if (parsed && typeof parsed === 'object') {
+        currentUserEmail = parsed.email ?? '';
+      }
     }
   } catch (e) {
     console.warn('Invalid user in localStorage');
@@ -138,20 +140,11 @@ const AccountOrders = () => {
   const formatPrice = (n: number): string => `$${n.toFixed(2)}`;
 
   const getOrderBreakup = (order: any) => {
-    const products = order?.products || [];
-    let totalMRP = 0;
-    let totalMRPDiscount = 0;
-
-    products.forEach((p: any) => {
-      const qty = p?.quantity ?? 1;
-      const orig = parsePrice(p?.originalPrice ?? p?.price);
-      const disc = parsePrice(p?.discountedPrice ?? p?.price);
-      totalMRP += orig * qty;
-      totalMRPDiscount += Math.max(0, (orig - disc)) * qty;
-    });
-
-    const couponDiscount = parsePrice(order?.couponDiscount);
-    const orderTotal = Math.max(0, totalMRP - totalMRPDiscount - couponDiscount);
+    const totalMRP = parsePrice(order?.total_price);
+    const discountedPrice = parsePrice(order?.discounted_price);
+    const totalMRPDiscount = Math.max(0, totalMRP - discountedPrice);
+    const couponDiscount = parsePrice(order?.coupon_discount);
+    const orderTotal = parsePrice(order?.final_total || discountedPrice);
     return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal };
   };
 
@@ -187,7 +180,7 @@ const AccountOrders = () => {
                   Loading your orders...
                 </CardContent>
               </Card>
-            ) : displayOrders.length === 0 ? (
+            ) : displayOrders.length === 0 ?  (
               <Card className="border-0 shadow-xl">
                 <CardContent className="py-12 text-center">
                   <div className="flex flex-col items-center gap-4 animate-enter">
@@ -210,12 +203,12 @@ const AccountOrders = () => {
             ) : (
               displayOrders.map((order: any) => (
                 <Card key={order.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300">
-                  <p> {orders}</p>
+                 
                   <CardHeader className="pb-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div>
                         <CardTitle className="text-base">Order {order.id}</CardTitle>
-                        <CardDescription>Placed on {order.date}</CardDescription>
+                        <CardDescription>Placed on {order.created_at}</CardDescription>
                       </div>
                       <Badge className={getStatusColor(order.status)}>
                         {order.status}
@@ -225,34 +218,27 @@ const AccountOrders = () => {
                   <CardContent className="space-y-4">
                     {/* Products Section - Flexible Grid */}
                     <div className="space-y-4">
-                      <h4 className="font-medium text-base">
-                        Products ({order.items.length} item{order.items.length > 1 ? 's' : ''})
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {order.items.map((product: any, index: number) => (
-                          <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
-                            <img 
-                              src={product.image} 
-                              alt={product.name}
-                              className="w-14 h-14 object-cover rounded-lg border-2"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium text-sm truncate">{product.name}</p>
-                              <p className="text-xs text-muted-foreground">Qty: {product.quantity}</p>
-                              <div className="text-xs">
-                                {product.discountedPrice || product.originalPrice ? (
-                                  <div className="space-x-1">
-                                    <span className="line-through text-muted-foreground/70">{product.originalPrice || product.price}</span>
-                                    <span className="font-semibold text-primary">{product.discountedPrice || product.price}</span>
-                                  </div>
-                                ) : (
-                                  <span className="font-semibold text-primary">{product.price}</span>
-                                )}
+                        <h4 className="font-medium text-base">
+                          Products ({(order.items?.length || 0)} item{(order.items?.length || 0) > 1 ? 's' : ''})
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {(order.items || []).map((item: any, index: number) => (
+                            <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border">
+                              <img 
+                                src={item.image} 
+                                alt={item.name}
+                                className="w-14 h-14 object-cover rounded-lg border-2"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm truncate">{item.name}{item.color ? ` - ${item.color}` : ''}</p>
+                                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                                <div className="text-xs">
+                                  <span className="font-semibold text-primary">{formatPrice(parsePrice(item.price))}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
-                      </div>
+                          ))}
+                        </div>
                       <div className="pt-3 border-t space-y-2">
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Total MRP</span>
@@ -280,44 +266,50 @@ const AccountOrders = () => {
                       {/* Shipping Address */}
                       <div className="space-y-2">
                         <h4 className="font-medium text-sm">Shipping Address</h4>
-                        {typeof order.shippingAddress === 'string' ? (
-                          <p className="text-sm text-muted-foreground leading-relaxed">{order.shippingAddress}</p>
-                        ) : (
-                          <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
-                            <p className="font-medium text-foreground">{order.shippingAddress?.name}</p>
-                            <p>Phone: {order.shippingAddress?.phone}</p>
-                            <p>{order.shippingAddress?.address}</p>
-                          </div>
-                        )}
+                        <div className="text-sm text-muted-foreground leading-relaxed space-y-1">
+                          <p className="font-medium text-foreground">{order.first_name} {order.last_name}</p>
+                          <p>Phone: {order.phone}</p>
+                          <p>
+                            {order.address?.line1} {order.address?.line2},{order.address?.city},{order.address?.state} {order.address?.pin_code}, {order.address?.country}
+                          </p>
+                        </div>
                       </div>
 
                       {/* Shipping Details */}
-                      <div className="space-y-2">
-                        <h4 className="font-medium text-sm">Shipping Details</h4>
-                        <div className="space-y-1">
-                          <div>
-                            <p className="text-xs text-muted-foreground">Tracking Number</p>
-                            <p className="text-sm font-mono">{order.trackingNumber}</p>
+                        {(order.trackingNumber || order.courierPartner || order.courierWebsite) ? (
+                          <div className="space-y-2">
+                            <h4 className="font-medium text-sm">Shipping Details</h4>
+                            <div className="space-y-1">
+                              {order.trackingNumber && (
+                                <div>
+                                  <p className="text-xs text-muted-foreground">Tracking Number</p>
+                                  <p className="text-sm font-mono">{order.trackingNumber}</p>
+                                </div>
+                              )}
+                              {(order.courierPartner || order.courierWebsite) && (
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm">Courier: {order.courierPartner}</span>
+                                  {order.courierWebsite && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-auto p-0 text-primary"
+                                      asChild
+                                    >
+                                      <a 
+                                        href={order.courierWebsite} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                      >
+                                        <ExternalLink className="h-3 w-3" />
+                                      </a>
+                                    </Button>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm">Courier: {order.courierPartner}</span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-auto p-0 text-primary"
-                              asChild
-                            >
-                              <a 
-                                href={order.courierWebsite} 
-                                target="_blank" 
-                                rel="noopener noreferrer"
-                              >
-                                <ExternalLink className="h-3 w-3" />
-                              </a>
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
+                        ) : null}
                     </div>
                     
                     <Separator />
