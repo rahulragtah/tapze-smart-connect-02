@@ -10,65 +10,65 @@ import  { useEffect, useState } from 'react';
 import {getOrders} from '../sercices/orderService';
 
 // Mock data - replace with real data from your backend
-const mockOrders = [
-  {
-    id: "ORD-2024-001",
-    date: "2024-01-15",
-    status: "Delivered",
-    products: [
-      {
-        name: "Premium NFC Card - Black",
-        image: "/lovable-uploads/vcard27.png",
-        quantity: 2,
-        originalPrice: "$29.99",
-        discountedPrice: "$24.99",
-      },
-      {
-        name: "Standard NFC Card - White",
-        image: "/lovable-uploads/vcard28.png",
-        quantity: 1,
-        originalPrice: "$22.99",
-        discountedPrice: "$19.99",
-      }
-    ],
-    total: "$69.97",
-    trackingNumber: "1Z999AA1234567890",
-    courierPartner: "UPS",
-    courierWebsite: "https://www.ups.com",
-    invoiceUrl: "/invoices/ORD-2024-001.pdf",
-    shippingAddress: {
-      name: "John Doe",
-      phone: "+1 555-123-4567",
-      address: "123 Main Street, Apt 4B, New York, NY 10001",
-    },
-    couponDiscount: "$5.00",
-  },
-  {
-    id: "ORD-2024-002",
-    date: "2024-01-20",
-    status: "In Transit",
-    products: [
-      {
-        name: "Premium NFC Card - Rose Gold",
-        image: "/lovable-uploads/vcard29.png",
-        quantity: 3,
-        originalPrice: "$29.99",
-        discountedPrice: "$24.99",
-      }
-    ],
-    total: "$74.97",
-    trackingNumber: "1Z999BB9876543210",
-    courierPartner: "FedEx",
-    courierWebsite: "https://www.fedex.com",
-    invoiceUrl: "/invoices/ORD-2024-002.pdf",
-    shippingAddress: {
-      name: "Jane Smith",
-      phone: "+1 555-987-6543",
-      address: "456 Business Ave, Suite 200, New York, NY 10002",
-    },
-    couponDiscount: "$0.00",
-  },
-];
+// const mockOrders = [
+//   {
+//     id: "ORD-2024-001",
+//     date: "2024-01-15",
+//     status: "Delivered",
+//     products: [
+//       {
+//         name: "Premium NFC Card - Black",
+//         image: "/lovable-uploads/vcard27.png",
+//         quantity: 2,
+//         originalPrice: "$29.99",
+//         discountedPrice: "$24.99",
+//       },
+//       {
+//         name: "Standard NFC Card - White",
+//         image: "/lovable-uploads/vcard28.png",
+//         quantity: 1,
+//         originalPrice: "$22.99",
+//         discountedPrice: "$19.99",
+//       }
+//     ],
+//     total: "$69.97",
+//     trackingNumber: "1Z999AA1234567890",
+//     courierPartner: "UPS",
+//     courierWebsite: "https://www.ups.com",
+//     invoiceUrl: "/invoices/ORD-2024-001.pdf",
+//     shippingAddress: {
+//       name: "John Doe",
+//       phone: "+1 555-123-4567",
+//       address: "123 Main Street, Apt 4B, New York, NY 10001",
+//     },
+//     couponDiscount: "$5.00",
+//   },
+//   {
+//     id: "ORD-2024-002",
+//     date: "2024-01-20",
+//     status: "In Transit",
+//     products: [
+//       {
+//         name: "Premium NFC Card - Rose Gold",
+//         image: "/lovable-uploads/vcard29.png",
+//         quantity: 3,
+//         originalPrice: "$29.99",
+//         discountedPrice: "$24.99",
+//       }
+//     ],
+//     total: "$74.97",
+//     trackingNumber: "1Z999BB9876543210",
+//     courierPartner: "FedEx",
+//     courierWebsite: "https://www.fedex.com",
+//     invoiceUrl: "/invoices/ORD-2024-002.pdf",
+//     shippingAddress: {
+//       name: "Jane Smith",
+//       phone: "+1 555-987-6543",
+//       address: "456 Business Ave, Suite 200, New York, NY 10002",
+//     },
+//     couponDiscount: "$0.00",
+//   },
+// ];
 
 const AccountOrders = () => {
   const getStatusColor = (status: string) => {
@@ -137,7 +137,7 @@ const AccountOrders = () => {
     return isNaN(n) ? 0 : n;
   };
 
-  const formatPrice = (n: number): string => `$${n.toFixed(2)}`;
+  const formatPrice = (n: number): string => `₹${n.toFixed(2)}`;
 
   const getOrderBreakup = (order: any) => {
     const totalMRP = parsePrice(order?.total_price);
