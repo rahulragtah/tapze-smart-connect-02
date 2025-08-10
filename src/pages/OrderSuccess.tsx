@@ -132,7 +132,7 @@ const OrderSuccess = () => {
       </div>
     );
   }
-  if (!orderDetails) {
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
