@@ -4,8 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Upload, Camera, User, Mail, Phone, Lock, Edit2, Save } from "lucide-react";
+import { Eye, EyeOff, Camera, User, Mail, Phone, Lock } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -28,7 +29,7 @@ const AccountInfo = () => {
     confirm: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -229,36 +230,19 @@ const AccountInfo = () => {
             </Card>
           </div>
 
-          {/* Main Content Grid */}
-          <div className="grid gap-8 lg:grid-cols-2">
-            {/* Profile Information */}
-            <div className="animate-fade-in">
-              <Card className="border-0 shadow-xl h-fit">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-primary/10 rounded-lg">
-                        <User className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <CardTitle className="text-xl">Personal Information</CardTitle>
-                        <CardDescription>
-                          Update your personal details
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <Button
-                      onClick={() => setIsEditing(!isEditing)}
-                      variant={isEditing ? "default" : "outline"}
-                      size="sm"
-                      className="flex items-center gap-2"
-                    >
-                      {isEditing ? <Save className="h-4 w-4" /> : <Edit2 className="h-4 w-4" />}
-                      {isEditing ? "Save" : "Edit"}
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
+          {/* Actions */}
+          <div className="animate-fade-in">
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+              {/* Edit Personal Details Modal */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="lg" className="px-6">Edit Personal Details</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Edit Personal Details</DialogTitle>
+                    <DialogDescription>Update your personal information.</DialogDescription>
+                  </DialogHeader>
                   <form onSubmit={handleUserInfoUpdate} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -270,8 +254,6 @@ const AccountInfo = () => {
                           id="firstName"
                           value={userInfo.firstName}
                           onChange={(e) => setUserInfo(prev => ({ ...prev, firstName: e.target.value }))}
-                          disabled={!isEditing}
-                          className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                           required
                         />
                       </div>
@@ -284,8 +266,6 @@ const AccountInfo = () => {
                           id="lastName"
                           value={userInfo.lastName}
                           onChange={(e) => setUserInfo(prev => ({ ...prev, lastName: e.target.value }))}
-                          disabled={!isEditing}
-                          className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                           required
                         />
                       </div>
@@ -300,8 +280,6 @@ const AccountInfo = () => {
                         type="email"
                         value={userInfo.email}
                         onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
-                        disabled={!isEditing}
-                        className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                         required
                       />
                     </div>
@@ -314,49 +292,35 @@ const AccountInfo = () => {
                         id="phoneNumber"
                         value={userInfo.phoneNumber}
                         onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                        disabled={!isEditing}
-                        className="transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                         required
                       />
                     </div>
-                    {isEditing && (
-                      <Button 
-                        type="submit" 
-                        className="w-full"
-                        disabled={isLoading}
-                      >
+                    <DialogFooter>
+                      <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center gap-2">
                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            Updating...
+                            Saving...
                           </div>
                         ) : (
-                          "Update Information"
+                          "Save Changes"
                         )}
                       </Button>
-                    )}
+                    </DialogFooter>
                   </form>
-                </CardContent>
-              </Card>
-            </div>
+                </DialogContent>
+              </Dialog>
 
-            {/* Security Settings */}
-            <div className="animate-fade-in">
-              <Card className="border-0 shadow-xl h-fit">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-destructive/10 rounded-lg">
-                      <Lock className="h-5 w-5 text-destructive" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-xl">Security Settings</CardTitle>
-                      <CardDescription>
-                        Manage your password and security preferences
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
+              {/* Change Password Modal */}
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="lg" className="px-6">Change Password</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Change Password</DialogTitle>
+                    <DialogDescription>Update your account password.</DialogDescription>
+                  </DialogHeader>
                   <form onSubmit={handlePasswordChange} className="space-y-6">
                     <div className="space-y-2">
                       <Label htmlFor="currentPassword" className="flex items-center gap-2">
@@ -445,8 +409,7 @@ const AccountInfo = () => {
                         </Button>
                       </div>
                     </div>
-                    
-                    {/* Password Requirements */}
+
                     <div className="p-4 bg-muted/50 rounded-lg border border-muted">
                       <h4 className="text-sm font-medium mb-2">Password Requirements:</h4>
                       <ul className="text-xs text-muted-foreground space-y-1">
@@ -456,25 +419,27 @@ const AccountInfo = () => {
                         <li>• Contains both uppercase and lowercase letters</li>
                       </ul>
                     </div>
-                    
-                    <Button 
-                      type="submit" 
-                      variant="destructive"
-                      className="w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
-                        <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Changing Password...
-                        </div>
-                      ) : (
-                        "Change Password"
-                      )}
-                    </Button>
+
+                    <DialogFooter>
+                      <Button 
+                        type="submit" 
+                        variant="destructive"
+                        className="w-full"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Changing Password...
+                          </div>
+                        ) : (
+                          "Change Password"
+                        )}
+                      </Button>
+                    </DialogFooter>
                   </form>
-                </CardContent>
-              </Card>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
