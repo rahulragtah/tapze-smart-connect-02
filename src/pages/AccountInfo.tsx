@@ -263,6 +263,7 @@ const AccountInfo = () => {
                                   </Label>
                                   <Input
                                     id="firstName"
+                                    placeholder="Enter your first name"
                                     value={userInfo.firstName}
                                     onChange={(e) => setUserInfo(prev => ({ ...prev, firstName: e.target.value }))}
                                     required
@@ -275,6 +276,7 @@ const AccountInfo = () => {
                                   </Label>
                                   <Input
                                     id="lastName"
+                                    placeholder="Enter your last name"
                                     value={userInfo.lastName}
                                     onChange={(e) => setUserInfo(prev => ({ ...prev, lastName: e.target.value }))}
                                     required
@@ -286,13 +288,14 @@ const AccountInfo = () => {
                                   <Mail className="h-4 w-4" />
                                   Email Address
                                 </Label>
-                                <Input
-                                  id="email"
-                                  type="email"
-                                  value={userInfo.email}
-                                  onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
-                                  required
-                                />
+                                 <Input
+                                   id="email"
+                                   type="email"
+                                   placeholder="Enter your email address"
+                                   value={userInfo.email}
+                                   onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
+                                   required
+                                 />
                               </div>
                               <div className="space-y-2">
                                 <Label htmlFor="phoneNumber" className="flex items-center gap-2">
@@ -300,11 +303,12 @@ const AccountInfo = () => {
                                   Phone Number
                                 </Label>
                                 <Input
-                                  id="phoneNumber"
-                                  value={userInfo.phoneNumber}
-                                  onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
-                                  required
-                                />
+                                   id="phoneNumber"
+                                   placeholder="Enter your phone number"
+                                   value={userInfo.phoneNumber}
+                                   onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
+                                   required
+                                 />
                               </div>
                               <DialogFooter>
                                 <Button type="submit" className="w-full" disabled={isLoading}>
@@ -342,6 +346,7 @@ const AccountInfo = () => {
                                   <Input
                                     id="currentPassword"
                                     type={showPasswords.current ? "text" : "password"}
+                                    placeholder="Enter your current password"
                                     value={passwordData.currentPassword}
                                     onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
                                     className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -371,6 +376,7 @@ const AccountInfo = () => {
                                   <Input
                                     id="newPassword"
                                     type={showPasswords.new ? "text" : "password"}
+                                    placeholder="Create a strong password"
                                     value={passwordData.newPassword}
                                     onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
                                     className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -400,6 +406,7 @@ const AccountInfo = () => {
                                   <Input
                                     id="confirmPassword"
                                     type={showPasswords.confirm ? "text" : "password"}
+                                    placeholder="Re-enter your new password"
                                     value={passwordData.confirmPassword}
                                     onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                                     className="pr-12 transition-all duration-200 focus:ring-2 focus:ring-primary/20"

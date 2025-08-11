@@ -493,6 +493,7 @@ const isUserExistValidate = async (event) => {
                 <Label htmlFor="firstName">First Name *</Label>
                 <Input
                   id="firstName"
+                  placeholder="Enter your first name"
                   {...register('firstName', { required: 'First name is required' })}
                   className={errors.firstName ? 'border-destructive' : ''}
                 />
@@ -504,6 +505,7 @@ const isUserExistValidate = async (event) => {
                 <Label htmlFor="lastName">Last Name *</Label>
                 <Input
                   id="lastName"
+                  placeholder="Enter your last name"
                   {...register('lastName', { required: 'Last name is required' })}
                   className={errors.lastName ? 'border-destructive' : ''}
                 />
@@ -516,22 +518,20 @@ const isUserExistValidate = async (event) => {
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
-                
                 type="email"
+                placeholder="Enter your email address"
                 {...register('email', { 
                   required: 'Email is required',
                   pattern: {
                     value: /^\S+@\S+$/i,
                     message: 'Please enter a valid email'
                   }})}
-                    onBlur={(e) => {
-                    // call React Hook Form's onBlur
-                    register('email').onBlur(e);
-                    // call your function
-                    isUserExistValidate(e);
-                  }}
-
-
+                  onBlur={(e) => {
+                  // call React Hook Form's onBlur
+                  register('email').onBlur(e);
+                  // call your function
+                  isUserExistValidate(e);
+                }}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
@@ -543,6 +543,7 @@ const isUserExistValidate = async (event) => {
               <Input
                 id="phone"
                 type="tel"
+                placeholder="Enter your phone number"
                 {...register('phone', { required: 'Phone number is required' })}
                 className={errors.phone ? 'border-destructive' : ''}
               />
@@ -563,6 +564,7 @@ const isUserExistValidate = async (event) => {
               <Label htmlFor="address">Address *</Label>
               <Input
                 id="address"
+                placeholder="House no., street, area"
                 {...register('address', { required: 'Address is required' })}
                 className={errors.address ? 'border-destructive' : ''}
               />
@@ -572,13 +574,14 @@ const isUserExistValidate = async (event) => {
             </div>
             <div>
               <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
-              <Input id="apartment" {...register('apartment')} />
+              <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="city">City *</Label>
                 <Input
                   id="city"
+                  placeholder="Enter your city"
                   {...register('city', { required: 'City is required' })}
                   className={errors.city ? 'border-destructive' : ''}
                 />
@@ -590,6 +593,7 @@ const isUserExistValidate = async (event) => {
                 <Label htmlFor="state">State *</Label>
                 <Input
                   id="state"
+                  placeholder="Enter your state"
                   {...register('state', { required: 'State is required' })}
                   className={errors.state ? 'border-destructive' : ''}
                 />
@@ -603,6 +607,7 @@ const isUserExistValidate = async (event) => {
                 <Label htmlFor="zipCode">ZIP / Postal Code *</Label>
                 <Input
                   id="zipCode"
+                  placeholder="Enter your ZIP / postal code"
                   {...register('zipCode', { required: 'ZIP code is required' })}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
@@ -615,6 +620,7 @@ const isUserExistValidate = async (event) => {
                 <Input
                   id="country"
                   defaultValue="India"
+                  placeholder="Enter your country"
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />

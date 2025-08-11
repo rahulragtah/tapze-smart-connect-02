@@ -8,13 +8,7 @@ const Select = SelectPrimitive.Root
 
 const SelectGroup = SelectPrimitive.Group
 
-const SelectValue = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.Value>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
->(({ placeholder = "Select an option", ...props }, ref) => (
-  <SelectPrimitive.Value ref={ref} placeholder={placeholder} {...props} />
-))
-SelectValue.displayName = "SelectValue"
+const SelectValue = SelectPrimitive.Value
 
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
@@ -28,7 +22,7 @@ const SelectTrigger = React.forwardRef<
     )}
     {...props}
   >
-    {children ?? <SelectPrimitive.Value placeholder="Select an option" />}
+    {children}
     <SelectPrimitive.Icon asChild>
       <ChevronDown className="h-4 w-4 opacity-50" />
     </SelectPrimitive.Icon>

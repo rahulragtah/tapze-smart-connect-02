@@ -305,6 +305,7 @@ const Account = () => {
                         <Label htmlFor="firstName">First Name</Label>
                         <Input
                           id="firstName"
+                          placeholder="Enter your first name"
                           value={userInfo.firstName}
                           onChange={(e) => setUserInfo(prev => ({ ...prev, firstName: e.target.value }))}
                           required
@@ -314,6 +315,7 @@ const Account = () => {
                         <Label htmlFor="lastName">Last Name</Label>
                         <Input
                           id="lastName"
+                          placeholder="Enter your last name"
                           value={userInfo.lastName}
                           onChange={(e) => setUserInfo(prev => ({ ...prev, lastName: e.target.value }))}
                           required
@@ -325,6 +327,7 @@ const Account = () => {
                       <Input
                         id="email"
                         type="email"
+                        placeholder="Enter your email address"
                         value={userInfo.email}
                         onChange={(e) => setUserInfo(prev => ({ ...prev, email: e.target.value }))}
                         required
@@ -334,6 +337,7 @@ const Account = () => {
                       <Label htmlFor="phoneNumber">Phone Number</Label>
                       <Input
                         id="phoneNumber"
+                        placeholder="Enter your phone number"
                         value={userInfo.phoneNumber}
                         onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
                         required
@@ -368,6 +372,7 @@ const Account = () => {
                         <Input
                           id="currentPassword"
                           type={showPasswords.current ? "text" : "password"}
+                          placeholder="Enter your current password"
                           value={passwordData.currentPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
                           required
@@ -393,6 +398,7 @@ const Account = () => {
                         <Input
                           id="newPassword"
                           type={showPasswords.new ? "text" : "password"}
+                          placeholder="Create a strong password"
                           value={passwordData.newPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
                           required
@@ -418,6 +424,7 @@ const Account = () => {
                         <Input
                           id="confirmPassword"
                           type={showPasswords.confirm ? "text" : "password"}
+                          placeholder="Re-enter your new password"
                           value={passwordData.confirmPassword}
                           onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                           required
