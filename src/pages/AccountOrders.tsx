@@ -162,7 +162,7 @@ const AccountOrders = () => {
                 <Package className="h-6 w-6 text-primary" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold text-gradient">
               My Orders
             </h1>
             <p className="text-muted-foreground mt-1">

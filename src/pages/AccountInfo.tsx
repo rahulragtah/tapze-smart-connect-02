@@ -129,7 +129,7 @@ const AccountInfo = () => {
                 <User className="h-8 w-8 text-primary" />
               </div>
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-bold text-gradient">
               Account Settings
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
