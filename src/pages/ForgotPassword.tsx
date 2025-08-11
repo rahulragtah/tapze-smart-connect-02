@@ -10,7 +10,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
 import {initiateResetPassword} from '../services/login';
-import {sendRestPasswordEmail} from '../services/appEmailservice';
+import {sendRestPasswordEmail} from '../services/appEmailService';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
