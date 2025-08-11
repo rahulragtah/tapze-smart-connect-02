@@ -1,6 +1,6 @@
 // services.ts
 import {signUpDTO} from '../components/models/loginInterface';
-import {sendRestPasswordEmail} from './appEmailservice';
+//import {sendRestPasswordEmail} from './appEmailservice';
 
 export const loginUser = async (email: string, password : string ) => {
   const response = await fetch('https://tapze.in/tapzeservice/user/login.php', {
