@@ -96,7 +96,7 @@ export interface Address {
 
 const API_BASE = "https://tapze.in/tapzeservice/user";
 
-export const getUserAddress = async (): Promise<Address | null> => {
+export const getUserAddress = async () => {
   try {
     const response = await fetch(`${API_BASE}/address.php`, {
       method: "GET",
@@ -106,7 +106,7 @@ export const getUserAddress = async (): Promise<Address | null> => {
     const data = await response.json();
 
     if (data.success) {
-      return data.address as Address;
+      return data ;
     } else {
       console.error("Error:", data.message);
       return null;

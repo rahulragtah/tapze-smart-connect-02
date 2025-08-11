@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,35 +11,20 @@ import {getUserAddress} from '../services/orderService';
 import {createUserAddress} from '../services/userService';
 
 // Mock data - replace with real data from your backend
-const mockAddresses = [
-  {
-    id: 1,
-    type: "Home",
-    name: "Rahul Ragtah",
-    address: "123 Main Street, Apt 4B",
-    city: "New York",
-    state: "NY",
-    zipCode: "10001",
-    isDefault: true,
-  },
-  {
-    id: 2,
-    type: "Office",
-    name: "Rahul Ragtah",
-    address: "456 Business Ave, Suite 200",
-    city: "New York",
-    state: "NY",
-    zipCode: "10002",
-    isDefault: false,
-  },
-];
+
 
 const AccountAddresses = () => {
-  const [addresses, setAddresses] = useState(mockAddresses);
+  const [addresses, setAddresses] = useState<any[]>([]);
   const [editingAddress, setEditingAddress] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  getUserAddress();
+   useEffect(() => {
+  getUserAddress().then((data) => {
+          if (data) {
+            setAddresses(data.address || []);
+          }
+        });
+        }, []);
 
   const handleAddAddress = () => {
     setEditingAddress(null);
@@ -93,7 +78,7 @@ const AccountAddresses = () => {
               Manage your saved delivery addresses
             </p>
             <div className="mt-3 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-              Total Addresses: {mockAddresses.length}
+              Total Addresses: {addresses.length}
             </div>
           </div>
 
