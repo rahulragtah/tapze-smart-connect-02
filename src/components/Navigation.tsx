@@ -136,7 +136,7 @@ const Navigation = () => {
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="ghost" 
-                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
+                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full capitalize"
                     >
                       <UserCircle className="w-4 h-4 mr-2" />
                       {userInfo.name}
