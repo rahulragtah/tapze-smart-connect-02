@@ -142,10 +142,11 @@ const AccountInfo = () => {
             <Card className="border-0 shadow-xl overflow-hidden bg-gradient-to-br from-background to-muted/30">
               <CardContent className="p-8">
                 <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-                  {/* Profile Avatar - initials only */}
-                  <div className="relative animate-scale-in">
-                    <Avatar className="w-32 h-32 border-4 border-background shadow-xl">
-                      <AvatarFallback className="text-3xl bg-gradient-to-br from-muted-foreground to-foreground text-background font-bold">
+                  {/* Profile Avatar - animated initials */}
+                  <div className="relative animate-enter hover-scale">
+                    <span aria-hidden className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 blur-2xl opacity-70 pulse" />
+                    <Avatar className="w-36 h-36 ring-4 ring-primary/20 bg-muted/60 backdrop-blur border border-background/50 shadow-xl">
+                      <AvatarFallback className="text-5xl font-extrabold bg-gradient-to-br from-primary to-primary/70 text-background tracking-wider">
                         {userInfo.firstName?.[0]}
                         {userInfo.lastName?.[0]}
                       </AvatarFallback>
