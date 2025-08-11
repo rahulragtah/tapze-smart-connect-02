@@ -2,7 +2,7 @@
 import { CheckoutDTO, orderDTO } from '../components/models/productInterface';
 import {signUpDTO} from '../components/models/loginInterface';
 import {signUp, loginUser, initiateResetPassword} from './login';
-import {sendRestPasswordEmail} from './appEmailservice';
+import {sendRestPasswordEmail} from './appEmailService';
 
 export const createRazorpayOrder = async (amount: number) => {
   const response = await fetch('https://tapze.in/tapzeservice/create_order.php', {
