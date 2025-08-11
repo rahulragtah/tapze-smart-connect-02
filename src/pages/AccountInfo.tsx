@@ -1,12 +1,12 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Camera, User, Mail, Phone, Lock, Check, X } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Phone, Lock, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -20,7 +20,6 @@ const AccountInfo = () => {
     lastName: user.last_name,
     email: user.email,
     phoneNumber: user.phone,
-    profilePicture: "/lovable-uploads/brijesh.png",
   });
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -34,7 +33,7 @@ const AccountInfo = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   const { toast } = useToast();
 
   const passwordRequirements = [
@@ -117,24 +116,6 @@ const AccountInfo = () => {
     }
   };
 
-  const handleProfilePictureUpload = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUserInfo(prev => ({ ...prev, profilePicture: reader.result as string }));
-        toast({
-          title: "Profile Picture Updated",
-          description: "Your profile picture has been updated successfully.",
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -161,46 +142,23 @@ const AccountInfo = () => {
             <Card className="border-0 shadow-xl overflow-hidden bg-gradient-to-br from-background to-muted/30">
               <CardContent className="p-8">
                 <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-                  {/* Profile Picture */}
-                  <div className="relative group animate-scale-in">
-                    <div className="relative">
-                      <Avatar className="w-32 h-32 border-4 border-background shadow-xl transition-all duration-300 group-hover:shadow-2xl">
-                        <AvatarImage src={userInfo.profilePicture} alt="Profile" className="object-cover" />
-                        <AvatarFallback className="text-3xl bg-gradient-to-br from-muted-foreground to-foreground text-background font-bold">
-                          {userInfo.firstName[0]}{userInfo.lastName[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="absolute -bottom-2 -right-2">
-                        <Button
-                          onClick={handleProfilePictureUpload}
-                          size="icon"
-                          className="rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-                        >
-                          <Camera className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      className="hidden"
-                    />
+                  {/* Profile Avatar - initials only */}
+                  <div className="relative animate-scale-in">
+                    <Avatar className="w-32 h-32 border-4 border-background shadow-xl">
+                      <AvatarFallback className="text-3xl bg-gradient-to-br from-muted-foreground to-foreground text-background font-bold">
+                        {userInfo.firstName?.[0]}
+                        {userInfo.lastName?.[0]}
+                      </AvatarFallback>
+                    </Avatar>
                   </div>
                   
                   {/* User Info */}
                   <div className="flex-1 text-center lg:text-left">
                     <div className="space-y-6">
-                      {/* Name and Status */}
                       <div>
                         <h2 className="text-3xl font-bold text-foreground mb-3">
                           {userInfo.firstName} {userInfo.lastName}
                         </h2>
-                        <div className="flex items-center justify-center lg:justify-start gap-2 mb-6">
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                          <span className="text-sm text-muted-foreground font-medium">Active</span>
-                        </div>
                       </div>
 
                       {/* Contact Information */}
