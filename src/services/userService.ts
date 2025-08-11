@@ -6,7 +6,7 @@ export const createUserAddress = async ( address: UserAddress ) => {
     method: 'POST',
     credentials: 'include', 
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ address})
+    body: JSON.stringify( address)
   });
 
   if (!response.ok) {

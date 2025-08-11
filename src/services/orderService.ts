@@ -56,8 +56,10 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
 
       const result = await  loginUser(orderData.personalInfo.email,'TabZe@123' )
       if(result.success){
-        createUserAddress(orderData.address);
-        logOut()
+        const address = await createUserAddress(orderData.address);
+        if (address.message){
+           logOut()
+        }
       }
     }
   }
