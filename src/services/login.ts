@@ -1,5 +1,6 @@
 // services.ts
 import {signUpDTO} from '../components/models/loginInterface';
+import {sendRestPasswordEmail} from './appEmailservice';
 
 export const loginUser = async (email: string, password : string ) => {
   const response = await fetch('https://tapze.in/tapzeservice/user/login.php', {
@@ -35,7 +36,7 @@ export const signUp = async (signupData: signUpDTO) => {
 };
 
 
-export const resetPassword = async (email: string) => {
+export const initiateResetPassword = async (email: string) => {
 
   const response = await fetch("https://tapze.in/tapzeservice/user/userTransaction.php", {
     method: "POST",
@@ -43,8 +44,6 @@ export const resetPassword = async (email: string) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: email})
   });
-
-
   if (!response.ok) {
     throw new Error("Tapze order creation failed.");
   }
@@ -52,13 +51,14 @@ export const resetPassword = async (email: string) => {
 };
 
 
-export const resetPassword111 = async (email: string, password: string ,confirmPassword : string ) => {
+
+export const resetPassword = async (email: string, password: string ,confirmPassword : string ) => {
 
   const response = await fetch("https://tapze.in/tapzeservice/user/resetpassword.php", {
     method: "POST",
     
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ transactionId: email,password: email, confirmPassword:email})
+    body: JSON.stringify({ transactionId: email, password: password, confirmPassword:confirmPassword})
   });
 
 
@@ -69,15 +69,11 @@ export const resetPassword111 = async (email: string, password: string ,confirmP
 };
 
 
-export const logOut = async () => {
-
-  
+export const logOut = async () => { 
   const response = await fetch("https://tapze.in/tapzeservice/user/logout.php", {
     method: 'GET',
     credentials: 'include', // Important to send session cookies
   });
-
-
   const result = await response.json();
   if (result.status === 'success') {
     console.log('User logged out');

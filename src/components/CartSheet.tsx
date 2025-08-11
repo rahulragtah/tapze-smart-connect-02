@@ -18,8 +18,9 @@ import {registerUser} from '../components/user/registerUser';
 import ReCAPTCHA from "react-google-recaptcha";
 import OrderProcessingLoader from './OrderProcessingLoader';
 import OrderErrorModal from './OrderErrorModal';
-import {isUserExist} from '../sercices/login';
+import {isUserExist} from '../services/login';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import {postOrderProcessing} from '../services/orderService';
 
 
 interface CheckoutFormData {
@@ -262,6 +263,8 @@ const isUserExistValidate = async (event) => {
     try {
       // Stage 1: Create Razorpay order
       setProcessingStage('creating');
+      postOrderProcessing(finalOrderDto, false);
+      return ;
       const createOrderRazorpayResponse = await fetch(
         'https://tapze.in/tapzeservice/create_order.php',
         {
@@ -366,6 +369,9 @@ const isUserExistValidate = async (event) => {
               try {
                 await emailjs.send('tapzeEmailService', 'template_zk2gl62', finalEmailDto, 'iwIaefaueRobx3b5j');
                 console.log('Order confirmation email sent successfully');
+                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+                //if user is logged in it means it is not a new user 
+                postOrderProcessing(finalOrderDto, isLoggedIn);
               } catch (emailError) {
                 console.error('Failed to send email:', emailError);
               }

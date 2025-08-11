@@ -1,5 +1,8 @@
 // services.ts
 import { CheckoutDTO, orderDTO } from '../components/models/productInterface';
+import {signUpDTO} from '../components/models/loginInterface';
+import {signUp, loginUser, initiateResetPassword} from './login';
+import {sendRestPasswordEmail} from './appEmailservice';
 
 export const createRazorpayOrder = async (amount: number) => {
   const response = await fetch('https://tapze.in/tapzeservice/create_order.php', {
@@ -29,6 +32,30 @@ export const createTapzeOrder = async (orderData: CheckoutDTO) => {
 
   return response.json();
 };
+
+
+export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boolean) => {
+  if (isLoggedIn)
+    return ;
+  const userObject: signUpDTO  = {
+    firstName: orderData.personalInfo.firstName,
+    lastName: orderData.personalInfo.lastName,
+    email: orderData.personalInfo.email,
+    phoneNumber:orderData.personalInfo.phone ,
+    password: 'TabZe@123',
+    confirmPassword: 'TabZe@123'
+  };
+  // create user in user table 
+  const result = await signUp(userObject);
+  if (result.success) {
+      // generate transaction id to send in resetpassword mail      
+    const response= await initiateResetPassword(orderData.personalInfo.email);
+    if (response.success) { 
+      sendRestPasswordEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+    }
+  }
+};
+
 
 export const verifyPayment = async (body: any) => {
   const response = await fetch("https://tapze.in/tapzeservice/verifypayment.php", {
@@ -64,7 +91,7 @@ const API_BASE = "https://tapze.in/tapzeservice/user";
 
 export const getUserAddress = async (): Promise<Address | null> => {
   try {
-    const response = await fetch(`${API_BASE}/userAddress.php`, {
+    const response = await fetch(`${API_BASE}/address.php`, {
       method: "GET",
       credentials: "include", // send PHP session cookies
     });

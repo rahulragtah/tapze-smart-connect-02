@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import authBackground from "@/assets/auth-background.jpg";
 import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { resetPassword111 } from "@/sercices/login";
+import { resetPassword } from "@/services/login";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -57,8 +57,7 @@ const ResetPassword = () => {
     try {
       // TODO: Integrate with backend using token when available
       // await confirmResetPassword({ token, password });
-      await new Promise((r) => setTimeout(r, 800));
-      const response = await resetPassword111(String(token || ''));
+      const response = await resetPassword(String(token || ''),password, confirmPassword);
        if (response.status=="success") {
             setIsSuccess(true);
         } else {

@@ -9,7 +9,7 @@ import { Eye, EyeOff, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {signUp} from '../sercices/login';
+import {signUp} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
 
 const Signup = () => {

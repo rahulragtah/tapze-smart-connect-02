@@ -7,6 +7,7 @@ import { Edit, Plus, MapPin } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
+import {getUserAddress} from '../services/orderService';
 
 // Mock data - replace with real data from your backend
 const mockAddresses = [
@@ -36,6 +37,8 @@ const AccountAddresses = () => {
   const [addresses, setAddresses] = useState(mockAddresses);
   const [editingAddress, setEditingAddress] = useState<any>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  getUserAddress();
 
   const handleAddAddress = () => {
     setEditingAddress(null);

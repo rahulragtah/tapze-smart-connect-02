@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, LogOut, UserCircle, Menu, X, Package, MapPin } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
-import {logOut} from '../sercices/login'
+import {logOut} from '../services/login'
 import { 
   DropdownMenu,
   DropdownMenuContent,

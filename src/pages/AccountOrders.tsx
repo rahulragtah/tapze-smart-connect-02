@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
 
-import {getOrders} from '../sercices/orderService';
+import {getOrders} from '../services/orderService';
 
 // Mock data - replace with real data from your backend
 // const mockOrders = [
