@@ -8,6 +8,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
 import {getUserAddress} from '../services/orderService';
+import {createUserAddress} from '../services/userService';
 
 // Mock data - replace with real data from your backend
 const mockAddresses = [
@@ -60,6 +61,9 @@ const AccountAddresses = () => {
       // Add new address
       const newAddress = { ...addressData, id: Date.now() };
       setAddresses(prev => [...prev, newAddress]);
+      //createUserAddress
+      
+
     }
     setIsSheetOpen(false);
     setEditingAddress(null);
