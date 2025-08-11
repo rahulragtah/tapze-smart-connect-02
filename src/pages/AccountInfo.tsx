@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Camera, User, Mail, Phone, Lock } from "lucide-react";
+import { Eye, EyeOff, Camera, User, Mail, Phone, Lock, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -32,6 +32,14 @@ const AccountInfo = () => {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const passwordRequirements = [
+    { regex: /.{8,}/, text: "At least 8 characters" },
+    { regex: /[0-9]/, text: "At least 1 number" },
+    { regex: /[!@#$%^&*(),.?":{}|<>]/, text: "At least 1 special character" },
+    { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+    { regex: /[a-z]/, text: "At least 1 lowercase letter" },
+  ];
 
   const handleUserInfoUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,6 +71,16 @@ const AccountInfo = () => {
       toast({
         title: "Password Mismatch",
         description: "New passwords do not match.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const allRequirementsMet = passwordRequirements.every(req => req.regex.test(passwordData.newPassword));
+    if (!allRequirementsMet) {
+      toast({
+        title: "Password Requirements Not Met",
+        description: "Please ensure your password meets all requirements.",
         variant: "destructive",
       });
       return;
@@ -402,15 +420,21 @@ const AccountInfo = () => {
                                   </Button>
                                 </div>
                               </div>
-
-                              <div className="p-4 bg-muted/50 rounded-lg border border-muted">
-                                <h4 className="text-sm font-medium mb-2">Password Requirements:</h4>
-                                <ul className="text-xs text-muted-foreground space-y-1">
-                                  <li>• At least 8 characters long</li>
-                                  <li>• Contains at least one number</li>
-                                  <li>• Contains at least one special character</li>
-                                  <li>• Contains both uppercase and lowercase letters</li>
-                                </ul>
+                              {/* Live password checklist matching Signup behavior */}
+                              <div className="space-y-1 text-xs">
+                                {passwordRequirements.map((req, index) => {
+                                  const isValid = req.regex.test(passwordData.newPassword);
+                                  return (
+                                    <div key={index} className={`flex items-center gap-2 ${isValid ? 'text-green-600' : 'text-muted-foreground'}`}>
+                                      {isValid ? (
+                                        <Check className="h-3 w-3" />
+                                      ) : (
+                                        <X className="h-3 w-3" />
+                                      )}
+                                      {req.text}
+                                    </div>
+                                  );
+                                })}
                               </div>
 
                               <DialogFooter>

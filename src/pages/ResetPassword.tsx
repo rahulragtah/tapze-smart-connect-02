@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import authBackground from "@/assets/auth-background.jpg";
-import { Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, CheckCircle2, Check, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { resetPassword } from "@/services/login";
 
@@ -22,6 +22,14 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const passwordRequirements = [
+    { regex: /.{8,}/, text: "At least 8 characters" },
+    { regex: /[0-9]/, text: "At least 1 number" },
+    { regex: /[!@#$%^&*(),.?":{}|<>]/, text: "At least 1 special character" },
+    { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+    { regex: /[a-z]/, text: "At least 1 lowercase letter" },
+  ];
 
 
 
@@ -49,6 +57,17 @@ const ResetPassword = () => {
       toast({
         title: "Passwords do not match",
         description: "Please ensure both fields are identical.",
+        variant: "destructive",
+      });
+      return;
+    }
+    const allRequirementsMet = passwordRequirements.every(req => 
+      req.regex.test(password)
+    );
+    if (!allRequirementsMet) {
+      toast({
+        title: "Password Requirements Not Met",
+        description: "Please ensure your password meets all requirements.",
         variant: "destructive",
       });
       return;
@@ -146,6 +165,23 @@ const ResetPassword = () => {
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
+                  </div>
+
+                  {/* Live password checklist matching Signup behavior */}
+                  <div className="space-y-1 text-xs">
+                    {passwordRequirements.map((req, index) => {
+                      const isValid = req.regex.test(password);
+                      return (
+                        <div key={index} className={`flex items-center gap-2 ${isValid ? 'text-green-600' : 'text-muted-foreground'}`}>
+                          {isValid ? (
+                            <Check className="h-3 w-3" />
+                          ) : (
+                            <X className="h-3 w-3" />
+                          )}
+                          {req.text}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <div className="space-y-2">
