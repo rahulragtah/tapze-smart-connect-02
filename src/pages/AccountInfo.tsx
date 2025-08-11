@@ -12,10 +12,10 @@ import Footer from "@/components/Footer";
 
 const AccountInfo = () => {
   const [userInfo, setUserInfo] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 (555) 123-4567",
+    firstName: "Rahul",
+    lastName: "Ragtah",
+    email: "rahulragtah@tapze.in",
+    phoneNumber: "+91 9990909789",
     profilePicture: "/lovable-uploads/brijesh.png",
   });
   const [passwordData, setPasswordData] = useState({

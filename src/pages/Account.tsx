@@ -14,7 +14,7 @@ const mockAddresses = [
   {
     id: 1,
     type: "Home",
-    name: "John Doe",
+    name: "Rahul Ragtah",
     address: "123 Main Street, Apt 4B",
     city: "New York",
     state: "NY",
@@ -24,7 +24,7 @@ const mockAddresses = [
   {
     id: 2,
     type: "Office",
-    name: "John Doe",
+    name: "Swadha Ragtah",
     address: "456 Business Ave, Suite 200",
     city: "New York",
     state: "NY",
@@ -63,10 +63,10 @@ const mockOrders = [
 const Account = () => {
   const [activeTab, setActiveTab] = useState("addresses");
   const [userInfo, setUserInfo] = useState({
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phoneNumber: "+1 (555) 123-4567",
+    firstName: "Rahul",
+    lastName: "Ragtah",
+    email: "rahulragtah@tapze.in",
+    phoneNumber: "+91 9990909789",
   });
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",

@@ -149,7 +149,7 @@ const Signup = () => {
                 <Input
                   id="firstName"
                   name="firstName"
-                  placeholder="John"
+                  placeholder="e.g. Rahul"
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
@@ -160,7 +160,7 @@ const Signup = () => {
                 <Input
                   id="lastName"
                   name="lastName"
-                  placeholder="Doe"
+                  placeholder="e.g. Ragtah"
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
@@ -174,7 +174,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="e.g. rahulragtah@tapze.in"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
@@ -187,7 +187,7 @@ const Signup = () => {
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
-                placeholder="+1 (555) 123-4567"
+                placeholder="e.g. +91 9990909789"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 required

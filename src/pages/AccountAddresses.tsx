@@ -14,7 +14,7 @@ const mockAddresses = [
   {
     id: 1,
     type: "Home",
-    name: "John Doe",
+    name: "Rahul Ragtah",
     address: "123 Main Street, Apt 4B",
     city: "New York",
     state: "NY",
@@ -24,7 +24,7 @@ const mockAddresses = [
   {
     id: 2,
     type: "Office",
-    name: "John Doe",
+    name: "Rahul Ragtah",
     address: "456 Business Ave, Suite 200",
     city: "New York",
     state: "NY",
