@@ -1,7 +1,6 @@
 // services.ts
 import {signUpDTO} from '../components/models/loginInterface';
 
-
 export const loginUser = async (email: string, password : string ) => {
   const response = await fetch('https://tapze.in/tapzeservice/user/login.php', {
     method: 'POST',
