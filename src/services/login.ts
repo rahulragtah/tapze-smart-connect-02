@@ -1,6 +1,7 @@
 // services.ts
 import {signUpDTO} from '../components/models/loginInterface';
 
+
 export const loginUser = async (email: string, password : string ) => {
   const response = await fetch('https://tapze.in/tapzeservice/user/login.php', {
     method: 'POST',
@@ -79,6 +80,7 @@ export const logOut = async () => {
     // Clear any local state or redirect
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('user');
+   
     
   } else {
     console.error('Logout failed');

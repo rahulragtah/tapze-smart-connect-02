@@ -38,6 +38,7 @@ const Navigation = () => {
     setIsLoggedIn(false);
     logOut();
     setUserInfo({ name: "", phone: "" });
+    
   };
 
   const closeMobileMenu = () => {

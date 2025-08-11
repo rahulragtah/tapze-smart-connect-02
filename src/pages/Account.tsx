@@ -252,9 +252,9 @@ const Account = () => {
                       </div>
                       <div>
                         <h4 className="font-medium mb-2">Shipping Details</h4>
-                        <p className="text-sm">Tracking: {order.trackingNumber}</p>
+                        <p className="text-sm">Tracking: {order.tracking_number}</p>
                         <div className="flex items-center gap-2 text-sm">
-                          <span>Courier: {order.courierPartner}</span>
+                          <span>Courier: {order.shipping_partner}</span>
                           <Button
                             variant="ghost"
                             size="sm"
@@ -262,7 +262,7 @@ const Account = () => {
                             asChild
                           >
                             <a 
-                              href={order.courierWebsite} 
+                              href={order.partner_url} 
                               target="_blank" 
                               rel="noopener noreferrer"
                             >
