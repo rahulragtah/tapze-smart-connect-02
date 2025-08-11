@@ -4,7 +4,7 @@ export const sendRestPasswordEmail = async (email: string, FirstName: string ,la
 // send email from this place to customer for reset password
 const emailPayload = {email,FirstName,lastName,transactionId}
     try {
-        await emailjs.send('tapzeEmailService', 'template_zk2gl62', emailPayload, 'iwIaefaueRobx3b5j');
+        await emailjs.send('tapzeEmailService', 'template_1ncvqdb', emailPayload, 'iwIaefaueRobx3b5j');
         } catch (emailError) {
             console.error('Failed to send email:', emailError);
         }
