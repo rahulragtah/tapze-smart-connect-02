@@ -10,12 +10,16 @@ import { Eye, EyeOff, Camera, User, Mail, Phone, Lock, Check, X } from "lucide-r
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
+
 const AccountInfo = () => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const user = JSON.parse(localStorage.getItem('user'));
+
   const [userInfo, setUserInfo] = useState({
-    firstName: "Rahul",
-    lastName: "Ragtah",
-    email: "rahulragtah@tapze.in",
-    phoneNumber: "+91 9990909789",
+    firstName: user.first_name,
+    lastName: user.last_name,
+    email: user.email,
+    phoneNumber: user.phone,
     profilePicture: "/lovable-uploads/brijesh.png",
   });
   const [passwordData, setPasswordData] = useState({
