@@ -231,7 +231,7 @@ const AccountInfo = () => {
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="flex justify-center lg:justify-start gap-8 pt-4">
+                      {/* <div className="flex justify-center lg:justify-start gap-8 pt-4">
                         <div className="text-center">
                           <div className="w-16 h-16 mx-auto mb-2 rounded-xl bg-muted border flex items-center justify-center shadow-sm">
                             <span className="text-xl font-bold text-foreground">5</span>
@@ -244,14 +244,14 @@ const AccountInfo = () => {
                           </div>
                           <p className="text-xs text-muted-foreground font-medium">Saved Addresses</p>
                         </div>
-                      </div>
+                      </div> */}
 
                       {/* Actions on profile panel */}
                       <div className="flex flex-wrap gap-3 pt-6 justify-center lg:justify-start">
                         {/* Edit Personal Details Modal */}
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button size="lg" className="px-6">Edit Personal Details</Button>
+                            {/* <Button size="lg" className="px-6">Edit Personal Details</Button> */}
                           </DialogTrigger>
                           <DialogContent className="sm:max-w-lg">
                             <DialogHeader>
