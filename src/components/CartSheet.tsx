@@ -1,4 +1,4 @@
-import React, { useState , useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -152,6 +152,11 @@ const CartSheet = () => {
   const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
+  useEffect(() => {
+    if (isOpen) {
+      setStep('cart');
+    }
+  }, [isOpen]);
   
   const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
   
