@@ -10,6 +10,7 @@ import { MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 interface ContactForm {
   name: string;
