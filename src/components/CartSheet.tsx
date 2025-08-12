@@ -23,6 +23,8 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import {postOrderProcessing} from '../services/orderService';
 
 
+
+
 interface CheckoutFormData {
   firstName: string;
   lastName: string;
@@ -57,6 +59,8 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
   applyCoupon,
   removeCoupon
 }) => {
+  
+
   return (
     <Card>
       <CardHeader>
@@ -130,6 +134,7 @@ const formattedDate = new Date().toLocaleDateString('en-IN', {
 });
  
 const CartSheet = () => {
+
   const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -527,9 +532,9 @@ const isUserExistValidate = async (event) => {
                     value: /^\S+@\S+$/i,
                     message: 'Please enter a valid email'
                   }})}
-                  onBlur={(e) => {
+                  onChange={(e) => {
                   // call React Hook Form's onBlur
-                  register('email').onBlur(e);
+                  register('email').onChange(e);
                   // call your function
                   isUserExistValidate(e);
                 }}
@@ -890,7 +895,10 @@ const isUserExistValidate = async (event) => {
               const emailVal = watch('email');
               setShowExistingAccountDialog(false);
               setIsOpen(false);
-              navigate('/login', { state: { prefillEmail: emailVal } });
+              
+              navigate(`/login?redirecturl=${location.pathname}${location.search}`, {
+                state: { prefillEmail: emailVal },
+              });
             }}>
               Login
             </AlertDialogAction>

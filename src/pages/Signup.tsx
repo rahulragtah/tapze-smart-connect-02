@@ -78,7 +78,7 @@ const Signup = () => {
         if (response?.success) {
            toast({
             title: "Signup Failed",
-            description: "Looks like you already have an account with that email address. If you don't remember your password, use the Forgot password",
+            description: "Looks like you already have an account with that email address. If you don't remember your password, use the 'Forgot password'",
             variant: "destructive",
           });
 
