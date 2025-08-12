@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,14 @@ import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
 import {loginUser} from '../services/login'
 
+
+
 const Login = () => {
+  const [searchParams] = useSearchParams();
+  // Optional: token from email link (if available later)
+  const redirecturl = searchParams.get("redirecturl");
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +45,13 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate("/account/orders");
+      if(redirecturl!= null && redirecturl!= "" ){
+      navigate("/buy-nfc-card");
+      alert 
+      }
+      else{
+        navigate("/");
+      }
       }else {
         toast({
         title: "Login Failed",
