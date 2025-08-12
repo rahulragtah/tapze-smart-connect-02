@@ -52,13 +52,13 @@ export const initiateResetPassword = async (email: string) => {
 
 
 
-export const resetPassword = async (email: string, password: string ,confirmPassword : string ) => {
+export const resetPassword = async (email: string, password: string ,confirmPassword : string , action:string) => {
 
   const response = await fetch("https://tapze.in/tapzeservice/user/resetpassword.php", {
     method: "POST",
     
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ transactionId: email, password: password, confirmPassword:confirmPassword})
+    body: JSON.stringify({ transactionId: email, password: password, confirmPassword:confirmPassword, action:action})
   });
 
 

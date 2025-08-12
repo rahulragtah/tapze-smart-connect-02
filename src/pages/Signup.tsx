@@ -9,8 +9,9 @@ import { Eye, EyeOff, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {signUp} from '../services/login';
+import {signUp, isUserExist, initiateResetPassword} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
+import {sendAccountVerificationEmail} from '../services/appEmailService';
 
 const Signup = () => {
   const [formData, setFormData] = useState<signUpDTO>({
@@ -42,6 +43,8 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+
     
     if (formData.password !== formData.confirmPassword) {
       toast({
@@ -69,22 +72,36 @@ const Signup = () => {
 
     try {
       // TODO: Replace with actual signup API call
-        const result = await signUp(formData);
-      
-        if (result.success) {
-          toast({
-        title: "Account Created Successfully",
-        description: "Welcome to Tapze! You can now log in.",
-        });
-        navigate("/login");
+        const response = await isUserExist(formData.email);
+        if (response?.success) {
+           toast({
+            title: "Signup Failed",
+            description: "Looks like you already have an account with that email address. If you don't remember your password, use the "Forgot password",
+            variant: "destructive",
+          });
+
         } else {
-          toast({
-        title: "Signup Failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-      });
+        const result = await signUp(formData);
+        if (result.success) {
+           const response = await initiateResetPassword(formData.email);
+              if (response.success) {
+                   sendAccountVerificationEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+                  toast({
+                  title: "Account Created Successfully",
+                  description: "You’re all set! Just click the link we sent to your email to verify your account.",
+                });
+               navigate("/login");
+              }
+        } else {
+            toast({
+              title: "Signup Failed",
+              description: "Please try again or contact support.",
+              variant: "destructive",
+        });
 
       }
+
+     }
       
     } catch (error) {
       toast({

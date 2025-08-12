@@ -143,8 +143,8 @@ const CartSheet = () => {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [captchaToken, setCaptchaToken] = useState(false);
-const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
-
+  const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
   
   const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
@@ -217,6 +217,7 @@ const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false
 
 const isUserExistValidate = async (event) => {
     const email = event.target.value?.trim();
+    if (isLoggedIn) return;
     if (!email) return;
     try {
         const response = await isUserExist(email);

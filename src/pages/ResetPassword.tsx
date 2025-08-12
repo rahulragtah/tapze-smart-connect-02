@@ -35,6 +35,7 @@ const ResetPassword = () => {
 
   // Optional: token from email link (if available later)
   const token = searchParams.get("token");
+  const verification = searchParams.get("verification");
   console.log("token   ", token);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const ResetPassword = () => {
     try {
       // TODO: Integrate with backend using token when available
       // await confirmResetPassword({ token, password });
-      const response = await resetPassword(String(token || ''),password, confirmPassword);
+      const response = await resetPassword(String(token || ''),password, confirmPassword, 'resetpassword');
        if (response.status=="success") {
             setIsSuccess(true);
         } else {
