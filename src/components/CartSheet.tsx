@@ -217,6 +217,8 @@ const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false
 
 const isUserExistValidate = async (event) => {
     const email = event.target.value?.trim();
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (isLoggedIn) return;
     if (!email) return;
     try {
         const response = await isUserExist(email);
