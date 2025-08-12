@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, User, LogOut, UserCircle, Menu, X, Package, MapPin } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
-import {logOut} from '../services/login'
+import {logOut} from '../services/login';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -18,9 +18,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginModal from "./LoginModal";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation ,useNavigate} from "react-router-dom";
 
 const Navigation = () => {
+  const navigate = useNavigate();
   const { totalItems, setIsOpen } = useCart();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -38,6 +39,7 @@ const Navigation = () => {
     setIsLoggedIn(false);
     logOut();
     setUserInfo({ name: "", phone: "" });
+    navigate('/login');
     
   };
 

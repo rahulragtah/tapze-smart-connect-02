@@ -9,7 +9,7 @@ import { Eye, EyeOff, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {signUp} from '../services/login';
+import {signUp, isUserExist} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
 
 const Signup = () => {
@@ -42,6 +42,8 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+
     
     if (formData.password !== formData.confirmPassword) {
       toast({
@@ -69,22 +71,32 @@ const Signup = () => {
 
     try {
       // TODO: Replace with actual signup API call
-        const result = await signUp(formData);
-      
+        const response = await isUserExist(formData.email);
+        if (response?.success) {
+           toast({
+            title: "Signup Failed",
+            description: "this email id already exists. please try with others",
+            variant: "destructive",
+          });
+
+        } else {
+          const result = await signUp(formData);
         if (result.success) {
           toast({
         title: "Account Created Successfully",
-        description: "Welcome to Tapze! You can now log in.",
+        description: "You’re all set! Just click the link we sent to your email to verify your account.",
         });
         navigate("/login");
         } else {
-          toast({
-        title: "Signup Failed",
-        description: "Please try again or contact support.",
-        variant: "destructive",
-      });
+            toast({
+              title: "Signup Failed",
+              description: "Please try again or contact support.",
+              variant: "destructive",
+        });
 
       }
+
+     }
       
     } catch (error) {
       toast({
