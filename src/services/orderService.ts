@@ -44,7 +44,9 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
     email: orderData.personalInfo.email,
     phoneNumber:orderData.personalInfo.phone ,
     password: 'TabZe@123',
-    confirmPassword: 'TabZe@123'
+    confirmPassword: 'TabZe@123', 
+    isVerified: 1
+
   };
   // create user in user table 
   const result = await signUp(userObject);
