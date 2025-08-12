@@ -889,7 +889,7 @@ const isUserExistValidate = async (event) => {
               const emailVal = watch('email');
               setShowExistingAccountDialog(false);
               setIsOpen(false);
-              navigate('/login', { state: { prefillEmail: emailVal } });
+              navigate('/login?url=checkout', { state: { prefillEmail: emailVal }});
             }}>
               Login
             </AlertDialogAction>
