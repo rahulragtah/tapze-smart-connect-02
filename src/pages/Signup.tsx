@@ -13,6 +13,7 @@ import {signUp, isUserExist, initiateResetPassword} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
 import {sendAccountVerificationEmail} from '../services/appEmailService';
 import {resendEmailDTO} from '../components/models/loginInterface';
+import { PhoneInput } from "@/components/ui/phone-input";
 
 const Signup = () => {
   const [formData, setFormData] = useState<signUpDTO>({
@@ -203,11 +204,10 @@ const Signup = () => {
             
             <div className="space-y-2">
               <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
+              <PhoneInput
                 id="phoneNumber"
                 name="phoneNumber"
-                type="tel"
-                placeholder="e.g. +91 9990909789"
+                placeholder="10-digit mobile number"
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 required

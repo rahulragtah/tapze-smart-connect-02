@@ -181,9 +181,8 @@ const Contact = () => {
                           <FormItem>
                             <FormLabel className="text-gray-300">Phone Number</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="tel"
-                                placeholder="+91 9990909789" 
+                              <PhoneInput 
+                                placeholder="10-digit mobile number" 
                                 {...field}
                                 className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400"
                               />

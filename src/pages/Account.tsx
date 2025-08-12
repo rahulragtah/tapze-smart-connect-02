@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { MapPin, Package, User, Eye, EyeOff, Download, ExternalLink, Plus, Edit } from "lucide-react";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 // Mock data - replace with real data from your backend
 const mockAddresses = [
@@ -66,7 +67,7 @@ const Account = () => {
     firstName: "Rahul",
     lastName: "Ragtah",
     email: "rahulragtah@tapze.in",
-    phoneNumber: "+91 9990909789",
+    phoneNumber: "+919990909789",
   });
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
@@ -335,9 +336,9 @@ const Account = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="phoneNumber">Phone Number</Label>
-                      <Input
+                      <PhoneInput
                         id="phoneNumber"
-                        placeholder="Enter your phone number"
+                        placeholder="10-digit mobile number"
                         value={userInfo.phoneNumber}
                         onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
                         required

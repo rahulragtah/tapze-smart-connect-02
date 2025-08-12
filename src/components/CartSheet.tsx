@@ -21,6 +21,7 @@ import OrderErrorModal from './OrderErrorModal';
 import {isUserExist} from '../services/login';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import {postOrderProcessing} from '../services/orderService';
+import { PhoneInput } from '@/components/ui/phone-input';
 
 
 
@@ -546,10 +547,9 @@ const isUserExistValidate = async (event) => {
             </div>
             <div>
               <Label htmlFor="phone">Phone Number *</Label>
-              <Input
+              <PhoneInput
                 id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
+                placeholder="10-digit mobile number"
                 {...register('phone', { required: 'Phone number is required' })}
                 className={errors.phone ? 'border-destructive' : ''}
               />
@@ -741,7 +741,7 @@ const isUserExistValidate = async (event) => {
 
   return (
     <>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (open) setStep('cart'); }}>
         <SheetContent className="w-full sm:max-w-2xl flex flex-col">
           <SheetHeader>
             <SheetTitle className="flex items-center justify-between">
