@@ -4,5 +4,6 @@ export interface signUpDTO {
     email: string,
     phoneNumber: string,
     password: string,
-    confirmPassword: string
+    confirmPassword: string,
+    isVerified: number
   }

@@ -21,6 +21,7 @@ const Signup = () => {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
+    isVerified : 0
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);

@@ -46,7 +46,7 @@ const Login = () => {
         description: "Welcome back!",
       });
       if(redirecturl!= null && redirecturl!= "" ){
-      navigate("/buy-nfc-card");
+      navigate('${redirecturl}');
       alert 
       }
       else{
