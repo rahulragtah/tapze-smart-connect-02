@@ -11,9 +11,12 @@ import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
 import {initiateResetPassword} from '../services/login';
 import {sendRestPasswordEmail} from '../services/appEmailService';
+import {resendEmailDTO} from '../components/models/loginInterface';
+import ResendEmailButton from "./ResendEmailButton";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [emailPayload, setEmailPayload] = useState<resendEmailDTO>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { toast } = useToast();
@@ -33,7 +36,9 @@ const ForgotPassword = () => {
       if (response.success) {
 
         setIsEmailSent(true);
-        sendRestPasswordEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+        setEmailPayload({ email:response.email, FirstName:response.firstName, 
+           lastName:response.lastName,transactionId:response.transactionId });
+        sendRestPasswordEmail(emailPayload);
       toast({
         title: "Reset Email Sent",
         description: "Please check your email for password reset instructions.",
@@ -106,7 +111,7 @@ const ForgotPassword = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Didn't receive the email? Check your spam folder or try again with a different email address.
+                  Didn't receive the email? Check your spam folder or <ResendEmailButton payload={emailPayload}  />
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col space-y-4">
