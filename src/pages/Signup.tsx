@@ -12,6 +12,7 @@ import authBackground from "@/assets/auth-background.jpg";
 import {signUp, isUserExist, initiateResetPassword} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
 import {sendAccountVerificationEmail} from '../services/appEmailService';
+import {resendEmailDTO} from '../components/models/loginInterface';
 
 const Signup = () => {
   const [formData, setFormData] = useState<signUpDTO>({
@@ -86,7 +87,8 @@ const Signup = () => {
         if (result.success) {
            const response = await initiateResetPassword(formData.email);
               if (response.success) {
-                   sendAccountVerificationEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+                 const payload :resendEmailDTO= {email:response.email,FirstName:response.firstName,  lastName:response.lastName,transactionId:response.transactionId} 
+                   sendAccountVerificationEmail(payload);
                   toast({
                   title: "Account Created Successfully",
                   description: "You’re all set! Just click the link we sent to your email to verify your account.",

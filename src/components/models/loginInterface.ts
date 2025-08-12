@@ -7,3 +7,10 @@ export interface signUpDTO {
     confirmPassword: string,
     isVerified: number
   }
+
+  export interface resendEmailDTO extends Record<string, unknown>{
+    email: string;
+    FirstName: string;
+    lastName:string;
+    transactionId:string
+}
