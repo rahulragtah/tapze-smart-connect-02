@@ -9,8 +9,9 @@ import { Eye, EyeOff, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {signUp, isUserExist} from '../services/login';
+import {signUp, isUserExist, initiateResetPassword} from '../services/login';
 import {signUpDTO} from '../components/models/loginInterface';
+import {sendAccountVerificationEmail} from '../services/appEmailService';
 
 const Signup = () => {
   const [formData, setFormData] = useState<signUpDTO>({
@@ -80,13 +81,17 @@ const Signup = () => {
           });
 
         } else {
-          const result = await signUp(formData);
+        const result = await signUp(formData);
         if (result.success) {
-          toast({
-        title: "Account Created Successfully",
-        description: "You’re all set! Just click the link we sent to your email to verify your account.",
-        });
-        navigate("/login");
+           const response = await initiateResetPassword(formData.email);
+              if (response.success) {
+                   sendAccountVerificationEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+                  toast({
+                  title: "Account Created Successfully",
+                  description: "You’re all set! Just click the link we sent to your email to verify your account.",
+                });
+               navigate("/login");
+              }
         } else {
             toast({
               title: "Signup Failed",
