@@ -115,7 +115,7 @@ const ForgotPassword = () => {
                   className="w-full"
                   onClick={() => setIsEmailSent(false)}
                 >
-                  Try Another Email
+                  Resend Email
                 </Button>
                 <Link to="/login" className="w-full">
                   <Button variant="ghost" className="w-full">
