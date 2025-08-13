@@ -154,6 +154,7 @@ const CartSheet = () => {
   const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
+  const zipRef = useRef<HTMLInputElement | null>(null);
   useEffect(() => {
     if (isOpen) {
       setStep('cart');
@@ -161,6 +162,14 @@ const CartSheet = () => {
   }, [isOpen]);
   
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
+
+  // Keep PIN field focused until 6 digits are entered
+  const zipValue = watch('zipCode');
+  useEffect(() => {
+    if ((zipValue || '').length < 6 && step === 'checkout' && isOpen) {
+      zipRef.current?.focus();
+    }
+  }, [zipValue, step, isOpen]);
 
   // India address helpers
   const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
@@ -685,11 +694,10 @@ const isUserExistValidate = async (event) => {
                     maxLength: { value: 6, message: 'Enter 6 digits' },
                     pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
                   })}
+                  ref={zipRef}
                   onChange={(e) => {
                     register('zipCode').onChange(e);
                     handleZipChange(e);
-                    // keep focus until user finishes typing
-                    e.currentTarget.focus();
                   }}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
