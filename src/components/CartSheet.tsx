@@ -652,65 +652,7 @@ const isUserExistValidate = async (event) => {
             <CardTitle className="text-lg">Shipping Address</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* PIN code first for better UX */}
-            <div>
-              <Label htmlFor="zipCode">PIN Code *</Label>
-              <Input
-                id="zipCode"
-                inputMode="numeric"
-                placeholder="6-digit PIN code"
-                maxLength={6}
-                {...register('zipCode', {
-                  required: 'PIN code is required',
-                  minLength: { value: 6, message: 'Enter 6 digits' },
-                  maxLength: { value: 6, message: 'Enter 6 digits' },
-                  pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
-                })}
-                onChange={handleZipChange}
-                className={errors.zipCode ? 'border-destructive' : ''}
-              />
-              {errors.zipCode && (
-                <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
-              )}
-            </div>
-
-            {/* State and City as dropdowns */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>State *</Label>
-                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50">
-                    {stateOptions.map((s) => (
-                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.state && (
-                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
-                )}
-              </div>
-              <div>
-                <Label>City *</Label>
-                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select city" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50">
-                    {cityOptions.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.city && (
-                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Address lines */}
+            {/* Address first */}
             <div>
               <Label htmlFor="address">Address *</Label>
               <Input
@@ -728,19 +670,82 @@ const isUserExistValidate = async (event) => {
               <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
             </div>
 
-            {/* Country fixed to India, non-editable */}
-            <div>
-              <Label htmlFor="country">Country *</Label>
-              <Input
-                id="country"
-                defaultValue="India"
-                readOnly
-                {...register('country', { required: 'Country is required' })}
-                className={errors.country ? 'border-destructive' : ''}
-              />
-              {errors.country && (
-                <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
-              )}
+            {/* PIN Code & State */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="zipCode">PIN Code *</Label>
+                <Input
+                  id="zipCode"
+                  inputMode="numeric"
+                  placeholder="6-digit PIN code"
+                  maxLength={6}
+                  {...register('zipCode', {
+                    required: 'PIN code is required',
+                    minLength: { value: 6, message: 'Enter 6 digits' },
+                    maxLength: { value: 6, message: 'Enter 6 digits' },
+                    pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
+                  })}
+                  onChange={(e) => {
+                    register('zipCode').onChange(e);
+                    handleZipChange(e);
+                    // keep focus until user finishes typing
+                    e.currentTarget.focus();
+                  }}
+                  className={errors.zipCode ? 'border-destructive' : ''}
+                />
+                {errors.zipCode && (
+                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
+                )}
+              </div>
+              <div>
+                <Label>State *</Label>
+                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {stateOptions.map((s) => (
+                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.state && (
+                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* City & Country */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>City *</Label>
+                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {cityOptions.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="country">Country *</Label>
+                <Input
+                  id="country"
+                  defaultValue="India"
+                  readOnly
+                  {...register('country', { required: 'Country is required' })}
+                  className={errors.country ? 'border-destructive' : ''}
+                />
+                {errors.country && (
+                  <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
