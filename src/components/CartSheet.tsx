@@ -22,6 +22,8 @@ import {isUserExist} from '../services/login';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import {postOrderProcessing} from '../services/orderService';
 import { PhoneInput } from '@/components/ui/phone-input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { State, City } from 'country-state-city';
 
 
 
@@ -158,7 +160,86 @@ const CartSheet = () => {
     }
   }, [isOpen]);
   
-  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
+
+  // India address helpers
+  const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    const st = State.getStatesOfCountry('IN').map(s => ({ name: s.name, isoCode: s.isoCode }));
+    setStateOptions(st);
+  }, []);
+
+  // Ensure country is India and non-editable
+  useEffect(() => {
+    setValue('country', 'India');
+  }, [setValue]);
+
+  // Register non-input fields with RHF
+  useEffect(() => {
+    register('state', { required: 'State is required' });
+    register('city', { required: 'City is required' });
+  }, [register]);
+
+  const handleZipChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length > 6) val = val.slice(0, 6);
+    setValue('zipCode', val, { shouldValidate: true });
+
+    if (val.length === 6) {
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
+        const data = await res.json();
+        const result = data?.[0];
+        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+          const po = result.PostOffice[0];
+          const stateName = po.State as string;
+          const district = po.District as string;
+
+          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+          if (matchedState) {
+            setSelectedStateCode(matchedState.isoCode);
+            setValue('state', matchedState.name, { shouldValidate: true });
+            const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
+            const uniqueCities = Array.from(new Set([district, ...cities]));
+            setCityOptions(uniqueCities);
+            setValue('city', district, { shouldValidate: true });
+          } else {
+            setValue('state', stateName, { shouldValidate: true });
+            setCityOptions([district]);
+            setValue('city', district, { shouldValidate: true });
+          }
+        }
+      } catch (err) {
+        console.error('PIN lookup failed', err);
+      }
+    }
+  };
+
+  const handleStateChange = (value: string) => {
+    setValue('state', value, { shouldValidate: true });
+    // Reset PIN when state changes per requirement
+    setValue('zipCode', '');
+
+    const st = State.getStatesOfCountry('IN').find(s => s.name === value);
+    if (st) {
+      setSelectedStateCode(st.isoCode);
+      const cities = City.getCitiesOfState('IN', st.isoCode).map(c => c.name);
+      setCityOptions(cities);
+      setValue('city', '', { shouldValidate: true });
+    } else {
+      setCityOptions([]);
+      setValue('city', '', { shouldValidate: true });
+    }
+  };
+
+  const handleCityChange = (value: string) => {
+    setValue('city', value, { shouldValidate: true });
+    // Reset PIN when city changes per requirement
+    setValue('zipCode', '');
+  };
   
   // Mock coupon codes for demo
   const validCoupons = {
@@ -571,6 +652,65 @@ const isUserExistValidate = async (event) => {
             <CardTitle className="text-lg">Shipping Address</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* PIN code first for better UX */}
+            <div>
+              <Label htmlFor="zipCode">PIN Code *</Label>
+              <Input
+                id="zipCode"
+                inputMode="numeric"
+                placeholder="6-digit PIN code"
+                maxLength={6}
+                {...register('zipCode', {
+                  required: 'PIN code is required',
+                  minLength: { value: 6, message: 'Enter 6 digits' },
+                  maxLength: { value: 6, message: 'Enter 6 digits' },
+                  pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
+                })}
+                onChange={handleZipChange}
+                className={errors.zipCode ? 'border-destructive' : ''}
+              />
+              {errors.zipCode && (
+                <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
+              )}
+            </div>
+
+            {/* State and City as dropdowns */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>State *</Label>
+                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {stateOptions.map((s) => (
+                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.state && (
+                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
+                )}
+              </div>
+              <div>
+                <Label>City *</Label>
+                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {cityOptions.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Address lines */}
             <div>
               <Label htmlFor="address">Address *</Label>
               <Input
@@ -587,58 +727,20 @@ const isUserExistValidate = async (event) => {
               <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
               <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="city">City *</Label>
-                <Input
-                  id="city"
-                  placeholder="Enter your city"
-                  {...register('city', { required: 'City is required' })}
-                  className={errors.city ? 'border-destructive' : ''}
-                />
-                {errors.city && (
-                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="state">State *</Label>
-                <Input
-                  id="state"
-                  placeholder="Enter your state"
-                  {...register('state', { required: 'State is required' })}
-                  className={errors.state ? 'border-destructive' : ''}
-                />
-                {errors.state && (
-                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="zipCode">ZIP / Postal Code *</Label>
-                <Input
-                  id="zipCode"
-                  placeholder="Enter your ZIP / postal code"
-                  {...register('zipCode', { required: 'ZIP code is required' })}
-                  className={errors.zipCode ? 'border-destructive' : ''}
-                />
-                {errors.zipCode && (
-                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message}</p>
-                )}
-              </div>
-              <div>
-                <Label htmlFor="country">Country *</Label>
-                <Input
-                  id="country"
-                  defaultValue="India"
-                  placeholder="Enter your country"
-                  {...register('country', { required: 'Country is required' })}
-                  className={errors.country ? 'border-destructive' : ''}
-                />
-                {errors.country && (
-                  <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
-                )}
-              </div>
+
+            {/* Country fixed to India, non-editable */}
+            <div>
+              <Label htmlFor="country">Country *</Label>
+              <Input
+                id="country"
+                defaultValue="India"
+                readOnly
+                {...register('country', { required: 'Country is required' })}
+                className={errors.country ? 'border-destructive' : ''}
+              />
+              {errors.country && (
+                <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
+              )}
             </div>
           </CardContent>
         </Card>
