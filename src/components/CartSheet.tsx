@@ -25,9 +25,6 @@ import { PhoneInput } from '@/components/ui/phone-input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { State, City } from 'country-state-city';
 
-
-
-
 interface CheckoutFormData {
   firstName: string;
   lastName: string;
@@ -154,7 +151,7 @@ const CartSheet = () => {
   const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
-  const zipRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     if (isOpen) {
       setStep('cart');
@@ -162,14 +159,6 @@ const CartSheet = () => {
   }, [isOpen]);
   
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
-
-  // Keep PIN field focused until 6 digits are entered
-  const zipValue = watch('zipCode');
-  useEffect(() => {
-    if ((zipValue || '').length < 6 && step === 'checkout' && isOpen) {
-      zipRef.current?.focus();
-    }
-  }, [zipValue, step, isOpen]);
 
   // India address helpers
   const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
@@ -192,11 +181,9 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch } 
     register('city', { required: 'City is required' });
   }, [register]);
 
-  const handleZipChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value.replace(/\D/g, '');
-    if (val.length > 6) val = val.slice(0, 6);
-    setValue('zipCode', val, { shouldValidate: true });
-
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target.value.trim();
+    
     if (val.length === 6) {
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
@@ -694,11 +681,12 @@ const isUserExistValidate = async (event) => {
                     maxLength: { value: 6, message: 'Enter 6 digits' },
                     pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
                   })}
-                  ref={zipRef}
                   onChange={(e) => {
-                    register('zipCode').onChange(e);
-                    handleZipChange(e);
+                    let val = e.target.value.replace(/\D/g, '');
+                    if (val.length > 6) val = val.slice(0, 6);
+                    setValue('zipCode', val, { shouldValidate: true });
                   }}
+                  onBlur={handleZipBlur}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
