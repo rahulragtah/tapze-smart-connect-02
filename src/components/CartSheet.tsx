@@ -184,11 +184,21 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
 
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value.trim();
+    const container = checkoutScrollRef.current;
+    const el = e.currentTarget as HTMLInputElement;
+
+    // Keep focus inside the scroll container to prevent Radix focus jump to the top
+    if (container && typeof (container as any).focus === 'function') {
+      try {
+        (container as any).focus({ preventScroll: true });
+      } catch {
+        // ignore
+      }
+    }
+
     await trigger('zipCode', { shouldFocus: false });
 
     if (val.length === 6) {
-      const container = checkoutScrollRef.current;
-      const el = e.currentTarget as HTMLInputElement;
       // Capture element's relative position within the scroll container
       let desiredRelTop: number | null = null;
       if (container && el) {
@@ -209,15 +219,15 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
           const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
           if (matchedState) {
             setSelectedStateCode(matchedState.isoCode);
-            setValue('state', matchedState.name, { shouldValidate: true });
+            setValue('state', matchedState.name, { shouldValidate: false });
             const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
             const uniqueCities = Array.from(new Set([district, ...cities]));
             setCityOptions(uniqueCities);
-            setValue('city', district, { shouldValidate: true });
+            setValue('city', district, { shouldValidate: false });
           } else {
-            setValue('state', stateName, { shouldValidate: true });
+            setValue('state', stateName, { shouldValidate: false });
             setCityOptions([district]);
-            setValue('city', district, { shouldValidate: true });
+            setValue('city', district, { shouldValidate: false });
           }
         }
       } catch (err) {
@@ -235,6 +245,12 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
           requestAnimationFrame(() => {
             requestAnimationFrame(() => {
               adjust();
+              // Re-focus the scroll container without moving it
+              try {
+                (container as any).focus({ preventScroll: true });
+              } catch {
+                // ignore
+              }
             });
           });
         }
@@ -598,7 +614,7 @@ const isUserExistValidate = async (event) => {
         </Button>
       </div>
 
-      <div ref={checkoutScrollRef} className="flex-1 overflow-y-auto space-y-6 pb-6">
+      <div ref={checkoutScrollRef} tabIndex={-1} className="flex-1 overflow-y-auto space-y-6 pb-6">
         {/* Personal Information */}
         <Card>
           <CardHeader>
