@@ -18,6 +18,22 @@ export const loginUser = async (email: string, password : string ) => {
   return response.json();
 };
 
+export const changePassword = async (currentPassword: string, newPassword:string,confirmPassword: string ) => {
+  const response = await fetch('https://tapze.in/tapzeservice/user/changePassword.php', {
+    method: 'POST',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ currentPassword , newPassword,  confirmPassword})
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error("Failed to create Razorpay order: " + errorText);
+  }
+
+  return response.json();
+};
+
 export const signUp = async (signupData: signUpDTO) => {
 
   console.log('form data ', signupData); 

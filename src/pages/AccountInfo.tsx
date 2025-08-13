@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, User, Mail, Phone, Lock, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import {changePassword} from '../services/login'
 
 
 const AccountInfo = () => {
@@ -93,18 +94,23 @@ const AccountInfo = () => {
 
     try {
       // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      //await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await changePassword(passwordData.currentPassword, passwordData.newPassword, passwordData.confirmPassword);
       
-      toast({
+      if(response.success){
+        toast({
         title: "Password Changed",
-        description: "Your password has been updated successfully.",
+        description: "Your password has been updated successfully." 
       });
-      
-      setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
+
+      } else {
+        toast({
+        title: "Password Change Failed",
+        description: response.message,
+        variant: "destructive",
       });
+
+      }
     } catch (error) {
       toast({
         title: "Password Change Failed",
