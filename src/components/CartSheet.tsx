@@ -151,6 +151,7 @@ const CartSheet = () => {
   const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
+  const checkoutScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -181,11 +182,13 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, [register]);
 
-const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value.trim();
     await trigger('zipCode');
-    
+
     if (val.length === 6) {
+      const container = checkoutScrollRef.current;
+      const prevScrollTop = container ? container.scrollTop : null;
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
         const data = await res.json();
@@ -211,6 +214,12 @@ const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
         }
       } catch (err) {
         console.error('PIN lookup failed', err);
+      } finally {
+        if (container != null && prevScrollTop != null) {
+          requestAnimationFrame(() => {
+            if (container) container.scrollTop = prevScrollTop;
+          });
+        }
       }
     }
   };
@@ -571,7 +580,7 @@ const isUserExistValidate = async (event) => {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-6 pb-6">
+      <div ref={checkoutScrollRef} className="flex-1 overflow-y-auto space-y-6 pb-6">
         {/* Personal Information */}
         <Card>
           <CardHeader>
