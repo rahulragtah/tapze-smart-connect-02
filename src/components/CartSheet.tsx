@@ -184,7 +184,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
 
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value.trim();
-    await trigger('zipCode');
+    await trigger('zipCode', { shouldFocus: false });
 
     if (val.length === 6) {
       const container = checkoutScrollRef.current;
