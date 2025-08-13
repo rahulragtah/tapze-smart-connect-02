@@ -24,6 +24,7 @@ import {postOrderProcessing} from '../services/orderService';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { State, City } from 'country-state-city';
+import {getUserAddress} from '../services/orderService';
 
 interface CheckoutFormData {
   firstName: string;
@@ -158,7 +159,16 @@ const CartSheet = () => {
       setStep('cart');
     }
   }, [isOpen]);
-  
+
+
+const [addresses, setAddresses] = useState<any[]>([])
+useEffect(() => {
+  getUserAddress().then((data) => {
+          if (data) {
+            setAddresses(data.address || []);
+          }
+        });
+        }, []);
   // Open cart on navigation if previous route asked for it (e.g., after login)
   const openedFromNavRef = useRef(false);
   useEffect(() => {
@@ -406,8 +416,9 @@ const isUserExistValidate = async (event) => {
     try {
       // Stage 1: Create Razorpay order
       setProcessingStage('creating');
-      postOrderProcessing(finalOrderDto, false);
-      return ;
+      
+      postOrderProcessing(finalOrderDto, isLoggedIn);
+      
       const createOrderRazorpayResponse = await fetch(
         'https://tapze.in/tapzeservice/create_order.php',
         {
@@ -588,6 +599,11 @@ const isUserExistValidate = async (event) => {
 
   const handleProceedToCheckout = () => {
     setStep('checkout');
+    getUserAddress().then((data) => {
+          if (data) {
+            setAddresses(data.address || []);
+          }
+        });
   };
 
   const EmptyCartIllustration = () => (
