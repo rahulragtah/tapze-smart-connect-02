@@ -45,11 +45,9 @@ const Login = () => {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      if(redirecturl!= null && redirecturl!= "" ){
-      navigate('${redirecturl}');
-      alert 
-      }
-      else{
+      if (redirecturl && redirecturl.trim() !== "") {
+        navigate(redirecturl, { state: { openCart: true } });
+      } else {
         navigate("/");
       }
       }else {

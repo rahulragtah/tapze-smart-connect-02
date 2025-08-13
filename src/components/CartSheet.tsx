@@ -159,6 +159,16 @@ const CartSheet = () => {
     }
   }, [isOpen]);
   
+  // Open cart on navigation if previous route asked for it (e.g., after login)
+  const openedFromNavRef = useRef(false);
+  useEffect(() => {
+    const state = location.state as any;
+    if (!openedFromNavRef.current && state?.openCart) {
+      openedFromNavRef.current = true;
+      setIsOpen(true);
+    }
+  }, [location.state, setIsOpen]);
+  
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
   // India address helpers
