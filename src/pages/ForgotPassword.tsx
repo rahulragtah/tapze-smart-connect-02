@@ -111,7 +111,7 @@ const ForgotPassword = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Didn't receive the email? Check your spam folder or <ResendEmailButton payload={emailPayload}  />
+                  Didn't receive the email? Check your spam folder
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col space-y-4">
@@ -120,7 +120,8 @@ const ForgotPassword = () => {
                   className="w-full"
                   onClick={() => setIsEmailSent(false)}
                 >
-                  Try Another Email
+                   <ResendEmailButton payload={emailPayload}  />
+                  {/* Resend Email */}
                 </Button>
                 <Link to="/login" className="w-full">
                   <Button variant="ghost" className="w-full">

@@ -1,4 +1,4 @@
-import React, { useState , useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -21,9 +21,9 @@ import OrderErrorModal from './OrderErrorModal';
 import {isUserExist} from '../services/login';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import {postOrderProcessing} from '../services/orderService';
-
-
-
+import { PhoneInput } from '@/components/ui/phone-input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { State, City } from 'country-state-city';
 
 interface CheckoutFormData {
   firstName: string;
@@ -151,8 +151,145 @@ const CartSheet = () => {
   const [showExistingAccountDialog, setShowExistingAccountDialog] = useState(false);
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
+  const checkoutScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setStep('cart');
+    }
+  }, [isOpen]);
   
-  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
+  // Open cart on navigation if previous route asked for it (e.g., after login)
+  const openedFromNavRef = useRef(false);
+  useEffect(() => {
+    const state = location.state as any;
+    if (!openedFromNavRef.current && state?.openCart) {
+      openedFromNavRef.current = true;
+      setIsOpen(true);
+    }
+  }, [location.state, setIsOpen]);
+  
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
+
+  // India address helpers
+  const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
+  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    const st = State.getStatesOfCountry('IN').map(s => ({ name: s.name, isoCode: s.isoCode }));
+    setStateOptions(st);
+  }, []);
+
+  // Ensure country is India and non-editable
+  useEffect(() => {
+    setValue('country', 'India');
+  }, [setValue]);
+
+  // Register non-input fields with RHF
+  useEffect(() => {
+    register('state', { required: 'State is required' });
+    register('city', { required: 'City is required' });
+  }, [register]);
+
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const val = e.target.value.trim();
+    const container = checkoutScrollRef.current;
+    const el = e.currentTarget as HTMLInputElement;
+
+    // Keep focus inside the scroll container to prevent Radix focus jump to the top
+    if (container && typeof (container as any).focus === 'function') {
+      try {
+        (container as any).focus({ preventScroll: true });
+      } catch {
+        // ignore
+      }
+    }
+
+    await trigger('zipCode', { shouldFocus: false });
+
+    if (val.length === 6) {
+      // Capture element's relative position within the scroll container
+      let desiredRelTop: number | null = null;
+      if (container && el) {
+        const cr = container.getBoundingClientRect();
+        const er = el.getBoundingClientRect();
+        desiredRelTop = er.top - cr.top;
+      }
+
+      try {
+        const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
+        const data = await res.json();
+        const result = data?.[0];
+        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+          const po = result.PostOffice[0];
+          const stateName = po.State as string;
+          const district = po.District as string;
+
+          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+          if (matchedState) {
+            setSelectedStateCode(matchedState.isoCode);
+            setValue('state', matchedState.name, { shouldValidate: false });
+            const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
+            const uniqueCities = Array.from(new Set([district, ...cities]));
+            setCityOptions(uniqueCities);
+            setValue('city', district, { shouldValidate: false });
+          } else {
+            setValue('state', stateName, { shouldValidate: false });
+            setCityOptions([district]);
+            setValue('city', district, { shouldValidate: false });
+          }
+        }
+      } catch (err) {
+        console.error('PIN lookup failed', err);
+      } finally {
+        if (container && el && desiredRelTop != null) {
+          const adjust = () => {
+            const cr2 = container.getBoundingClientRect();
+            const er2 = el.getBoundingClientRect();
+            const newRelTop = er2.top - cr2.top;
+            const delta = newRelTop - desiredRelTop!;
+            container.scrollTop += delta;
+          };
+          // Run after layout settles
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              adjust();
+              // Re-focus the scroll container without moving it
+              try {
+                (container as any).focus({ preventScroll: true });
+              } catch {
+                // ignore
+              }
+            });
+          });
+        }
+      }
+    }
+  };
+
+  const handleStateChange = (value: string) => {
+    setValue('state', value, { shouldValidate: true });
+    // Reset PIN when state changes per requirement
+    setValue('zipCode', '');
+
+    const st = State.getStatesOfCountry('IN').find(s => s.name === value);
+    if (st) {
+      setSelectedStateCode(st.isoCode);
+      const cities = City.getCitiesOfState('IN', st.isoCode).map(c => c.name);
+      setCityOptions(cities);
+      setValue('city', '', { shouldValidate: true });
+    } else {
+      setCityOptions([]);
+      setValue('city', '', { shouldValidate: true });
+    }
+  };
+
+  const handleCityChange = (value: string) => {
+    setValue('city', value, { shouldValidate: true });
+    // Reset PIN when city changes per requirement
+    setValue('zipCode', '');
+  };
   
   // Mock coupon codes for demo
   const validCoupons = {
@@ -487,7 +624,7 @@ const isUserExistValidate = async (event) => {
         </Button>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-6 pb-6">
+      <div ref={checkoutScrollRef} tabIndex={-1} className="flex-1 overflow-y-auto space-y-6 pb-6">
         {/* Personal Information */}
         <Card>
           <CardHeader>
@@ -546,10 +683,9 @@ const isUserExistValidate = async (event) => {
             </div>
             <div>
               <Label htmlFor="phone">Phone Number *</Label>
-              <Input
+              <PhoneInput
                 id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
+                placeholder="10-digit mobile number"
                 {...register('phone', { required: 'Phone number is required' })}
                 className={errors.phone ? 'border-destructive' : ''}
               />
@@ -566,6 +702,7 @@ const isUserExistValidate = async (event) => {
             <CardTitle className="text-lg">Shipping Address</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Address first */}
             <div>
               <Label htmlFor="address">Address *</Label>
               <Input
@@ -582,43 +719,68 @@ const isUserExistValidate = async (event) => {
               <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
               <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
             </div>
+
+            {/* PIN Code & State */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="city">City *</Label>
+                <Label htmlFor="zipCode">PIN Code *</Label>
                 <Input
-                  id="city"
-                  placeholder="Enter your city"
-                  {...register('city', { required: 'City is required' })}
-                  className={errors.city ? 'border-destructive' : ''}
+                  id="zipCode"
+                  inputMode="numeric"
+                  placeholder="6-digit PIN code"
+                  maxLength={6}
+                  {...register('zipCode', {
+                    required: 'PIN code is required',
+                    minLength: { value: 6, message: 'Enter 6 digits' },
+                    maxLength: { value: 6, message: 'Enter 6 digits' },
+                    pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
+                  })}
+onChange={(e) => {
+                    let val = e.target.value.replace(/\D/g, '');
+                    if (val.length > 6) val = val.slice(0, 6);
+                    setValue('zipCode', val, { shouldDirty: true });
+                  }}
+                  onBlur={handleZipBlur}
+                  className={errors.zipCode ? 'border-destructive' : ''}
                 />
-                {errors.city && (
-                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
+                {errors.zipCode && (
+                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
                 )}
               </div>
               <div>
-                <Label htmlFor="state">State *</Label>
-                <Input
-                  id="state"
-                  placeholder="Enter your state"
-                  {...register('state', { required: 'State is required' })}
-                  className={errors.state ? 'border-destructive' : ''}
-                />
+                <Label>State *</Label>
+                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {stateOptions.map((s) => (
+                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {errors.state && (
                   <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
                 )}
               </div>
             </div>
+
+            {/* City & Country */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="zipCode">ZIP / Postal Code *</Label>
-                <Input
-                  id="zipCode"
-                  placeholder="Enter your ZIP / postal code"
-                  {...register('zipCode', { required: 'ZIP code is required' })}
-                  className={errors.zipCode ? 'border-destructive' : ''}
-                />
-                {errors.zipCode && (
-                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message}</p>
+                <Label>City *</Label>
+                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {cityOptions.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
                 )}
               </div>
               <div>
@@ -626,7 +788,7 @@ const isUserExistValidate = async (event) => {
                 <Input
                   id="country"
                   defaultValue="India"
-                  placeholder="Enter your country"
+                  readOnly
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
@@ -741,7 +903,7 @@ const isUserExistValidate = async (event) => {
 
   return (
     <>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (open) setStep('cart'); }}>
         <SheetContent className="w-full sm:max-w-2xl flex flex-col">
           <SheetHeader>
             <SheetTitle className="flex items-center justify-between">

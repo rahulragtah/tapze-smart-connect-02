@@ -10,6 +10,7 @@ import { Eye, EyeOff, User, Mail, Phone, Lock, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import {changePassword} from '../services/login'
+import { PhoneInput } from "@/components/ui/phone-input";
 
 
 const AccountInfo = () => {
@@ -271,9 +272,9 @@ const AccountInfo = () => {
                                   <Phone className="h-4 w-4" />
                                   Phone Number
                                 </Label>
-                                <Input
+                                <PhoneInput
                                    id="phoneNumber"
-                                   placeholder="Enter your phone number"
+                                   placeholder="10-digit mobile number"
                                    value={userInfo.phoneNumber}
                                    onChange={(e) => setUserInfo(prev => ({ ...prev, phoneNumber: e.target.value }))}
                                    required

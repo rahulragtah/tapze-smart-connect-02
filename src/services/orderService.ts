@@ -54,13 +54,15 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
       // generate transaction id to send in resetpassword mail      
     const response= await initiateResetPassword(orderData.personalInfo.email);
     if (response.success) { 
-      sendRestPasswordEmail(response.email,response.firstName,  response.lastName,response.transactionId);
+      const payload = { email: response.email, FirstName: response.firstName, lastName: response.lastName, transactionId: response.transactionId };
+      // send reset password email
+      await sendRestPasswordEmail(payload);
 
-      const result = await  loginUser(orderData.personalInfo.email,'TabZe@123' )
-      if(result.success){
+      const result = await loginUser(orderData.personalInfo.email, 'TabZe@123');
+      if (result.success) {
         const address = await createUserAddress(orderData.address);
-        if (address.message){
-           logOut()
+        if (address.message) {
+          logOut();
         }
       }
     }

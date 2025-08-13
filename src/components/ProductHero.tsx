@@ -6,6 +6,7 @@ import ProductGallery from "./ProductGallery";
 import ProductColorSwitcher from "./ProductColorSwitcher";
 import { Card } from "@/components/ui/card";
 import { gImage} from "../components/models/productInterface";
+import { Link} from "react-router-dom";
 
 interface Product {
   id: string;
@@ -242,7 +243,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
                     <p className="text-sm text-gray-400 mb-3">Bulk orders get priority processing and exclusive discounts</p>
                     <div className="flex gap-2">
                       <Button size="sm" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
-                        Contact Now For Bulk Order
+                      <Link to="/contact">Contact Now For Bulk Order</Link>
                       </Button>
                       {/* <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
                         Get a Quote

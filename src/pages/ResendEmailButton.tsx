@@ -31,7 +31,7 @@ export default function ResendEmailButton({  payload }: ResendEmailButtonProps) 
   const handleResend = () => {
     console.log("dfd", payload.email);
     sendRestPasswordEmail(payload);
-    alert("Email resent!");
+    //alert("Email resent!");
     setDisabled(true);
     setCountdown(30);
   };
