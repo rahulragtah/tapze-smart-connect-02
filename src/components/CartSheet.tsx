@@ -158,7 +158,7 @@ const CartSheet = () => {
     }
   }, [isOpen]);
   
-const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CheckoutFormData>();
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
   // India address helpers
   const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
@@ -181,8 +181,9 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch } 
     register('city', { required: 'City is required' });
   }, [register]);
 
-  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value.trim();
+    await trigger('zipCode');
     
     if (val.length === 6) {
       try {
@@ -681,10 +682,10 @@ const isUserExistValidate = async (event) => {
                     maxLength: { value: 6, message: 'Enter 6 digits' },
                     pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
                   })}
-                  onChange={(e) => {
+onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, '');
                     if (val.length > 6) val = val.slice(0, 6);
-                    setValue('zipCode', val, { shouldValidate: true });
+                    setValue('zipCode', val, { shouldDirty: true });
                   }}
                   onBlur={handleZipBlur}
                   className={errors.zipCode ? 'border-destructive' : ''}
