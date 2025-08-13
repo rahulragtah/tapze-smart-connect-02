@@ -188,7 +188,15 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
 
     if (val.length === 6) {
       const container = checkoutScrollRef.current;
-      const prevScrollTop = container ? container.scrollTop : null;
+      const el = e.currentTarget as HTMLInputElement;
+      // Capture element's relative position within the scroll container
+      let desiredRelTop: number | null = null;
+      if (container && el) {
+        const cr = container.getBoundingClientRect();
+        const er = el.getBoundingClientRect();
+        desiredRelTop = er.top - cr.top;
+      }
+
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
         const data = await res.json();
@@ -215,9 +223,19 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
       } catch (err) {
         console.error('PIN lookup failed', err);
       } finally {
-        if (container != null && prevScrollTop != null) {
+        if (container && el && desiredRelTop != null) {
+          const adjust = () => {
+            const cr2 = container.getBoundingClientRect();
+            const er2 = el.getBoundingClientRect();
+            const newRelTop = er2.top - cr2.top;
+            const delta = newRelTop - desiredRelTop!;
+            container.scrollTop += delta;
+          };
+          // Run after layout settles
           requestAnimationFrame(() => {
-            if (container) container.scrollTop = prevScrollTop;
+            requestAnimationFrame(() => {
+              adjust();
+            });
           });
         }
       }
