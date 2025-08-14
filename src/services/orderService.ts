@@ -36,8 +36,11 @@ export const createTapzeOrder = async (orderData: CheckoutDTO) => {
 
 
 export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boolean) => {
-  if (isLoggedIn)
-    return ;
+        if (isLoggedIn){
+          const address = await createUserAddress(orderData.address);
+        return ;
+         }
+    
   const userObject: signUpDTO  = {
     firstName: orderData.personalInfo.firstName,
     lastName: orderData.personalInfo.lastName,

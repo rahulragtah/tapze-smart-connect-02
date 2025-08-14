@@ -49,6 +49,14 @@ const ResetPassword = () => {
       m.setAttribute("content", content);
       document.head.appendChild(m);
     }
+    if (verification==='true'){
+      console.log('ddd  ' ,verification );
+      const response =  resetPassword(String(token || ''),password, confirmPassword, 'verification');
+      alert("verification completed");
+      navigate("/login")
+    }
+    
+       
   }, []);
 
     
