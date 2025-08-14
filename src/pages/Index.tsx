@@ -1,4 +1,5 @@
 
+import React from "react";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -13,8 +14,19 @@ import PricingSection from "@/components/PricingSection";
 import BulkOrderSection from "@/components/BulkOrderSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
+import PromotionalModal from "@/components/PromotionalModal";
 
 const Index = () => {
+  const [showPromotionalModal, setShowPromotionalModal] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPromotionalModal(true);
+    }, 12000); // 12 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navigation />
@@ -33,6 +45,11 @@ const Index = () => {
         <FinalCTASection />
         <Footer />
       </div>
+      
+      <PromotionalModal
+        isOpen={showPromotionalModal}
+        onClose={() => setShowPromotionalModal(false)}
+      />
     </div>
   );
 };
