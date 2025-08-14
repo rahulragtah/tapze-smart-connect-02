@@ -111,14 +111,14 @@ const ForgotPassword = () => {
               </CardHeader>
               <CardContent className="space-y-4 text-center">
                 <p className="text-sm text-muted-foreground">
-                  Didn't receive the email? Check your spam folder
+                  Didn't receive the email? Check your spam folder.
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col space-y-4">
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => setIsEmailSent(false)}
+                  // onClick={() => setIsEmailSent(false)}
                 >
                    <ResendEmailButton payload={emailPayload}  />
                   {/* Resend Email */}
@@ -126,7 +126,7 @@ const ForgotPassword = () => {
                 <Link to="/login" className="w-full">
                   <Button variant="ghost" className="w-full">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    Back to Login
+                    Go to Login
                   </Button>
                 </Link>
               </CardFooter>
