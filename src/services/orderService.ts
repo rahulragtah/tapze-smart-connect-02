@@ -57,7 +57,7 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
       // generate transaction id to send in resetpassword mail      
     const response= await initiateResetPassword(orderData.personalInfo.email);
     if (response.success) { 
-      const mailurl = 'token=' + response.transactionId + '?verification=false';
+      const mailurl = 'token=' + response.transactionId + '&verification=false';
       const payload = { email:response.email, 
         firstName:response.firstName, 
          lastName:response.lastName,

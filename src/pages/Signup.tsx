@@ -88,7 +88,7 @@ const Signup = () => {
         if (result.success) {
            const response = await initiateResetPassword(formData.email);
               if (response.success) {
-                const mailurl = 'token=' + response.transactionId + '?verification=true';
+                const mailurl = 'token=' + response.transactionId + '&verification=true';
                  const payload :resendEmailDTO= { email:response.email, 
                   firstName:response.firstName, 
                    lastName:response.lastName,

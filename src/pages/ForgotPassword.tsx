@@ -34,7 +34,7 @@ const ForgotPassword = () => {
       // TODO: Replace with actual forgot password API call
       const response = await initiateResetPassword(email);
       if (response.success) {
-        const mailurl = 'token=' + response.transactionId + '?verification=false';
+        const mailurl = 'token=' + response.transactionId + '&verification=false';
         setIsEmailSent(true);
         const payload : resendEmailDTO= { email:response.email, 
           firstName:response.firstName, 
