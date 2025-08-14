@@ -93,9 +93,7 @@ const EcoFriendlySection = () => {
                 loop: true,
               }}
               plugins={[
-                Autoplay({
-                  delay: 3000,
-                }),
+                Autoplay({ delay: 3000 }) as any,
               ]}
               className="w-full"
             >
