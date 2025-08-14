@@ -23,6 +23,7 @@ export interface  UserAddress {
     city: string;
     pinCode: string;
     country:string;
+    isDefault:number;
   }
 
 export interface CheckoutDTO  extends Record<string, unknown> {
