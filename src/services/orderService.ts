@@ -57,7 +57,15 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
       // generate transaction id to send in resetpassword mail      
     const response= await initiateResetPassword(orderData.personalInfo.email);
     if (response.success) { 
-      const payload = { email: response.email, FirstName: response.firstName, lastName: response.lastName, transactionId: response.transactionId };
+      const mailurl = 'token=' + response.transactionId + '?verification=false';
+      const payload = { email:response.email, 
+        firstName:response.firstName, 
+         lastName:response.lastName,
+         urlParam: mailurl ,
+         emailSubject : 'tapZe Account Support: Reset Password !!', 
+         tagline: 'Your new password is just a step away.',
+         actionText: 'reset your password'
+         };
       // send reset password email
       await sendRestPasswordEmail(payload);
 

@@ -10,7 +10,11 @@ export interface signUpDTO {
 
   export interface resendEmailDTO extends Record<string, unknown>{
     email: string;
-    FirstName: string;
+    firstName: string;
     lastName:string;
-    transactionId:string
+    //transactionId:string;
+    emailSubject:string;
+    tagline:string;
+    actionText:string;
+    urlParam:string;
 }

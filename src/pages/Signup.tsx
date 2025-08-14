@@ -88,7 +88,15 @@ const Signup = () => {
         if (result.success) {
            const response = await initiateResetPassword(formData.email);
               if (response.success) {
-                 const payload :resendEmailDTO= {email:response.email,FirstName:response.firstName,  lastName:response.lastName,transactionId:response.transactionId} 
+                const mailurl = 'token=' + response.transactionId + '?verification=true';
+                 const payload :resendEmailDTO= { email:response.email, 
+                  firstName:response.firstName, 
+                   lastName:response.lastName,
+                   urlParam: mailurl ,
+                   emailSubject : 'tapZe Account Verification !!', 
+                   tagline: 'Please verify your email & login to your account.',
+                   actionText: 'verify your account'
+                   }
                    sendAccountVerificationEmail(payload);
                   toast({
                   title: "Account Created Successfully",

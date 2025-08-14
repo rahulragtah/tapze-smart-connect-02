@@ -34,10 +34,16 @@ const ForgotPassword = () => {
       // TODO: Replace with actual forgot password API call
       const response = await initiateResetPassword(email);
       if (response.success) {
-
+        const mailurl = 'token=' + response.transactionId + '?verification=false';
         setIsEmailSent(true);
-        setEmailPayload({ email:response.email, FirstName:response.firstName, 
-           lastName:response.lastName,transactionId:response.transactionId });
+        setEmailPayload({ email:response.email, 
+          firstName:response.firstName, 
+           lastName:response.lastName,
+           urlParam: mailurl ,
+           emailSubject : 'tapZe Account Support: Reset Password !!', 
+           tagline: 'Your new password is just a step away.',
+           actionText: 'reset your password'
+           });
         sendRestPasswordEmail(emailPayload);
       toast({
         title: "Reset Email Sent",
