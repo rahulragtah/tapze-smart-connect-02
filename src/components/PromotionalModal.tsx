@@ -22,7 +22,7 @@ const PromotionalModal: React.FC<PromotionalModalProps> = ({ isOpen, onClose }) 
 
   const handleWhatsAppClick = () => {
     const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappUrl = `https://wa.me/918447202716?text=${encodedMessage}`;
+    const whatsappUrl = `https://wa.me/919990909789?text=${encodedMessage}`;
     window.open(whatsappUrl, '_blank');
     onClose();
   };
