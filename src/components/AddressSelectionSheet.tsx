@@ -127,9 +127,6 @@ const AddressSelectionSheet: React.FC<AddressSelectionSheetProps> = ({
                             </Badge>
                           )}
                         </div>
-                        <h3 className="font-medium text-foreground">
-                          {address.name || 'No Name'}
-                        </h3>
                         <p className="text-sm text-muted-foreground mt-1">
                           {address.line1}
                           {address.line2 && `, ${address.line2}`}

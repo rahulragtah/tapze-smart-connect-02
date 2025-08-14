@@ -791,9 +791,6 @@ const isUserExistValidate = async (event) => {
                               </Badge>
                             )}
                           </div>
-                          <h3 className="font-medium text-foreground">
-                            {selectedAddress.name || 'No Name'}
-                          </h3>
                           <p className="text-sm text-muted-foreground mt-1">
                             {selectedAddress.line1}
                             {selectedAddress.line2 && `, ${selectedAddress.line2}`}
