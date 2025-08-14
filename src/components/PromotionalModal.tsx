@@ -90,15 +90,15 @@ const PromotionalModal: React.FC<PromotionalModalProps> = ({ isOpen, onClose }) 
           <div className="grid grid-cols-3 gap-4 mb-6">
             <div className="text-center p-3 bg-white/50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <Star className="w-6 h-6 text-orange-500 mx-auto mb-2 animate-spin" style={{animationDuration: '3s'}} />
-              <div className="text-xs font-semibold">Premium Quality</div>
+              <div className="text-xs font-semibold text-black">Premium Quality</div>
             </div>
             <div className="text-center p-3 bg-white/50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <Zap className="w-6 h-6 text-blue-500 mx-auto mb-2 animate-pulse" />
-              <div className="text-xs font-semibold">Instant Setup</div>
+              <div className="text-xs font-semibold text-black">Instant Setup</div>
             </div>
             <div className="text-center p-3 bg-white/50 rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <Gift className="w-6 h-6 text-green-500 mx-auto mb-2 animate-bounce" />
-              <div className="text-xs font-semibold">Free Delivery</div>
+              <div className="text-xs font-semibold text-black">Free Delivery</div>
             </div>
           </div>
 
