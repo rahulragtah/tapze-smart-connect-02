@@ -399,7 +399,8 @@ const isUserExistValidate = async (event) => {
         state: values.state,
         city: values.city,
         pinCode: values.zipCode,
-        country: values.country
+        country: values.country,
+        isDefault :0
       },
       orderItems: items,
       totalItems: totalItems,

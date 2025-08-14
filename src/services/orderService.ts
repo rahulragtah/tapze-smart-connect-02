@@ -40,7 +40,7 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
           const address = await createUserAddress(orderData.address);
         return ;
          }
-    
+  orderData.address.isDefault=1; 
   const userObject: signUpDTO  = {
     firstName: orderData.personalInfo.firstName,
     lastName: orderData.personalInfo.lastName,
