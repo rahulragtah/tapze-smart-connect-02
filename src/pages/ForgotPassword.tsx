@@ -36,15 +36,17 @@ const ForgotPassword = () => {
       if (response.success) {
         const mailurl = 'token=' + response.transactionId + '?verification=false';
         setIsEmailSent(true);
-        setEmailPayload({ email:response.email, 
+        const payload : resendEmailDTO= { email:response.email, 
           firstName:response.firstName, 
            lastName:response.lastName,
            urlParam: mailurl ,
            emailSubject : 'tapZe Account Support: Reset Password !!', 
            tagline: 'Your new password is just a step away.',
            actionText: 'reset your password'
-           });
-        sendRestPasswordEmail(emailPayload);
+           };
+        setEmailPayload(payload);
+        console.log("email payload ",payload );
+        sendRestPasswordEmail(payload);
       toast({
         title: "Reset Email Sent",
         description: "Please check your email for password reset instructions.",
