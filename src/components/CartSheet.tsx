@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft, MapPin } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft } from 'lucide-react';
 import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
@@ -25,7 +25,6 @@ import { PhoneInput } from '@/components/ui/phone-input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { State, City } from 'country-state-city';
 import {getUserAddress} from '../services/orderService';
-import AddressSelectionSheet from './AddressSelectionSheet';
 
 interface CheckoutFormData {
   firstName: string;
@@ -154,10 +153,6 @@ const CartSheet = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
   const checkoutScrollRef = useRef<HTMLDivElement>(null);
-  
-  // Address selection state
-  const [showAddressSelection, setShowAddressSelection] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<any>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -168,19 +163,12 @@ const CartSheet = () => {
 
 const [addresses, setAddresses] = useState<any[]>([])
 useEffect(() => {
-  if (isLoggedIn) {
-    getUserAddress().then((data) => {
-      if (data) {
-        setAddresses(data.address || []);
-        // Set default address if available
-        const defaultAddr = data.address?.find(addr => addr.isDefault === 1);
-        if (defaultAddr) {
-          setSelectedAddress(defaultAddr);
-        }
-      }
-    });
-  }
-}, [isLoggedIn]);
+  getUserAddress().then((data) => {
+          if (data) {
+            setAddresses(data.address || []);
+          }
+        });
+        }, []);
   // Open cart on navigation if previous route asked for it (e.g., after login)
   const openedFromNavRef = useRef(false);
   useEffect(() => {
@@ -398,25 +386,6 @@ const isUserExistValidate = async (event) => {
     setIsProcessing(true);
     setProcessingStage('creating');
     
-    // Use selected address for logged-in users, form values for guests
-    const addressData = isLoggedIn && selectedAddress ? {
-      line1: selectedAddress.line1,
-      line2: selectedAddress.line2 || '',
-      state: selectedAddress.state,
-      city: selectedAddress.city,
-      pinCode: selectedAddress.pincode,
-      country: 'India',
-      isDefault: selectedAddress.isDefault || 0
-    } : {
-      line1: values.address,
-      line2: values.apartment,
-      state: values.state,
-      city: values.city,
-      pinCode: values.zipCode,
-      country: values.country,
-      isDefault: 0
-    };
-    
     const finalOrderDto: CheckoutDTO = {
       personalInfo: {
         firstName: values.firstName,
@@ -424,7 +393,15 @@ const isUserExistValidate = async (event) => {
         phone: values.phone,
         email: values.email,
       },
-      address: addressData,
+      address: {
+        line1: values.address,
+        line2: values.apartment,
+        state: values.state,
+        city: values.city,
+        pinCode: values.zipCode,
+        country: values.country,
+        isDefault :0
+      },
       orderItems: items,
       totalItems: totalItems,
       totalPrice: totalPrice,
@@ -623,39 +600,11 @@ const isUserExistValidate = async (event) => {
 
   const handleProceedToCheckout = () => {
     setStep('checkout');
-    if (isLoggedIn) {
-      getUserAddress().then((data) => {
-        if (data) {
-          setAddresses(data.address || []);
-          // Set default address if available and not already set
-          if (!selectedAddress) {
-            const defaultAddr = data.address?.find(addr => addr.isDefault === 1);
-            if (defaultAddr) {
-              setSelectedAddress(defaultAddr);
-            }
+    getUserAddress().then((data) => {
+          if (data) {
+            setAddresses(data.address || []);
           }
-        }
-      });
-    }
-  };
-
-  // Address selection handlers
-  const handleChangeAddress = () => {
-    setShowAddressSelection(true);
-  };
-
-  const handleSelectAddress = (address: any) => {
-    setSelectedAddress(address);
-  };
-
-  const handleAddNewAddress = (newAddress: any) => {
-    // Add the new address to the list
-    const addressData = {
-      ...newAddress,
-      id: Date.now(), // temporary ID
-    };
-    setAddresses(prev => [...prev, addressData]);
-    setSelectedAddress(addressData);
+        });
   };
 
   const EmptyCartIllustration = () => (
@@ -767,162 +716,104 @@ const isUserExistValidate = async (event) => {
         {/* Shipping Address */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <MapPin className="h-5 w-5" />
-              Shipping Address
-            </CardTitle>
+            <CardTitle className="text-lg">Shipping Address</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {isLoggedIn ? (
-              // Logged-in user: Show selected address with change option
-              selectedAddress ? (
-                <div className="space-y-4">
-                  <Card className="bg-muted/50 border-primary/20">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Badge variant={selectedAddress.isDefault ? 'default' : 'secondary'}>
-                              {selectedAddress.type || 'Address'}
-                            </Badge>
-                            {selectedAddress.isDefault === 1 && (
-                              <Badge variant="outline" className="text-green-600 border-green-600">
-                                Default
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {selectedAddress.line1}
-                            {selectedAddress.line2 && `, ${selectedAddress.line2}`}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {selectedAddress.city}, {selectedAddress.state} - {selectedAddress.pincode}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Button
-                    variant="outline"
-                    onClick={handleChangeAddress}
-                    className="w-full"
-                  >
-                    Change Address
-                  </Button>
-                </div>
-              ) : (
-                // No address selected - show change address button
-                <div className="text-center py-6">
-                  <p className="text-muted-foreground mb-4">No address selected</p>
-                  <Button
-                    variant="outline"
-                    onClick={handleChangeAddress}
-                    className="w-full"
-                  >
-                    Select Address
-                  </Button>
-                </div>
-              )
-            ) : (
-              // Guest user: Show address form
-              <>
-                {/* Address first */}
-                <div>
-                  <Label htmlFor="address">Address *</Label>
-                  <Input
-                    id="address"
-                    placeholder="House no., street, area"
-                    {...register('address', { required: 'Address is required' })}
-                    className={errors.address ? 'border-destructive' : ''}
-                  />
-                  {errors.address && (
-                    <p className="text-sm text-destructive mt-1">{errors.address.message}</p>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
-                  <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
-                </div>
+            {/* Address first */}
+            <div>
+              <Label htmlFor="address">Address *</Label>
+              <Input
+                id="address"
+                placeholder="House no., street, area"
+                {...register('address', { required: 'Address is required' })}
+                className={errors.address ? 'border-destructive' : ''}
+              />
+              {errors.address && (
+                <p className="text-sm text-destructive mt-1">{errors.address.message}</p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
+              <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
+            </div>
 
-                {/* PIN Code & State */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="zipCode">PIN Code *</Label>
-                    <Input
-                      id="zipCode"
-                      inputMode="numeric"
-                      placeholder="6-digit PIN code"
-                      maxLength={6}
-                      {...register('zipCode', {
-                        required: 'PIN code is required',
-                        minLength: { value: 6, message: 'Enter 6 digits' },
-                        maxLength: { value: 6, message: 'Enter 6 digits' },
-                        pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
-                      })}
-    onChange={(e) => {
-                        let val = e.target.value.replace(/\D/g, '');
-                        if (val.length > 6) val = val.slice(0, 6);
-                        setValue('zipCode', val, { shouldDirty: true });
-                      }}
-                      onBlur={handleZipBlur}
-                      className={errors.zipCode ? 'border-destructive' : ''}
-                    />
-                    {errors.zipCode && (
-                      <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label>State *</Label>
-                    <Select onValueChange={handleStateChange} value={watch('state') || ''}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select state" />
-                      </SelectTrigger>
-                      <SelectContent className="z-50">
-                        {stateOptions.map((s) => (
-                          <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.state && (
-                      <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
-                    )}
-                  </div>
-                </div>
+            {/* PIN Code & State */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="zipCode">PIN Code *</Label>
+                <Input
+                  id="zipCode"
+                  inputMode="numeric"
+                  placeholder="6-digit PIN code"
+                  maxLength={6}
+                  {...register('zipCode', {
+                    required: 'PIN code is required',
+                    minLength: { value: 6, message: 'Enter 6 digits' },
+                    maxLength: { value: 6, message: 'Enter 6 digits' },
+                    pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
+                  })}
+onChange={(e) => {
+                    let val = e.target.value.replace(/\D/g, '');
+                    if (val.length > 6) val = val.slice(0, 6);
+                    setValue('zipCode', val, { shouldDirty: true });
+                  }}
+                  onBlur={handleZipBlur}
+                  className={errors.zipCode ? 'border-destructive' : ''}
+                />
+                {errors.zipCode && (
+                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
+                )}
+              </div>
+              <div>
+                <Label>State *</Label>
+                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {stateOptions.map((s) => (
+                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.state && (
+                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
+                )}
+              </div>
+            </div>
 
-                {/* City & Country */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>City *</Label>
-                    <Select onValueChange={handleCityChange} value={watch('city') || ''}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select city" />
-                      </SelectTrigger>
-                      <SelectContent className="z-50">
-                        {cityOptions.map((c) => (
-                          <SelectItem key={c} value={c}>{c}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.city && (
-                      <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
-                    )}
-                  </div>
-                  <div>
-                    <Label htmlFor="country">Country *</Label>
-                    <Input
-                      id="country"
-                      defaultValue="India"
-                      readOnly
-                      {...register('country', { required: 'Country is required' })}
-                      className={errors.country ? 'border-destructive' : ''}
-                    />
-                    {errors.country && (
-                      <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
-                    )}
-                  </div>
-                </div>
-              </>
-            )}
+            {/* City & Country */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>City *</Label>
+                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent className="z-50">
+                    {cityOptions.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
+                )}
+              </div>
+              <div>
+                <Label htmlFor="country">Country *</Label>
+                <Input
+                  id="country"
+                  defaultValue="India"
+                  readOnly
+                  {...register('country', { required: 'Country is required' })}
+                  className={errors.country ? 'border-destructive' : ''}
+                />
+                {errors.country && (
+                  <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
+                )}
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -943,7 +834,7 @@ const isUserExistValidate = async (event) => {
             <CardTitle className="text-lg">Order Summary</CardTitle>
           </CardHeader>
 
-          
+          {addresses.map((address) => (  <p> {address.line1}  {address.line2} {address.state}, {address.pincode} </p> )) }
 
           <CardContent className="space-y-4">
             {items.map((item) => (
@@ -1022,11 +913,9 @@ const isUserExistValidate = async (event) => {
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
           onClick={handleSubmit(onSubmit)}
-          disabled={isProcessing || (isLoggedIn && !selectedAddress)}
+          disabled={isProcessing}
         >
-          {isProcessing ? 'Processing...' : 
-           isLoggedIn && !selectedAddress ? 'Select Address to Continue' :
-           `Place Order - ₹${totalOfferPrice.toFixed(2)}`}
+          {isProcessing ? 'Processing...' : `Place Order - ₹${totalOfferPrice.toFixed(2)}`}
         </Button>
       </div>
     </div>
@@ -1163,16 +1052,6 @@ const isUserExistValidate = async (event) => {
         onClose={closeErrorModal}
         onRetry={handleRetryOrder}
         errorMessage={errorMessage}
-      />
-
-      {/* Address Selection Sheet */}
-      <AddressSelectionSheet
-        isOpen={showAddressSelection}
-        onClose={() => setShowAddressSelection(false)}
-        addresses={addresses}
-        selectedAddress={selectedAddress}
-        onSelectAddress={handleSelectAddress}
-        onAddAddress={handleAddNewAddress}
       />
 
       {/* Existing Account Prompt */}
