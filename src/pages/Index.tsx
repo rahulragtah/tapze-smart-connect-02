@@ -22,7 +22,7 @@ const Index = () => {
   React.useEffect(() => {
     const timer = setTimeout(() => {
       setShowPromotionalModal(true);
-    }, 12000); // 12 seconds
+    }, 5000); // 12 seconds
 
     return () => clearTimeout(timer);
   }, []);
