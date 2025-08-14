@@ -103,13 +103,7 @@ export const sendConfirmationEmail = async (finalEmailDto: orderDTO) => {
 
 
 
-export interface Address {
-  address_line1: string;
-  address_line2: string;
-  city: string;
-  state: string;
-  pincode: string;
-}
+
 
 const API_BASE = "https://tapze.in/tapzeservice/user";
 
