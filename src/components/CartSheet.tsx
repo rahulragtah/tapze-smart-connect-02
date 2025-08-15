@@ -727,6 +727,8 @@ const isUserExistValidate = async (event) => {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Address first */}
+            {/* <p>
+          {addresses.map((address) => (  <p> {address.line1}  {address.line2} {address.state}, {address.pincode} {address.isDefault}</p> )) }</p> */}
             <div>
               <Label htmlFor="address">Address *</Label>
               <Input
@@ -841,7 +843,6 @@ onChange={(e) => {
             <CardTitle className="text-lg">Order Summary</CardTitle>
           </CardHeader>
 
-          {addresses.map((address) => (  <p> {address.line1}  {address.line2} {address.state}, {address.pincode} </p> )) }
 
           <CardContent className="space-y-4">
             {items.map((item) => (
