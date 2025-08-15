@@ -62,9 +62,9 @@ export const postOrderProcessing = async (orderData: CheckoutDTO, isLoggedIn:boo
         firstName:response.firstName, 
          lastName:response.lastName,
          urlParam: mailurl ,
-         emailSubject : 'tapZe Account Support: Reset Password !!', 
-         tagline: 'Your new password is just a step away.',
-         actionText: 'reset your password'
+         emailSubject : 'tapZe Account Support: Set Your Password !!', 
+         tagline: 'Set your password to access your tapZe account.',
+         actionText: 'Set Password'
          };
       // send reset password email
       await sendRestPasswordEmail(payload);
