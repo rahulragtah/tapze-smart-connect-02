@@ -385,7 +385,11 @@ const isUserExistValidate = async (event) => {
   const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
     setProcessingStage('creating');
-    
+
+    if(isLoggedIn){
+      values.email=localStorage.getItem('email');
+    }
+    console.log('current email.', values.email );
     const finalOrderDto: CheckoutDTO = {
       personalInfo: {
         firstName: values.firstName,
@@ -674,6 +678,7 @@ const isUserExistValidate = async (event) => {
                 )}
               </div>
             </div>
+            { isLoggedIn ?  <div>{isLoggedIn} </div> : 
             <div>
               <Label htmlFor="email">Email *</Label>
               <Input
@@ -698,6 +703,8 @@ const isUserExistValidate = async (event) => {
                 <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
               )}
             </div>
+             }
+            
             <div>
               <Label htmlFor="phone">Phone Number *</Label>
               <PhoneInput

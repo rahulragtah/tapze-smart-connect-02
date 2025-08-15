@@ -16,3 +16,14 @@ export const createUserAddress = async ( address: UserAddress ) => {
 
   return response.json();
 };
+
+
+export const setDefaultAddress = async ( addressId: number ) => {
+  const response = await fetch('https://tapze.in/tapzeservice/user/defaultAddress.php', {
+    method: 'POST',
+    credentials: 'include', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify( addressId)
+  });
+  return response.json();
+};

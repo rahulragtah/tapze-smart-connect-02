@@ -41,6 +41,7 @@ const Login = () => {
       if(response.success){
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('user', JSON.stringify(response));
+        localStorage.setItem('email', response.email);
         toast({
         title: "Login Successful",
         description: "Welcome back!",
