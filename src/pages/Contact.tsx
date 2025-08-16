@@ -10,11 +10,14 @@ import { MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { PhoneInput } from "@/components/ui/phone-input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 interface ContactForm {
   name: string;
   email: string;
   phone: string;
+  queryType: string;
   message: string;
 }
 
@@ -27,6 +30,7 @@ const Contact = () => {
       name: "",
       email: "",
       phone: "",
+      queryType: "",
       message: "",
     },
   });
@@ -181,12 +185,35 @@ const Contact = () => {
                           <FormItem>
                             <FormLabel className="text-gray-300">Phone Number</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="tel"
-                                placeholder="+91 9990909789" 
+                              <PhoneInput 
+                                placeholder="10-digit mobile number" 
                                 {...field}
                                 className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400"
                               />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="queryType"
+                        rules={{ required: "Please select a query type" }}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-300">Type of Query</FormLabel>
+                            <FormControl>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger className="bg-gray-800/50 border-gray-700 text-white">
+                                  <SelectValue placeholder="Select a query type" />
+                                </SelectTrigger>
+                                <SelectContent className="z-50">
+                                  <SelectItem value="bulk">Bulk inquiry</SelectItem>
+                                  <SelectItem value="support">Support</SelectItem>
+                                  <SelectItem value="general">General</SelectItem>
+                                </SelectContent>
+                              </Select>
                             </FormControl>
                             <FormMessage />
                           </FormItem>

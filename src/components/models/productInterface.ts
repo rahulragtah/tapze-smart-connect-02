@@ -16,6 +16,16 @@ export interface Offer {
   isActive: boolean;
 }
 
+export interface  UserAddress {
+    line1: string;
+    line2?: string;
+    state: string;
+    city: string;
+    pinCode: string;
+    country:string;
+    isDefault:number;
+  }
+
 export interface CheckoutDTO  extends Record<string, unknown> {
   personalInfo: {
     firstName: string;
@@ -23,14 +33,7 @@ export interface CheckoutDTO  extends Record<string, unknown> {
     phone: string;
     email: string;
   };
-  address: {
-    line1: string;
-    line2?: string;
-    state: string;
-    city: string;
-    pinCode: string;
-    country:string;
-  };
+  address: UserAddress;
   orderItems: CartItem[];
   totalItems: number;
   totalPrice:number;

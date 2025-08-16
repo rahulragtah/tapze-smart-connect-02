@@ -1,8 +1,9 @@
 
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, User, LogOut, UserCircle, Menu, X } from "lucide-react";
+import { ShoppingCart, User, LogOut, UserCircle, Menu, X, Package, MapPin } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useState, useEffect } from "react";
+import {logOut} from '../services/login';
 import { 
   DropdownMenu,
   DropdownMenuContent,
@@ -17,9 +18,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import LoginModal from "./LoginModal";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation ,useNavigate} from "react-router-dom";
 
 const Navigation = () => {
+  const navigate = useNavigate();
   const { totalItems, setIsOpen } = useCart();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,7 +37,10 @@ const Navigation = () => {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    logOut();
     setUserInfo({ name: "", phone: "" });
+    navigate('/login');
+    
   };
 
   const closeMobileMenu = () => {
@@ -53,21 +58,18 @@ const Navigation = () => {
   };
 
 
-  
+  useEffect(() => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const user = JSON.parse(localStorage.getItem('user'));
 
-  fetch("https://tapze.in/tapzeservice/checkUser.php", {
-  credentials: "include",
-})
-  .then(res => res.json())
-  .then(data => {
-    if (data.loggedIn) {
-      console.log("✅ Logged in:", data);
-      setIsLoggedIn(true);
-    } else {
-      console.log("⛔ Not logged in:", data.message);
-      setIsLoggedIn(false);
-    }
-  });
+  if (isLoggedIn && user) {
+    setIsLoggedIn(true);
+
+    setUserInfo({name: user.first_name + ' '+ user.last_name, phone: user.phone })
+   // setLoginStatus(true, user);
+  }
+  }, []);
+
 
 
   
@@ -136,16 +138,30 @@ const Navigation = () => {
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="ghost" 
-                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full"
+                      className="text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 rounded-full capitalize"
                     >
                       <UserCircle className="w-4 h-4 mr-2" />
                       {userInfo.name}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={handleLoginOpen}>
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link to="/account/orders">
+                        <Package className="w-4 h-4 mr-2" />
+                        My Orders
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/account/addresses">
+                        <MapPin className="w-4 h-4 mr-2" />
+                        My Addresses
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/account/info">
+                        <User className="w-4 h-4 mr-2" />
+                        Account Info
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="w-4 h-4 mr-2" />
@@ -156,9 +172,9 @@ const Navigation = () => {
               ) : (
                 <Button 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 rounded-full"
-                  onClick={handleLoginOpen}
+                  asChild
                 >
-                  Login
+                  <Link to="/login">Login</Link>
                 </Button>
               )}
             </div>
@@ -254,10 +270,35 @@ const Navigation = () => {
                           <Button 
                             variant="ghost" 
                             className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
-                            onClick={handleLoginOpen}
+                            onClick={closeMobileMenu}
+                            asChild
                           >
-                            <User className="w-4 h-4 mr-2" />
-                            Dashboard
+                            <Link to="/account/orders">
+                              <Package className="w-4 h-4 mr-2" />
+                              My Orders
+                            </Link>
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                            onClick={closeMobileMenu}
+                            asChild
+                          >
+                            <Link to="/account/addresses">
+                              <MapPin className="w-4 h-4 mr-2" />
+                              My Addresses
+                            </Link>
+                          </Button>
+                          <Button 
+                            variant="ghost" 
+                            className="justify-start text-foreground hover:text-foreground hover:bg-accent/80 transition-all duration-200 w-full rounded-full"
+                            onClick={closeMobileMenu}
+                            asChild
+                          >
+                            <Link to="/account/info">
+                              <User className="w-4 h-4 mr-2" />
+                              Account Info
+                            </Link>
                           </Button>
                           <Button 
                             variant="ghost" 
@@ -274,9 +315,10 @@ const Navigation = () => {
                       ) : (
                         <Button 
                           className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white transition-all duration-200 w-full rounded-full"
-                          onClick={handleLoginOpen}
+                          onClick={closeMobileMenu}
+                          asChild
                         >
-                          Login
+                          <Link to="/login">Login</Link>
                         </Button>
                       )}
                     </div>

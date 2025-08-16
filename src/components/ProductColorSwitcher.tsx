@@ -60,6 +60,10 @@ const { productId } = useParams();
         if (data && data.length > 0 && !selectedColor) {
           setSelectedColor(data[0].colorId);
           onColorChange?.(data[0].colorName);
+        }else {
+          setSelectedColor('');
+          onColorChange?.('');
+
         }
         console.log('ProductColorSwitcher for all  product', data);
       })
