@@ -171,6 +171,7 @@ const CartSheet = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
   const checkoutScrollRef = useRef<HTMLDivElement>(null);
+  const placeOrderButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -794,12 +795,17 @@ const isUserExistValidate = async (event) => {
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
-                      // Find the Place Order button and focus it
-                      const placeOrderButton = document.querySelector('[data-place-order-button]') as HTMLButtonElement;
-                      if (placeOrderButton) {
-                        e.preventDefault();
-                        placeOrderButton.focus();
-                      }
+                      e.preventDefault();
+                      console.log('Tab pressed from PIN code, focusing place order button');
+                      // Use setTimeout to ensure focus happens after any other event handlers
+                      setTimeout(() => {
+                        if (placeOrderButtonRef.current) {
+                          placeOrderButtonRef.current.focus();
+                          console.log('Place order button focused');
+                        } else {
+                          console.log('Place order button ref not found');
+                        }
+                      }, 0);
                     }
                   }}
                   onBlur={handleZipBlur}
@@ -956,6 +962,7 @@ const isUserExistValidate = async (event) => {
           
         
         <Button 
+          ref={placeOrderButtonRef}
           data-place-order-button
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
