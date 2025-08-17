@@ -171,6 +171,7 @@ const CartSheet = () => {
   const recaptchaRef = useRef(null);
   const checkoutScrollRef = useRef<HTMLDivElement>(null);
   const placeOrderButtonRef = useRef<HTMLButtonElement>(null);
+  const countryFieldRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -225,14 +226,15 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, [register]);
 
-  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusCountry = false) => {
     const val = e.target.value.trim();
 
-    // Focus Place Order button immediately if PIN is 6 digits or Tab was pressed
-    if (val.length === 6 || shouldFocusPlaceOrder) {
+    // Focus country field after PIN auto-fill completes
+    if ((val.length === 6 || shouldFocusCountry) && val.length === 6) {
+      // Wait for state and city to be populated before focusing country
       setTimeout(() => {
-        placeOrderButtonRef.current?.focus();
-      }, 0);
+        countryFieldRef.current?.focus();
+      }, 100); // Small delay to ensure auto-fill is complete
     }
 
     // PIN lookup happens asynchronously in background - no blocking
@@ -763,7 +765,7 @@ const isUserExistValidate = async (event) => {
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
                       e.preventDefault();
-                      // Trigger the blur event manually with the flag to focus Place Order button
+                      // Trigger the blur event manually with the flag to focus country field
                       const pinCodeValue = e.currentTarget.value.trim();
                       if (pinCodeValue.length === 6) {
                         // Call handleZipBlur directly with a minimal event object
@@ -774,9 +776,9 @@ const isUserExistValidate = async (event) => {
                           type: 'blur'
                         } as any, true);
                       } else {
-                        // If PIN is not complete, just focus the Place Order button
+                        // If PIN is not complete, just focus the country field
                         setTimeout(() => {
-                          placeOrderButtonRef.current?.focus();
+                          countryFieldRef.current?.focus();
                         }, 0);
                       }
                     }
@@ -827,9 +829,9 @@ const isUserExistValidate = async (event) => {
               <div>
                 <Label htmlFor="country">Country *</Label>
                 <Input
+                  ref={countryFieldRef}
                   id="country"
                   defaultValue="India"
-                  readOnly
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
