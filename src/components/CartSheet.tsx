@@ -639,7 +639,7 @@ const isUserExistValidate = async (event) => {
         </Button>
       </div>
 
-      <div ref={checkoutScrollRef} tabIndex={-1} className="flex-1 overflow-y-auto space-y-6 pb-6">
+      <div ref={checkoutScrollRef} className="flex-1 overflow-y-auto space-y-6 pb-6">
         {/* Personal Information */}
         <Card>
           <CardHeader>
@@ -791,7 +791,7 @@ const isUserExistValidate = async (event) => {
               <div>
                 <Label>State *</Label>
                 <Select onValueChange={handleStateChange} value={stateValue || ''}>
-                  <SelectTrigger tabIndex={-1}>
+                  <SelectTrigger>
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -811,7 +811,7 @@ const isUserExistValidate = async (event) => {
               <div>
                 <Label>City *</Label>
                 <Select onValueChange={handleCityChange} value={cityValue || ''}>
-                  <SelectTrigger tabIndex={-1}>
+                  <SelectTrigger>
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -830,7 +830,6 @@ const isUserExistValidate = async (event) => {
                   id="country"
                   defaultValue="India"
                   readOnly
-                  tabIndex={-1}
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
@@ -941,7 +940,6 @@ const isUserExistValidate = async (event) => {
           size="lg"
           onClick={handleSubmit(onSubmit)}
           disabled={isProcessing}
-          tabIndex={0}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
