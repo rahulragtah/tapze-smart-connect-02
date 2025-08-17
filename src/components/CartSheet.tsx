@@ -813,7 +813,7 @@ onChange={(e) => {
                 <Input
                   id="country"
                   defaultValue="India"
-                  readOnly
+                  
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
