@@ -228,29 +228,11 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
 
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
-    const container = checkoutScrollRef.current;
-    const el = e.currentTarget as HTMLInputElement;
 
-    // Keep focus inside the scroll container to prevent Radix focus jump to the top
-    if (container && typeof (container as any).focus === 'function') {
-      try {
-        (container as any).focus({ preventScroll: true });
-      } catch {
-        // ignore
-      }
-    }
-
+    // Validate PIN code without focusing
     await trigger('zipCode', { shouldFocus: false });
 
     if (val.length === 6) {
-      // Capture element's relative position within the scroll container
-      let desiredRelTop: number | null = null;
-      if (container && el) {
-        const cr = container.getBoundingClientRect();
-        const er = el.getBoundingClientRect();
-        desiredRelTop = er.top - cr.top;
-      }
-
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
         const data = await res.json();
@@ -278,11 +260,9 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
         console.error('PIN lookup failed', err);
       } finally {
         // Always focus the Place Order button after PIN lookup completes
-        if (val.length === 6) {
-          setTimeout(() => {
-            placeOrderButtonRef.current?.focus();
-          }, 150);
-        }
+        setTimeout(() => {
+          placeOrderButtonRef.current?.focus();
+        }, 150);
       }
     } else if (shouldFocusPlaceOrder) {
       // If PIN is not 6 digits but Tab was pressed, still focus Place Order button
