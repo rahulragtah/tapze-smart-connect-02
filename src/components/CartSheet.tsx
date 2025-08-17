@@ -226,7 +226,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, [register]);
 
-  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
     const container = checkoutScrollRef.current;
     const el = e.currentTarget as HTMLInputElement;
@@ -295,8 +295,20 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
               } catch {
                 // ignore
               }
+              
+              // If this was triggered by Tab key, focus the Place Order button
+              if (shouldFocusPlaceOrder && placeOrderButtonRef.current) {
+                setTimeout(() => {
+                  placeOrderButtonRef.current?.focus();
+                }, 100);
+              }
             });
           });
+        } else if (shouldFocusPlaceOrder && placeOrderButtonRef.current) {
+          // If no container adjustment needed, focus immediately
+          setTimeout(() => {
+            placeOrderButtonRef.current?.focus();
+          }, 100);
         }
       }
     }
@@ -796,19 +808,25 @@ const isUserExistValidate = async (event) => {
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
                       e.preventDefault();
-                      console.log('Tab pressed from PIN code, focusing place order button');
-                      // Use setTimeout to ensure focus happens after any other event handlers
-                      setTimeout(() => {
-                        if (placeOrderButtonRef.current) {
-                          placeOrderButtonRef.current.focus();
-                          console.log('Place order button focused');
-                        } else {
-                          console.log('Place order button ref not found');
-                        }
-                      }, 0);
+                      // Trigger the blur event manually with the flag to focus Place Order button
+                      const pinCodeValue = e.currentTarget.value.trim();
+                      if (pinCodeValue.length === 6) {
+                        // Call handleZipBlur directly with a minimal event object
+                        handleZipBlur({
+                          target: e.currentTarget,
+                          currentTarget: e.currentTarget,
+                          relatedTarget: null,
+                          type: 'blur'
+                        } as any, true);
+                      } else {
+                        // If PIN is not complete, just focus the Place Order button
+                        setTimeout(() => {
+                          placeOrderButtonRef.current?.focus();
+                        }, 0);
+                      }
                     }
                   }}
-                  onBlur={handleZipBlur}
+                  onBlur={(e) => handleZipBlur(e, false)}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
