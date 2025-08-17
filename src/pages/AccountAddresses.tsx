@@ -94,9 +94,11 @@ const AccountAddresses = () => {
                     </div>
                     <h3 className="text-base font-semibold">No addresses saved</h3>
                     <p className="text-sm text-muted-foreground max-w-sm">
-                      Add your first delivery address to make checkout faster and easier.
+                    Start your journey with a Smart Business Card — network faster and smarter.
                     </p>
-                    <Button onClick={handleAddAddress}>Add New Address</Button>
+                    < <Button asChild>
+                      <a href="/buy-nfc-card">Get your Smart Business Card</a>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
