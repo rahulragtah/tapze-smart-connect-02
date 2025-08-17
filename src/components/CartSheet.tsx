@@ -277,40 +277,18 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
       } catch (err) {
         console.error('PIN lookup failed', err);
       } finally {
-        if (container && el && desiredRelTop != null) {
-          const adjust = () => {
-            const cr2 = container.getBoundingClientRect();
-            const er2 = el.getBoundingClientRect();
-            const newRelTop = er2.top - cr2.top;
-            const delta = newRelTop - desiredRelTop!;
-            container.scrollTop += delta;
-          };
-          // Run after layout settles
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              adjust();
-              // Re-focus the scroll container without moving it
-              try {
-                (container as any).focus({ preventScroll: true });
-              } catch {
-                // ignore
-              }
-              
-              // If this was triggered by Tab key, focus the Place Order button
-              if (shouldFocusPlaceOrder && placeOrderButtonRef.current) {
-                setTimeout(() => {
-                  placeOrderButtonRef.current?.focus();
-                }, 100);
-              }
-            });
-          });
-        } else if (shouldFocusPlaceOrder && placeOrderButtonRef.current) {
-          // If no container adjustment needed, focus immediately
+        // Always focus the Place Order button after PIN lookup completes
+        if (val.length === 6) {
           setTimeout(() => {
             placeOrderButtonRef.current?.focus();
-          }, 100);
+          }, 150);
         }
       }
+    } else if (shouldFocusPlaceOrder) {
+      // If PIN is not 6 digits but Tab was pressed, still focus Place Order button
+      setTimeout(() => {
+        placeOrderButtonRef.current?.focus();
+      }, 0);
     }
   };
 
