@@ -212,11 +212,11 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     setValue('country', 'India');
   }, [setValue]);
 
-  // Register non-input fields with RHF
+  // Register non-input fields with RHF on component mount only
   useEffect(() => {
     register('state', { required: 'State is required' });
     register('city', { required: 'City is required' });
-  }, [register]);
+  }, []); // Remove register dependency to prevent re-renders
 
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
@@ -243,11 +243,11 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
             const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
             if (matchedState) {
               setSelectedStateCode(matchedState.isoCode);
-              setValue('state', matchedState.name, { shouldValidate: false });
-              setValue('city', district, { shouldValidate: false });
+              setValue('state', matchedState.name);
+              setValue('city', district);
             } else {
-              setValue('state', stateName, { shouldValidate: false });
-              setValue('city', district, { shouldValidate: false });
+              setValue('state', stateName);
+              setValue('city', district);
             }
           }
         })
@@ -329,8 +329,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     setErrorMessage('');
   };
 
-const isUserExistValidate = async (event) => {
-    const email = event.target.value?.trim();
+const isUserExistValidate = async (email: string) => {
     if (isLoggedIn) return;
     if (!email) return;
     try {
@@ -653,11 +652,9 @@ const isUserExistValidate = async (event) => {
                     value: /^\S+@\S+$/i,
                     message: 'Please enter a valid email'
                   }})}
-                  onChange={(e) => {
-                  // call React Hook Form's onBlur
-                  register('email').onChange(e);
-                  // call your function
-                  isUserExistValidate(e);
+                  onBlur={(e) => {
+                  // call your function when user exits email field
+                  isUserExistValidate(e.target.value);
                 }}
                 className={errors.email ? 'border-destructive' : ''}
               />
@@ -726,7 +723,7 @@ const isUserExistValidate = async (event) => {
                   onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, '');
                     if (val.length > 6) val = val.slice(0, 6);
-                    setValue('zipCode', val, { shouldDirty: true });
+                    e.target.value = val; // Update the input value directly
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
