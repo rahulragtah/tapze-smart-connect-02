@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -51,7 +51,7 @@ interface CouponCodeSectionProps {
 }
 
 // Isolated component to prevent form re-rendering from affecting input focus
-const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
+const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
   appliedCoupon,
   couponCode,
   setCouponCode,
@@ -127,7 +127,7 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
       </CardContent>
     </Card>
   );
-};
+});
 
 const formattedDate = new Date().toLocaleDateString('en-IN', {
   day: '2-digit',
@@ -144,7 +144,7 @@ const CartSheet = () => {
   const [step, setStep] = useState<'cart' | 'checkout'>('cart');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCodeState] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState<'creating' | 'payment' | 'confirming' | 'complete'>('creating');
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -302,6 +302,11 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     setValue('zipCode', '');
   };
   
+  // Stabilize setCouponCode function to prevent input focus loss
+  const setCouponCode = useCallback((code: string) => {
+    setCouponCodeState(code);
+  }, []);
+  
   // Mock coupon codes for demo
   const validCoupons = {
     'COMEBACK10': { discount: 10, type: 'percentage' }
@@ -318,7 +323,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   // const finalTotal = afterDiscount + gstAmount + shippingCharge;
   const finalTotal = afterDiscount;
 
-  const applyCoupon = () => {
+  const applyCoupon = useCallback(() => {
     const coupon = validCoupons[couponCode.toUpperCase() as keyof typeof validCoupons];
     if (coupon) {
       setCouponDiscount(coupon.discount);
@@ -334,17 +339,17 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
         variant: "destructive",
       });
     }
-  };
+  }, [couponCode, toast]);
 
-  const removeCoupon = () => {
+  const removeCoupon = useCallback(() => {
     setCouponDiscount(0);
     setAppliedCoupon('');
-    setCouponCode('');
+    setCouponCodeState('');
     toast({
       title: "Coupon Removed",
       description: "Coupon code has been removed from your order.",
     });
-  };
+  }, [toast]);
 
   const handleCaptchaChange = (value) => {
     setCaptchaToken(value); // save it in state
@@ -547,7 +552,7 @@ const isUserExistValidate = async (event) => {
               setStep('cart');
               setCouponDiscount(0);
               setAppliedCoupon('');
-              setCouponCode('');
+              setCouponCodeState('');
               setIsOpen(false);
 
               // Keep loader visible during navigation
@@ -826,7 +831,8 @@ onChange={(e) => {
         </Card>
 
         {/* Coupon Code - Standalone component to prevent form interference */}
-        { <CouponCodeSection 
+        <CouponCodeSection 
+          key="coupon-section"
           appliedCoupon={appliedCoupon}
           couponCode={couponCode}
           setCouponCode={setCouponCode}
@@ -834,7 +840,7 @@ onChange={(e) => {
           validCoupons={validCoupons}
           applyCoupon={applyCoupon}
           removeCoupon={removeCoupon}
-        /> }
+        />
 
         {/* Order Summary */}
         <Card>
