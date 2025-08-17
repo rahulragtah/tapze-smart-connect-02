@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -50,8 +50,8 @@ interface CouponCodeSectionProps {
   removeCoupon: () => void;
 }
 
-// Isolated component to prevent form re-rendering from affecting input focus
-const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
+// Completely isolated component to prevent ANY form interference
+const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
   appliedCoupon,
   couponCode,
   setCouponCode,
@@ -60,6 +60,8 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
   applyCoupon,
   removeCoupon
 }) => {
+  // Local input ref to maintain focus
+  const inputRef = useRef<HTMLInputElement>(null);
   
 
   return (
@@ -97,10 +99,16 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Input
+                ref={inputRef}
                 placeholder="Enter coupon code"
                 value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+                tabIndex={-1}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setCouponCode(e.target.value);
+                }}
                 onKeyDown={(e) => {
+                  e.stopPropagation();
                   if (e.key === 'Enter') {
                     e.preventDefault();
                     applyCoupon();
@@ -108,6 +116,8 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
                 }}
                 className="flex-1"
                 autoComplete="off"
+                onFocus={(e) => e.stopPropagation()}
+                onBlur={(e) => e.stopPropagation()}
               />
             </div>
             <Button 
@@ -127,7 +137,14 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
       </CardContent>
     </Card>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  return (
+    prevProps.appliedCoupon === nextProps.appliedCoupon &&
+    prevProps.couponCode === nextProps.couponCode &&
+    prevProps.couponDiscount === nextProps.couponDiscount
+  );
+});
 
 const formattedDate = new Date().toLocaleDateString('en-IN', {
   day: '2-digit',
@@ -144,7 +161,7 @@ const CartSheet = () => {
   const [step, setStep] = useState<'cart' | 'checkout'>('cart');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
-  const [couponCode, setCouponCode] = useState('');
+  const [couponCode, setCouponCodeState] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState<'creating' | 'payment' | 'confirming' | 'complete'>('creating');
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -154,6 +171,7 @@ const CartSheet = () => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const recaptchaRef = useRef(null);
   const checkoutScrollRef = useRef<HTMLDivElement>(null);
+  const placeOrderButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -182,6 +200,11 @@ useEffect(() => {
   
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
+  // Memoize watched values to prevent unnecessary re-renders
+  const stateValue = watch('state');
+  const cityValue = watch('city');
+  const emailValue = watch('email');
+
   // India address helpers
   const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
   const [cityOptions, setCityOptions] = useState<string[]>([]);
@@ -203,79 +226,47 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, [register]);
 
-  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
-    const container = checkoutScrollRef.current;
-    const el = e.currentTarget as HTMLInputElement;
 
-    // Keep focus inside the scroll container to prevent Radix focus jump to the top
-    if (container && typeof (container as any).focus === 'function') {
-      try {
-        (container as any).focus({ preventScroll: true });
-      } catch {
-        // ignore
-      }
+    // Focus Place Order button immediately if PIN is 6 digits or Tab was pressed
+    if (val.length === 6 || shouldFocusPlaceOrder) {
+      setTimeout(() => {
+        placeOrderButtonRef.current?.focus();
+      }, 0);
     }
 
-    await trigger('zipCode', { shouldFocus: false });
-
+    // PIN lookup happens asynchronously in background - no blocking
     if (val.length === 6) {
-      // Capture element's relative position within the scroll container
-      let desiredRelTop: number | null = null;
-      if (container && el) {
-        const cr = container.getBoundingClientRect();
-        const er = el.getBoundingClientRect();
-        desiredRelTop = er.top - cr.top;
-      }
+      // Don't await - let it run in background
+      fetch(`https://api.postalpincode.in/pincode/${val}`)
+        .then(res => res.json())
+        .then(data => {
+          const result = data?.[0];
+          if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+            const po = result.PostOffice[0];
+            const stateName = po.State as string;
+            const district = po.District as string;
 
-      try {
-        const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
-        const data = await res.json();
-        const result = data?.[0];
-        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
-          const po = result.PostOffice[0];
-          const stateName = po.State as string;
-          const district = po.District as string;
-
-          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
-          if (matchedState) {
-            setSelectedStateCode(matchedState.isoCode);
-            setValue('state', matchedState.name, { shouldValidate: false });
-            const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
-            const uniqueCities = Array.from(new Set([district, ...cities]));
-            setCityOptions(uniqueCities);
-            setValue('city', district, { shouldValidate: false });
-          } else {
-            setValue('state', stateName, { shouldValidate: false });
-            setCityOptions([district]);
-            setValue('city', district, { shouldValidate: false });
+            const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+            if (matchedState) {
+              setSelectedStateCode(matchedState.isoCode);
+              setValue('state', matchedState.name, { shouldValidate: false });
+              const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
+              const uniqueCities = Array.from(new Set([district, ...cities]));
+              setCityOptions(uniqueCities);
+              setValue('city', district, { shouldValidate: false });
+            } else {
+              setValue('state', stateName, { shouldValidate: false });
+              setCityOptions([district]);
+              setValue('city', district, { shouldValidate: false });
+            }
           }
-        }
-      } catch (err) {
-        console.error('PIN lookup failed', err);
-      } finally {
-        if (container && el && desiredRelTop != null) {
-          const adjust = () => {
-            const cr2 = container.getBoundingClientRect();
-            const er2 = el.getBoundingClientRect();
-            const newRelTop = er2.top - cr2.top;
-            const delta = newRelTop - desiredRelTop!;
-            container.scrollTop += delta;
-          };
-          // Run after layout settles
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              adjust();
-              // Re-focus the scroll container without moving it
-              try {
-                (container as any).focus({ preventScroll: true });
-              } catch {
-                // ignore
-              }
-            });
-          });
-        }
-      }
+        })
+        .catch(err => {
+          console.error('PIN lookup failed', err);
+        });
+      // No finally block - focus already happened immediately above
     }
   };
 
@@ -302,6 +293,11 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     setValue('zipCode', '');
   };
   
+  // Stabilize setCouponCode function to prevent input focus loss
+  const setCouponCode = useCallback((code: string) => {
+    setCouponCodeState(code);
+  }, []);
+  
   // Mock coupon codes for demo
   const validCoupons = {
     'COMEBACK10': { discount: 10, type: 'percentage' }
@@ -318,7 +314,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   // const finalTotal = afterDiscount + gstAmount + shippingCharge;
   const finalTotal = afterDiscount;
 
-  const applyCoupon = () => {
+  const applyCoupon = useCallback(() => {
     const coupon = validCoupons[couponCode.toUpperCase() as keyof typeof validCoupons];
     if (coupon) {
       setCouponDiscount(coupon.discount);
@@ -334,17 +330,17 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
         variant: "destructive",
       });
     }
-  };
+  }, [couponCode, toast]);
 
-  const removeCoupon = () => {
+  const removeCoupon = useCallback(() => {
     setCouponDiscount(0);
     setAppliedCoupon('');
-    setCouponCode('');
+    setCouponCodeState('');
     toast({
       title: "Coupon Removed",
       description: "Coupon code has been removed from your order.",
     });
-  };
+  }, [toast]);
 
   const handleCaptchaChange = (value) => {
     setCaptchaToken(value); // save it in state
@@ -547,7 +543,7 @@ const isUserExistValidate = async (event) => {
               setStep('cart');
               setCouponDiscount(0);
               setAppliedCoupon('');
-              setCouponCode('');
+              setCouponCodeState('');
               setIsOpen(false);
 
               // Keep loader visible during navigation
@@ -760,12 +756,33 @@ const isUserExistValidate = async (event) => {
                     maxLength: { value: 6, message: 'Enter 6 digits' },
                     pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
                   })}
-onChange={(e) => {
+                  onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, '');
                     if (val.length > 6) val = val.slice(0, 6);
                     setValue('zipCode', val, { shouldDirty: true });
                   }}
-                  onBlur={handleZipBlur}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Tab' && !e.shiftKey) {
+                      e.preventDefault();
+                      // Trigger the blur event manually with the flag to focus Place Order button
+                      const pinCodeValue = e.currentTarget.value.trim();
+                      if (pinCodeValue.length === 6) {
+                        // Call handleZipBlur directly with a minimal event object
+                        handleZipBlur({
+                          target: e.currentTarget,
+                          currentTarget: e.currentTarget,
+                          relatedTarget: null,
+                          type: 'blur'
+                        } as any, true);
+                      } else {
+                        // If PIN is not complete, just focus the Place Order button
+                        setTimeout(() => {
+                          placeOrderButtonRef.current?.focus();
+                        }, 0);
+                      }
+                    }
+                  }}
+                  onBlur={(e) => handleZipBlur(e, false)}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
@@ -774,8 +791,8 @@ onChange={(e) => {
               </div>
               <div>
                 <Label>State *</Label>
-                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
-                  <SelectTrigger>
+                <Select onValueChange={handleStateChange} value={stateValue || ''}>
+                  <SelectTrigger tabIndex={-1}>
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -794,8 +811,8 @@ onChange={(e) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>City *</Label>
-                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
-                  <SelectTrigger>
+                <Select onValueChange={handleCityChange} value={cityValue || ''}>
+                  <SelectTrigger tabIndex={-1}>
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -813,7 +830,8 @@ onChange={(e) => {
                 <Input
                   id="country"
                   defaultValue="India"
-                  
+                  readOnly
+                  tabIndex={-1}
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
@@ -826,7 +844,8 @@ onChange={(e) => {
         </Card>
 
         {/* Coupon Code - Standalone component to prevent form interference */}
-        { <CouponCodeSection 
+        <CouponCodeSection 
+          key="coupon-section"
           appliedCoupon={appliedCoupon}
           couponCode={couponCode}
           setCouponCode={setCouponCode}
@@ -834,7 +853,7 @@ onChange={(e) => {
           validCoupons={validCoupons}
           applyCoupon={applyCoupon}
           removeCoupon={removeCoupon}
-        /> }
+        />
 
         {/* Order Summary */}
         <Card>
@@ -917,10 +936,13 @@ onChange={(e) => {
           
         
         <Button 
+          ref={placeOrderButtonRef}
+          data-place-order-button
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
           onClick={handleSubmit(onSubmit)}
           disabled={isProcessing}
+          tabIndex={0}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
@@ -1081,7 +1103,7 @@ onChange={(e) => {
               setValue('email', '');
             }}>Close</AlertDialogCancel>
             <AlertDialogAction onClick={() => {
-              const emailVal = watch('email');
+              const emailVal = emailValue;
               setShowExistingAccountDialog(false);
               setIsOpen(false);
               
