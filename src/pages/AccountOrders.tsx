@@ -84,7 +84,7 @@ const AccountOrders = () => {
     const totalMRPDiscount = Math.max(0, totalMRP - discountedPrice);
     const couponDiscount = parsePrice(order?.coupon_discount);
     const orderTotal = parsePrice(order?.final_total || discountedPrice);
-    return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal };
+    return { totalMRP, totalMRPDiscount, couponDiscount, orderTotal, discountedPrice };
   };
 
   const displayOrders: any[] = Array.isArray(orders) ? (orders as any[]) : [];
@@ -181,15 +181,18 @@ const AccountOrders = () => {
                                     const discountShare = orderMRP > 0 ? (coupon * (itemSubtotal / orderMRP)) : 0;
                                     const unitDiscounted = qty > 0 ? (itemSubtotal - discountShare) / qty : unitPrice;
                                     const hasDiscount = unitDiscounted < unitPrice;
-                                    return hasDiscount ? (
-                                      <span>
-                                        <span className="line-through text-muted-foreground mr-1">{formatPrice(unitPrice)}</span>
-                                        <span className="font-semibold text-primary">{formatPrice(unitDiscounted)}</span>
-                                      </span>
-                                    ) : (
-                                      <span className="font-semibold text-primary">{formatPrice(unitPrice)}</span>
-                                    );
+                                    
+                                    // return hasDiscount ? (
+                                    //   <span>
+                                    //     <span className="line-through text-muted-foreground mr-1">{formatPrice(unitPrice)}</span>
+                                    //     <span className="font-semibold text-primary">{formatPrice(getOrderBreakup(order).discountedPrice)}</span>
+                                    //   </span>
+                                    // ) : (
+                                    //   <span className="font-semibold text-primary">{formatPrice(unitPrice)}</span>
+                                    // );
+                                    
                                   })()}
+                                  <span className="font-semibold text-primary">{formatPrice(parsePrice(item.price))}</span>
                                 </div>
                               </div>
                             </div>
@@ -272,14 +275,21 @@ const AccountOrders = () => {
                     
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row justify-between gap-3">
-                      <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                      {/* <Button size="sm" variant="outline" className="w-full sm:w-auto">
                         View Digital Profiles
+                      </Button> */}
+                      <Button size="sm" variant="outline" className="w-full sm:w-auto">
+                      <a href="https://form.typeform.com/to/QSpgT5zA" target="_blank" >
+                      Provide details to set up Digital Profile
+                      </a>
                       </Button>
+
+  
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        {/* <Button variant="outline" size="sm">
                           <Download className="h-3 w-3 mr-2" />
                           Download Invoice
-                        </Button>
+                        </Button> */}
                         {/* <Button variant="ghost" size="sm">
                           Track Package
                         </Button> */}

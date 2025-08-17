@@ -421,7 +421,7 @@ const isUserExistValidate = async (event) => {
       // Stage 1: Create Razorpay order
       setProcessingStage('creating');
       
-      postOrderProcessing(finalOrderDto, isLoggedIn);
+      //postOrderProcessing(finalOrderDto, isLoggedIn);
       
       const createOrderRazorpayResponse = await fetch(
         'https://tapze.in/tapzeservice/create_order.php',

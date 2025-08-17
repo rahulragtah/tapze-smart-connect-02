@@ -84,11 +84,11 @@ const AccountAddresses = () => {
 
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
             {/* Add New Address Card */}
-            <Card 
+            {/* <Card 
               className="group border-2 border-dashed border-primary/40 hover:border-primary/60 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-primary/5 via-transparent to-purple-50/30 hover:from-primary/10 hover:to-purple-100/50 overflow-hidden relative"
               onClick={handleAddAddress}
             >
-              {/* Subtle gradient overlay */}
+             
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <CardContent className="relative flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
@@ -101,11 +101,12 @@ const AccountAddresses = () => {
                 <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Add New Address</h3>
                 <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">Click to add a new delivery address</p>
                 
-                {/* Decorative elements */}
+                
                 <div className="absolute top-4 right-4 w-8 h-8 border-2 border-dashed border-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-4 left-4 w-6 h-6 border-2 border-dashed border-purple-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </CardContent>
-            </Card>
+            </Card> */}
+            
             {addresses.map((address) => (
               <Card key={address.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
                 <CardHeader className="pb-3">
