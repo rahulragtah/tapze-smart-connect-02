@@ -229,45 +229,44 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
 
-    // Only proceed with PIN lookup - no validation or focus management
-    if (val.length === 6) {
-      try {
-        const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
-        const data = await res.json();
-        const result = data?.[0];
-        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
-          const po = result.PostOffice[0];
-          const stateName = po.State as string;
-          const district = po.District as string;
-
-          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
-          if (matchedState) {
-            setSelectedStateCode(matchedState.isoCode);
-            // Set values without validation to prevent focus issues
-            setValue('state', matchedState.name, { shouldValidate: false });
-            const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
-            const uniqueCities = Array.from(new Set([district, ...cities]));
-            setCityOptions(uniqueCities);
-            setValue('city', district, { shouldValidate: false });
-          } else {
-            setValue('state', stateName, { shouldValidate: false });
-            setCityOptions([district]);
-            setValue('city', district, { shouldValidate: false });
-          }
-        }
-      } catch (err) {
-        console.error('PIN lookup failed', err);
-      } finally {
-        // Always focus the Place Order button after PIN lookup completes
-        setTimeout(() => {
-          placeOrderButtonRef.current?.focus();
-        }, 200);
-      }
-    } else if (shouldFocusPlaceOrder) {
-      // If PIN is not 6 digits but Tab was pressed, still focus Place Order button
+    // Focus Place Order button immediately if PIN is 6 digits or Tab was pressed
+    if (val.length === 6 || shouldFocusPlaceOrder) {
       setTimeout(() => {
         placeOrderButtonRef.current?.focus();
       }, 0);
+    }
+
+    // PIN lookup happens asynchronously in background - no blocking
+    if (val.length === 6) {
+      // Don't await - let it run in background
+      fetch(`https://api.postalpincode.in/pincode/${val}`)
+        .then(res => res.json())
+        .then(data => {
+          const result = data?.[0];
+          if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+            const po = result.PostOffice[0];
+            const stateName = po.State as string;
+            const district = po.District as string;
+
+            const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+            if (matchedState) {
+              setSelectedStateCode(matchedState.isoCode);
+              setValue('state', matchedState.name, { shouldValidate: false });
+              const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
+              const uniqueCities = Array.from(new Set([district, ...cities]));
+              setCityOptions(uniqueCities);
+              setValue('city', district, { shouldValidate: false });
+            } else {
+              setValue('state', stateName, { shouldValidate: false });
+              setCityOptions([district]);
+              setValue('city', district, { shouldValidate: false });
+            }
+          }
+        })
+        .catch(err => {
+          console.error('PIN lookup failed', err);
+        });
+      // No finally block - focus already happened immediately above
     }
   };
 
