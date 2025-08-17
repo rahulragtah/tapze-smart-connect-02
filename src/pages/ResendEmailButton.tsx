@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {resendEmailDTO} from '../components/models/loginInterface';
-import {sendRestPasswordEmail} from '../services/appEmailService';
+import { resendEmailDTO } from '@/components/models/loginInterface';
+import { sendRestPasswordEmail } from '@/services/appEmailService';
 
 
 

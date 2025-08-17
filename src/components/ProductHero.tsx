@@ -5,7 +5,7 @@ import { ShoppingCart, Zap, Star, Shield, Truck, Award, Users } from "lucide-rea
 import ProductGallery from "./ProductGallery";
 import ProductColorSwitcher from "./ProductColorSwitcher";
 import { Card } from "@/components/ui/card";
-import { gImage} from "../components/models/productInterface";
+import { gImage } from '@/components/models/productInterface';
 import { Link} from "react-router-dom";
 
 interface Product {

@@ -9,7 +9,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {loginUser} from '../services/login'
+import { loginUser } from '@/services/login';
 
 
 

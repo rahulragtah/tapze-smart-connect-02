@@ -1,6 +1,6 @@
 // src/components/PaymentButton.jsx
 import React from 'react';
-import {CheckoutDTO} from  '../components/models/productInterface'
+import { CheckoutDTO } from '@/components/models/productInterface';
 interface Props {
   order: CheckoutDTO;
 } 

@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import  { useEffect, useState } from 'react';
 
-import {getOrders} from '../services/orderService';
+import { getOrders } from '@/services/orderService';
 
 const AccountOrders = () => {
   const getStatusColor = (status: string) => {

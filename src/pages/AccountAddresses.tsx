@@ -7,8 +7,8 @@ import { Edit, Plus, MapPin } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AddressForm from "@/components/AddressForm";
-import {getUserAddress} from '../services/orderService';
-import {createUserAddress} from '../services/userService';
+import { getUserAddress } from '@/services/orderService';
+import { createUserAddress } from '@/services/userService';
 
 // Mock data - replace with real data from your backend
 

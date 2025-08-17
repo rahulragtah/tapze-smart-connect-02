@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame, X } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { gImage} from "../components/models/productInterface";
+import { gImage } from '@/components/models/productInterface';
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ProductGalleryProps {

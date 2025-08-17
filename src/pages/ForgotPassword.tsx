@@ -9,9 +9,9 @@ import { ArrowLeft, Mail } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
-import {initiateResetPassword} from '../services/login';
-import {sendRestPasswordEmail} from '../services/appEmailService';
-import {resendEmailDTO} from '../components/models/loginInterface';
+import { initiateResetPassword } from '@/services/login';
+import { sendRestPasswordEmail } from '@/services/appEmailService';
+import { resendEmailDTO } from '@/components/models/loginInterface';
 import ResendEmailButton from "./ResendEmailButton";
 
 const ForgotPassword = () => {

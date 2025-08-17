@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { useCart } from "@/contexts/CartContext";
 import { Flame } from "lucide-react";
 import { Link } from "react-router-dom";
-import {CartItem} from "../components/models/productInterface"
+import { CartItem } from '@/components/models/productInterface';
 
 interface Offer {
   productId: string;

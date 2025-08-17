@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, User, Mail, Phone, Lock, Check, X } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import {changePassword} from '../services/login'
+import { changePassword } from '@/services/login';
 import { PhoneInput } from "@/components/ui/phone-input";
 
 

@@ -12,19 +12,19 @@ import { Minus, Plus, Trash2, ShoppingBag, Tag, X, ArrowLeft } from 'lucide-reac
 import { useCart, CartItem} from '@/contexts/CartContext';
 import { useToast } from '@/hooks/use-toast';
 import emailjs from '@emailjs/browser';
-import PaymentButton from '../components/PaymentButton';
-import{CheckoutDTO, orderDTO} from '../components/models/productInterface' ;
-import {registerUser} from '../components/user/registerUser';
+import PaymentButton from '@/components/PaymentButton';
+import { CheckoutDTO, orderDTO } from '@/components/models/productInterface';
+import { registerUser } from '@/components/user/registerUser';
 import ReCAPTCHA from "react-google-recaptcha";
 import OrderProcessingLoader from './OrderProcessingLoader';
 import OrderErrorModal from './OrderErrorModal';
-import {isUserExist} from '../services/login';
+import { isUserExist } from '@/services/login';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import {postOrderProcessing} from '../services/orderService';
+import { postOrderProcessing } from '@/services/orderService';
 import { PhoneInput } from '@/components/ui/phone-input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { State, City } from 'country-state-city';
-import {getUserAddress} from '../services/orderService';
+import { getUserAddress } from '@/services/orderService';
 
 interface CheckoutFormData {
   firstName: string;
