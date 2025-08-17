@@ -102,6 +102,7 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
                 ref={inputRef}
                 placeholder="Enter coupon code"
                 value={couponCode}
+                tabIndex={-1}
                 onChange={(e) => {
                   e.stopPropagation();
                   setCouponCode(e.target.value);
@@ -786,10 +787,20 @@ const isUserExistValidate = async (event) => {
                     maxLength: { value: 6, message: 'Enter 6 digits' },
                     pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
                   })}
-onChange={(e) => {
+                  onChange={(e) => {
                     let val = e.target.value.replace(/\D/g, '');
                     if (val.length > 6) val = val.slice(0, 6);
                     setValue('zipCode', val, { shouldDirty: true });
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Tab' && !e.shiftKey) {
+                      // Find the Place Order button and focus it
+                      const placeOrderButton = document.querySelector('[data-place-order-button]') as HTMLButtonElement;
+                      if (placeOrderButton) {
+                        e.preventDefault();
+                        placeOrderButton.focus();
+                      }
+                    }
                   }}
                   onBlur={handleZipBlur}
                   className={errors.zipCode ? 'border-destructive' : ''}
@@ -801,7 +812,7 @@ onChange={(e) => {
               <div>
                 <Label>State *</Label>
                 <Select onValueChange={handleStateChange} value={stateValue || ''}>
-                  <SelectTrigger>
+                  <SelectTrigger tabIndex={-1}>
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -821,7 +832,7 @@ onChange={(e) => {
               <div>
                 <Label>City *</Label>
                 <Select onValueChange={handleCityChange} value={cityValue || ''}>
-                  <SelectTrigger>
+                  <SelectTrigger tabIndex={-1}>
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
                   <SelectContent className="z-50">
@@ -840,6 +851,7 @@ onChange={(e) => {
                   id="country"
                   defaultValue="India"
                   readOnly
+                  tabIndex={-1}
                   {...register('country', { required: 'Country is required' })}
                   className={errors.country ? 'border-destructive' : ''}
                 />
@@ -944,10 +956,12 @@ onChange={(e) => {
           
         
         <Button 
+          data-place-order-button
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
           onClick={handleSubmit(onSubmit)}
           disabled={isProcessing}
+          tabIndex={0}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
