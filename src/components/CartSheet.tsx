@@ -102,7 +102,6 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
                 ref={inputRef}
                 placeholder="Enter coupon code"
                 value={couponCode}
-                tabIndex={-1}
                 onChange={(e) => {
                   e.stopPropagation();
                   setCouponCode(e.target.value);
