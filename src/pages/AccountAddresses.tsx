@@ -109,9 +109,9 @@ const AccountAddresses = () => {
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{address.type}</CardTitle>
-                    {address.isDefault && (
+                    {/* {address.isDefault && (
                       <Badge variant="secondary">Default</Badge>
-                    )}
+                    )} */}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
@@ -123,7 +123,7 @@ const AccountAddresses = () => {
                     </p>
                   </div>
                   
-                  <div className="flex gap-2 pt-2">
+                  {/* <div className="flex gap-2 pt-2">
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -138,7 +138,7 @@ const AccountAddresses = () => {
                         Set as Default
                       </Button>
                     )}
-                  </div>
+                  </div> */}
                 </CardContent>
               </Card>
                 ))}
