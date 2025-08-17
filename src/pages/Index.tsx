@@ -72,7 +72,7 @@ const Index = () => {
           {JSON.stringify(structuredData)}
         </script>
       </Helmet>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen bg-background text-foreground" style={{ backgroundColor: 'hsl(0, 0%, 5%)', color: 'hsl(0, 0%, 98%)' }}>
         <Navigation />
       <div className="pt-16"> {/* Add padding to account for fixed navigation */}
         <HeroSection />
