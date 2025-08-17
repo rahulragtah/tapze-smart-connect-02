@@ -229,9 +229,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
     const val = e.target.value.trim();
 
-    // Validate PIN code without focusing
-    await trigger('zipCode', { shouldFocus: false });
-
+    // Only proceed with PIN lookup - no validation or focus management
     if (val.length === 6) {
       try {
         const res = await fetch(`https://api.postalpincode.in/pincode/${val}`);
@@ -245,6 +243,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
           const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
           if (matchedState) {
             setSelectedStateCode(matchedState.isoCode);
+            // Set values without validation to prevent focus issues
             setValue('state', matchedState.name, { shouldValidate: false });
             const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
             const uniqueCities = Array.from(new Set([district, ...cities]));
@@ -262,7 +261,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
         // Always focus the Place Order button after PIN lookup completes
         setTimeout(() => {
           placeOrderButtonRef.current?.focus();
-        }, 150);
+        }, 200);
       }
     } else if (shouldFocusPlaceOrder) {
       // If PIN is not 6 digits but Tab was pressed, still focus Place Order button
