@@ -96,7 +96,7 @@ const AccountAddresses = () => {
                     <p className="text-sm text-muted-foreground max-w-sm">
                     Start your journey with a Smart Business Card — network faster and smarter.
                     </p>
-                    < <Button asChild>
+                    <Button asChild>
                       <a href="/buy-nfc-card">Get your Smart Business Card</a>
                     </Button>
                   </div>
