@@ -82,32 +82,27 @@ const AccountAddresses = () => {
             </div>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
-            {/* Add New Address Card */}
-            {/* <Card 
-              className="group border-2 border-dashed border-primary/40 hover:border-primary/60 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer bg-gradient-to-br from-primary/5 via-transparent to-purple-50/30 hover:from-primary/10 hover:to-purple-100/50 overflow-hidden relative"
-              onClick={handleAddAddress}
-            >
-             
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-purple-50/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              <CardContent className="relative flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
-                <div className="relative group-hover:scale-110 transition-transform duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 rounded-full opacity-20 animate-pulse group-hover:opacity-30" />
-                  <div className="relative p-4 bg-gradient-to-br from-primary/10 to-purple-100/50 rounded-full mb-4 border border-primary/20">
-                    <Plus className="h-8 w-8 text-primary group-hover:text-purple-600 transition-colors duration-300" />
+          <div className="space-y-6 animate-fade-in">
+            {addresses.length === 0 ? (
+              <Card className="border-0 shadow-xl">
+                <CardContent className="py-12 text-center">
+                  <div className="flex flex-col items-center gap-4 animate-enter">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center hover-scale">
+                        <MapPin className="w-10 h-10 text-primary pulse" />
+                      </div>
+                    </div>
+                    <h3 className="text-base font-semibold">No addresses saved</h3>
+                    <p className="text-sm text-muted-foreground max-w-sm">
+                      Add your first delivery address to make checkout faster and easier.
+                    </p>
+                    <Button onClick={handleAddAddress}>Add New Address</Button>
                   </div>
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Add New Address</h3>
-                <p className="text-sm text-muted-foreground group-hover:text-muted-foreground/80 transition-colors duration-300">Click to add a new delivery address</p>
-                
-                
-                <div className="absolute top-4 right-4 w-8 h-8 border-2 border-dashed border-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-4 left-4 w-6 h-6 border-2 border-dashed border-purple-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </CardContent>
-            </Card> */}
-            
-            {addresses.map((address) => (
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {addresses.map((address) => (
               <Card key={address.id} className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02]">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
@@ -144,7 +139,9 @@ const AccountAddresses = () => {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Address Form Sheet */}

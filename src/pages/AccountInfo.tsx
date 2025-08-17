@@ -34,6 +34,7 @@ const AccountInfo = () => {
     confirm: false,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   
   
   const { toast } = useToast();
@@ -103,6 +104,12 @@ const AccountInfo = () => {
         title: "Password Changed",
         description: "Your password has been updated successfully." 
       });
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+      setIsPasswordModalOpen(false);
 
       } else {
         toast({
@@ -297,7 +304,7 @@ const AccountInfo = () => {
                         </Dialog>
 
                         {/* Change Password Modal */}
-                        <Dialog>
+                        <Dialog open={isPasswordModalOpen} onOpenChange={setIsPasswordModalOpen}>
                           <DialogTrigger asChild>
                             <Button variant="outline" size="lg" className="px-6">Change Password</Button>
                           </DialogTrigger>
