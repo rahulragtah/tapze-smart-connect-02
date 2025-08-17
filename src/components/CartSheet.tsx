@@ -218,19 +218,12 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, []); // Remove register dependency to prevent re-renders
 
-  const handleZipBlur = async (e: React.FocusEvent<HTMLInputElement>, shouldFocusPlaceOrder = false) => {
+  const handleZipBlur = useCallback(async (e: React.FocusEvent<HTMLInputElement>) => {
     const val = e.target.value.trim();
-
-    // Focus Place Order button immediately if PIN is 6 digits or Tab was pressed
-    if (val.length === 6 || shouldFocusPlaceOrder) {
-      setTimeout(() => {
-        placeOrderButtonRef.current?.focus();
-      }, 0);
-    }
 
     // PIN lookup happens asynchronously in background - no blocking
     if (val.length === 6) {
-      // Don't await - let it run in background
+      // Don't await - let it run in background to prevent focus loss
       fetch(`https://api.postalpincode.in/pincode/${val}`)
         .then(res => res.json())
         .then(data => {
@@ -243,20 +236,19 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
             const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
             if (matchedState) {
               setSelectedStateCode(matchedState.isoCode);
-              setValue('state', matchedState.name);
-              setValue('city', district);
+              setValue('state', matchedState.name, { shouldValidate: false });
+              setValue('city', district, { shouldValidate: false });
             } else {
-              setValue('state', stateName);
-              setValue('city', district);
+              setValue('state', stateName, { shouldValidate: false });
+              setValue('city', district, { shouldValidate: false });
             }
           }
         })
         .catch(err => {
           console.error('PIN lookup failed', err);
         });
-      // No finally block - focus already happened immediately above
     }
-  };
+  }, [setValue]);
 
   // Note: handleStateChange and handleCityChange removed since fields are now read-only
   
@@ -646,16 +638,20 @@ const isUserExistValidate = async (email: string) => {
                 id="email"
                 type="email"
                 placeholder="Enter your email address"
-                {...register('email', { 
-                  required: 'Email is required',
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: 'Please enter a valid email'
-                  }})}
-                  onBlur={(e) => {
-                  // call your function when user exits email field
-                  isUserExistValidate(e.target.value);
-                }}
+                  {...register('email', {
+                    required: 'Email is required',
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: 'Please enter a valid email'
+                    },
+                    onBlur: (e) => {
+                      // Only validate when user exists email field
+                      const email = e.target.value?.trim();
+                      if (email) {
+                        isUserExistValidate(email);
+                      }
+                    }
+                  })}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
@@ -714,30 +710,32 @@ const isUserExistValidate = async (email: string) => {
                   inputMode="numeric"
                   placeholder="6-digit PIN code"
                   maxLength={6}
-                  {...register('zipCode', {
+                  {...register('zipCode', { 
                     required: 'PIN code is required',
-                    minLength: { value: 6, message: 'Enter 6 digits' },
-                    maxLength: { value: 6, message: 'Enter 6 digits' },
-                    pattern: { value: /^\d{6}$/, message: 'Enter a valid 6-digit PIN' }
+                    pattern: {
+                      value: /^\d{6}$/,
+                      message: 'Please enter a valid 6-digit PIN code'
+                    },
+                    onChange: (e) => {
+                      // Handle input formatting without losing focus
+                      let val = e.target.value.replace(/\D/g, '');
+                      if (val.length > 6) val = val.slice(0, 6);
+                      setValue('zipCode', val, { shouldDirty: true });
+                    }
                   })}
-                  onChange={(e) => {
-                    let val = e.target.value.replace(/\D/g, '');
-                    if (val.length > 6) val = val.slice(0, 6);
-                    e.target.value = val; // Update the input value directly
-                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
                       e.preventDefault();
                       // Trigger the blur event manually with the flag to focus Place Order button
                       const pinCodeValue = e.currentTarget.value.trim();
                       if (pinCodeValue.length === 6) {
-                        // Call handleZipBlur directly with a minimal event object
+                      // Call handleZipBlur directly with a minimal event object
                         handleZipBlur({
                           target: e.currentTarget,
                           currentTarget: e.currentTarget,
                           relatedTarget: null,
                           type: 'blur'
-                        } as any, true);
+                        } as any);
                       } else {
                         // If PIN is not complete, just focus the Place Order button
                         setTimeout(() => {
@@ -746,7 +744,7 @@ const isUserExistValidate = async (email: string) => {
                       }
                     }
                   }}
-                  onBlur={(e) => handleZipBlur(e, false)}
+                  onBlur={handleZipBlur}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
