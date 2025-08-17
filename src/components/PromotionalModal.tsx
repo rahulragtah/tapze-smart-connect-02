@@ -27,10 +27,19 @@ const PromotionalModal: React.FC<PromotionalModalProps> = ({ isOpen, onClose }) 
     onClose();
   };
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-background/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+    <div 
+      className="fixed inset-0 bg-background/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in"
+      onClick={handleBackdropClick}
+    >
       <Card className={`relative max-w-lg w-full mx-4 overflow-hidden shadow-2xl border-0 bg-gradient-to-br from-orange-50 via-white to-green-50 dark:from-orange-950/20 dark:via-background dark:to-green-950/20 transform transition-all duration-700 ${animate ? 'animate-scale-in' : ''}`}>
         
         {/* Animated Background Elements */}
