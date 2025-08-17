@@ -204,15 +204,8 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   const cityValue = watch('city');
   const emailValue = watch('email');
 
-  // India address helpers
-  const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
-  const [cityOptions, setCityOptions] = useState<string[]>([]);
+  // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
-
-  useEffect(() => {
-    const st = State.getStatesOfCountry('IN').map(s => ({ name: s.name, isoCode: s.isoCode }));
-    setStateOptions(st);
-  }, []);
 
   // Ensure country is India and non-editable
   useEffect(() => {
@@ -251,13 +244,9 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
             if (matchedState) {
               setSelectedStateCode(matchedState.isoCode);
               setValue('state', matchedState.name, { shouldValidate: false });
-              const cities = City.getCitiesOfState('IN', matchedState.isoCode).map(c => c.name);
-              const uniqueCities = Array.from(new Set([district, ...cities]));
-              setCityOptions(uniqueCities);
               setValue('city', district, { shouldValidate: false });
             } else {
               setValue('state', stateName, { shouldValidate: false });
-              setCityOptions([district]);
               setValue('city', district, { shouldValidate: false });
             }
           }
@@ -269,28 +258,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     }
   };
 
-  const handleStateChange = (value: string) => {
-    setValue('state', value, { shouldValidate: true });
-    // Reset PIN when state changes per requirement
-    setValue('zipCode', '');
-
-    const st = State.getStatesOfCountry('IN').find(s => s.name === value);
-    if (st) {
-      setSelectedStateCode(st.isoCode);
-      const cities = City.getCitiesOfState('IN', st.isoCode).map(c => c.name);
-      setCityOptions(cities);
-      setValue('city', '', { shouldValidate: true });
-    } else {
-      setCityOptions([]);
-      setValue('city', '', { shouldValidate: true });
-    }
-  };
-
-  const handleCityChange = (value: string) => {
-    setValue('city', value, { shouldValidate: true });
-    // Reset PIN when city changes per requirement
-    setValue('zipCode', '');
-  };
+  // Note: handleStateChange and handleCityChange removed since fields are now read-only
   
   // Stabilize setCouponCode function to prevent input focus loss
   const setCouponCode = useCallback((code: string) => {
@@ -789,17 +757,15 @@ const isUserExistValidate = async (event) => {
                 )}
               </div>
               <div>
-                <Label>State *</Label>
-                <Select onValueChange={handleStateChange} value={stateValue || ''}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select state" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50">
-                    {stateOptions.map((s) => (
-                      <SelectItem key={s.isoCode} value={s.name}>{s.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="state">State *</Label>
+                <Input
+                  id="state"
+                  placeholder="Auto-filled from PIN code"
+                  readOnly
+                  value={stateValue || ''}
+                  {...register('state', { required: 'State is required' })}
+                  className={`bg-muted ${errors.state ? 'border-destructive' : ''}`}
+                />
                 {errors.state && (
                   <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
                 )}
@@ -809,17 +775,15 @@ const isUserExistValidate = async (event) => {
             {/* City & Country */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>City *</Label>
-                <Select onValueChange={handleCityChange} value={cityValue || ''}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select city" />
-                  </SelectTrigger>
-                  <SelectContent className="z-50">
-                    {cityOptions.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="city">City *</Label>
+                <Input
+                  id="city"
+                  placeholder="Auto-filled from PIN code"
+                  readOnly
+                  value={cityValue || ''}
+                  {...register('city', { required: 'City is required' })}
+                  className={`bg-muted ${errors.city ? 'border-destructive' : ''}`}
+                />
                 {errors.city && (
                   <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
                 )}
