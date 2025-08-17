@@ -50,7 +50,7 @@ interface CouponCodeSectionProps {
   removeCoupon: () => void;
 }
 
-// Isolated component to prevent form re-rendering from affecting input focus
+// Completely isolated component to prevent ANY form interference
 const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
   appliedCoupon,
   couponCode,
@@ -60,6 +60,8 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
   applyCoupon,
   removeCoupon
 }) => {
+  // Local input ref to maintain focus
+  const inputRef = useRef<HTMLInputElement>(null);
   
 
   return (
@@ -97,10 +99,15 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
           <div className="flex gap-2">
             <div className="relative flex-1">
               <Input
+                ref={inputRef}
                 placeholder="Enter coupon code"
                 value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setCouponCode(e.target.value);
+                }}
                 onKeyDown={(e) => {
+                  e.stopPropagation();
                   if (e.key === 'Enter') {
                     e.preventDefault();
                     applyCoupon();
@@ -108,6 +115,8 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
                 }}
                 className="flex-1"
                 autoComplete="off"
+                onFocus={(e) => e.stopPropagation()}
+                onBlur={(e) => e.stopPropagation()}
               />
             </div>
             <Button 
@@ -126,6 +135,13 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
         </p> */}
       </CardContent>
     </Card>
+  );
+}, (prevProps, nextProps) => {
+  // Custom comparison to prevent unnecessary re-renders
+  return (
+    prevProps.appliedCoupon === nextProps.appliedCoupon &&
+    prevProps.couponCode === nextProps.couponCode &&
+    prevProps.couponDiscount === nextProps.couponDiscount
   );
 });
 
@@ -181,6 +197,11 @@ useEffect(() => {
   }, [location.state, setIsOpen]);
   
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
+
+  // Memoize watched values to prevent unnecessary re-renders
+  const stateValue = watch('state');
+  const cityValue = watch('city');
+  const emailValue = watch('email');
 
   // India address helpers
   const [stateOptions, setStateOptions] = useState<{ name: string; isoCode: string }[]>([]);
@@ -779,7 +800,7 @@ onChange={(e) => {
               </div>
               <div>
                 <Label>State *</Label>
-                <Select onValueChange={handleStateChange} value={watch('state') || ''}>
+                <Select onValueChange={handleStateChange} value={stateValue || ''}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
@@ -799,7 +820,7 @@ onChange={(e) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>City *</Label>
-                <Select onValueChange={handleCityChange} value={watch('city') || ''}>
+                <Select onValueChange={handleCityChange} value={cityValue || ''}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select city" />
                   </SelectTrigger>
@@ -1087,7 +1108,7 @@ onChange={(e) => {
               setValue('email', '');
             }}>Close</AlertDialogCancel>
             <AlertDialogAction onClick={() => {
-              const emailVal = watch('email');
+              const emailVal = emailValue;
               setShowExistingAccountDialog(false);
               setIsOpen(false);
               
