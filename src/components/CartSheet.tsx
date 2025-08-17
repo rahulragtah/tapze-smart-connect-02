@@ -643,15 +643,15 @@ const isUserExistValidate = async (email: string) => {
                     pattern: {
                       value: /^\S+@\S+$/i,
                       message: 'Please enter a valid email'
-                    },
-                    onBlur: (e) => {
-                      // Only validate when user exists email field
-                      const email = e.target.value?.trim();
-                      if (email) {
-                        isUserExistValidate(email);
-                      }
                     }
                   })}
+                onBlur={(e) => {
+                  // Only validate when user exists email field
+                  const email = e.target.value?.trim();
+                  if (email) {
+                    isUserExistValidate(email);
+                  }
+                }}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
@@ -715,14 +715,14 @@ const isUserExistValidate = async (email: string) => {
                     pattern: {
                       value: /^\d{6}$/,
                       message: 'Please enter a valid 6-digit PIN code'
-                    },
-                    onChange: (e) => {
-                      // Handle input formatting without losing focus
-                      let val = e.target.value.replace(/\D/g, '');
-                      if (val.length > 6) val = val.slice(0, 6);
-                      setValue('zipCode', val, { shouldDirty: true });
                     }
                   })}
+                  onChange={(e) => {
+                    // Handle input formatting without losing focus
+                    let val = e.target.value.replace(/\D/g, '');
+                    if (val.length > 6) val = val.slice(0, 6);
+                    setValue('zipCode', val, { shouldDirty: true });
+                  }}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
                       e.preventDefault();
