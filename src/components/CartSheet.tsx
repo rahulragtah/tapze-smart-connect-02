@@ -198,7 +198,7 @@ useEffect(() => {
     }
   }, [location.state, setIsOpen]);
   
-const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger , setFocus} = useForm<CheckoutFormData>();
 
   // Memoize watched values to prevent unnecessary re-renders
   //const stateValue = watch('state');
@@ -260,6 +260,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
       } catch (err) {
         console.error('PIN lookup failed', err);
       }
+      setFocus("country");
     }
   }, [setValue, setSelectedStateCode]);
 
@@ -370,6 +371,7 @@ const isUserExistValidate = async (email: string) => {
     } catch (error) {
         console.error("Error checking user:", error);
     }
+    setFocus("phone");
   };
   const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
