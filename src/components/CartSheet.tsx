@@ -239,8 +239,8 @@ useEffect(() => {
     setValue('country', 'India');
   }, [setValue]);
 
-  // Validation functions
-  const validateField = (name: keyof CheckoutFormData, value: string) => {
+  // Validation functions - memoized to prevent re-renders
+  const validateField = useCallback((name: keyof CheckoutFormData, value: string) => {
     const errors: Partial<CheckoutFormData> = {};
     
     switch (name) {
@@ -285,27 +285,31 @@ useEffect(() => {
     }
     
     return errors;
-  };
+  }, [isLoggedIn]);
 
   // Update form data and validate
-  const updateFormField = (name: keyof CheckoutFormData, value: string) => {
-    const newFormData = { ...formData, [name]: value };
-    setFormData(newFormData);
+  const updateFormField = useCallback((name: keyof CheckoutFormData, value: string) => {
+    // Use functional state updates to prevent unnecessary re-renders
+    setFormData(prev => ({ ...prev, [name]: value }));
     setValue(name, value);
     
     // Validate this field and update errors
     const fieldErrors = validateField(name, value);
-    setValidationErrors(prev => ({ ...prev, ...fieldErrors }));
     
-    // Clear error if field is now valid
-    if (!fieldErrors[name]) {
-      setValidationErrors(prev => {
-        const newErrors = { ...prev };
+    // Use functional update for validation errors
+    setValidationErrors(prev => {
+      const newErrors = { ...prev };
+      
+      // Update or clear the error for this field
+      if (fieldErrors[name]) {
+        newErrors[name] = fieldErrors[name];
+      } else {
         delete newErrors[name];
-        return newErrors;
-      });
-    }
-  };
+      }
+      
+      return newErrors;
+    });
+  }, [setValue, validateField]);
 
   // Check if form is valid for submit button
   const isFormValid = () => {
@@ -360,19 +364,33 @@ useEffect(() => {
     }
   }, [updateFormField, setSelectedStateCode]);
 
-  // Handle ZIP code input formatting
+  // Handle ZIP code input formatting with debounce ref
+  const zipCodeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 6) val = val.slice(0, 6);
     updateFormField('zipCode', val);
     
+    // Clear previous timeout
+    if (zipCodeTimeoutRef.current) {
+      clearTimeout(zipCodeTimeoutRef.current);
+    }
+    
     // Debounce the effect to avoid multiple API calls
-    const timeoutId = setTimeout(() => {
+    zipCodeTimeoutRef.current = setTimeout(() => {
       handleZipCodeChangeEffect(val);
     }, 300);
-    
-    return () => clearTimeout(timeoutId);
   }, [updateFormField, handleZipCodeChangeEffect]);
+
+  // Cleanup timeout on component unmount
+  useEffect(() => {
+    return () => {
+      if (zipCodeTimeoutRef.current) {
+        clearTimeout(zipCodeTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Handle email validation on blur
   const handleEmailBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
