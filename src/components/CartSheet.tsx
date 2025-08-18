@@ -198,22 +198,14 @@ useEffect(() => {
     }
   }, [location.state, setIsOpen]);
   
-const { register, handleSubmit, formState: { errors, isValid }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>({
-    mode: 'onChange'
-  });
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
-  // Watch form values for validation
-  const watchedValues = watch(['firstName', 'lastName', 'email', 'phone', 'address', 'zipCode', 'state', 'city']);
-  
-  // Check if all required fields are filled
-  const isFormValid = watchedValues[0] && // firstName
-                     watchedValues[1] && // lastName
-                     (isLoggedIn || watchedValues[2]) && // email (not required if logged in)
-                     watchedValues[3] && // phone
-                     watchedValues[4] && // address
-                     watchedValues[5] && watchedValues[5].length === 6 && // zipCode (6 digits)
-                     watchedValues[6] && // state
-                     watchedValues[7]; // city
+  // Memoize watched values to prevent unnecessary re-renders
+  //const stateValue = watch('state');
+  //const cityValue = watch('city');
+  //const emailValue = watch('email');
+  //const emailValue = "";
+  //const zipCodeValue = watch('zipCode');
 
   // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
@@ -229,47 +221,61 @@ const { register, handleSubmit, formState: { errors, isValid }, reset, setValue,
   //   register('city', { required: 'City is required' });
   // }, []); // Remove register dependency to prevent re-renders
 
+  // Ref to track the currently focused element
+  const focusedElementRef = useRef<HTMLElement | null>(null);
+
   // Watch for ZIP code changes and auto-populate state/city
-  
-    const handleZipCodeChangeEffect = async (zipCode: string) => {
-      if (zipCode && zipCode.length === 6) {
-        try {
-          const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
-          const data = await response.json();
-          const result = data?.[0];
-          
-          if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
-            const po = result.PostOffice[0];
-            const stateName = po.State as string;
-            const district = po.District as string;
-           
-
-            const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
-            if (matchedState) {
-              setSelectedStateCode(matchedState.isoCode);
-              setValue('state', matchedState.name, { shouldValidate: false });
-              setValue('city', district, { shouldValidate: false });
-
-            } else {
-              setValue('state', stateName, { shouldValidate: false });
-              setValue('city', district, { shouldValidate: false });
-            }
+  const handleZipCodeChangeEffect = useCallback(async (zipCode: string) => {
+    if (zipCode && zipCode.length === 6) {
+      // Store the currently focused element
+      focusedElementRef.current = document.activeElement as HTMLElement;
+      
+      try {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
+        const data = await response.json();
+        const result = data?.[0];
+        
+        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+          const po = result.PostOffice[0];
+          const stateName = po.State as string;
+          const district = po.District as string;
+         
+          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+          if (matchedState) {
+            setSelectedStateCode(matchedState.isoCode);
+            setValue('state', matchedState.name, { shouldValidate: false, shouldDirty: true });
+            setValue('city', district, { shouldValidate: false, shouldDirty: true });
+          } else {
+            setValue('state', stateName, { shouldValidate: false, shouldDirty: true });
+            setValue('city', district, { shouldValidate: false, shouldDirty: true });
           }
-        } catch (err) {
-          console.error('PIN lookup failed', err);
+
+          // Restore focus after a brief delay to allow DOM updates
+          setTimeout(() => {
+            if (focusedElementRef.current && document.contains(focusedElementRef.current)) {
+              focusedElementRef.current.focus();
+            }
+          }, 10);
         }
+      } catch (err) {
+        console.error('PIN lookup failed', err);
       }
-    };
-
-
+    }
+  }, [setValue, setSelectedStateCode]);
 
   // Handle ZIP code input formatting
   const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 6) val = val.slice(0, 6);
     setValue('zipCode', val, { shouldDirty: true });
-    handleZipCodeChangeEffect(val);
-  }, [setValue]);
+    
+    // Debounce the effect to avoid multiple API calls
+    const timeoutId = setTimeout(() => {
+      handleZipCodeChangeEffect(val);
+    }, 300);
+    
+    return () => clearTimeout(timeoutId);
+  }, [setValue, handleZipCodeChangeEffect]);
 
   // Handle email validation on blur
   const handleEmailBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
@@ -900,10 +906,10 @@ const isUserExistValidate = async (email: string) => {
         <Button 
           ref={placeOrderButtonRef}
           data-place-order-button
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed" 
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
           onClick={handleSubmit(onSubmit)}
-          disabled={isProcessing || !isFormValid}
+          disabled={isProcessing}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
