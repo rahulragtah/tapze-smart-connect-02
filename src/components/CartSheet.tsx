@@ -203,6 +203,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   const stateValue = watch('state');
   const cityValue = watch('city');
   const emailValue = watch('email');
+  const zipCodeValue = watch('zipCode');
 
   // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
@@ -218,16 +219,15 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
     register('city', { required: 'City is required' });
   }, []); // Remove register dependency to prevent re-renders
 
-  const handleZipBlur = useCallback(async (e: React.FocusEvent<HTMLInputElement>) => {
-    const val = e.target.value.trim();
-
-    // PIN lookup happens asynchronously in background - no blocking
-    if (val.length === 6) {
-      // Don't await - let it run in background to prevent focus loss
-      fetch(`https://api.postalpincode.in/pincode/${val}`)
-        .then(res => res.json())
-        .then(data => {
+  // Watch for ZIP code changes and auto-populate state/city
+  useEffect(() => {
+    const handleZipCodeChange = async (zipCode: string) => {
+      if (zipCode && zipCode.length === 6) {
+        try {
+          const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
+          const data = await response.json();
           const result = data?.[0];
+          
           if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
             const po = result.PostOffice[0];
             const stateName = po.State as string;
@@ -243,12 +243,31 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
               setValue('city', district, { shouldValidate: false });
             }
           }
-        })
-        .catch(err => {
+        } catch (err) {
           console.error('PIN lookup failed', err);
-        });
+        }
+      }
+    };
+
+    if (zipCodeValue) {
+      handleZipCodeChange(zipCodeValue);
     }
+  }, [zipCodeValue, setValue]);
+
+  // Handle ZIP code input formatting
+  const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length > 6) val = val.slice(0, 6);
+    setValue('zipCode', val, { shouldDirty: true });
   }, [setValue]);
+
+  // Handle email validation on blur
+  const handleEmailBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
+    const email = e.target.value?.trim();
+    if (email && !isLoggedIn) {
+      isUserExistValidate(email);
+    }
+  }, [isLoggedIn]);
 
   // Note: handleStateChange and handleCityChange removed since fields are now read-only
   
@@ -638,20 +657,14 @@ const isUserExistValidate = async (email: string) => {
                 id="email"
                 type="email"
                 placeholder="Enter your email address"
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: 'Please enter a valid email'
-                    }
-                  })}
-                onBlur={(e) => {
-                  // Only validate when user exists email field
-                  const email = e.target.value?.trim();
-                  if (email) {
-                    isUserExistValidate(email);
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: 'Please enter a valid email'
                   }
-                }}
+                })}
+                onBlur={handleEmailBlur}
                 className={errors.email ? 'border-destructive' : ''}
               />
               {errors.email && (
@@ -717,34 +730,15 @@ const isUserExistValidate = async (email: string) => {
                       message: 'Please enter a valid 6-digit PIN code'
                     }
                   })}
-                  onChange={(e) => {
-                    // Handle input formatting without losing focus
-                    let val = e.target.value.replace(/\D/g, '');
-                    if (val.length > 6) val = val.slice(0, 6);
-                    setValue('zipCode', val, { shouldDirty: true });
-                  }}
+                  onChange={handleZipCodeChange}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab' && !e.shiftKey) {
                       e.preventDefault();
-                      // Trigger the blur event manually with the flag to focus Place Order button
-                      const pinCodeValue = e.currentTarget.value.trim();
-                      if (pinCodeValue.length === 6) {
-                      // Call handleZipBlur directly with a minimal event object
-                        handleZipBlur({
-                          target: e.currentTarget,
-                          currentTarget: e.currentTarget,
-                          relatedTarget: null,
-                          type: 'blur'
-                        } as any);
-                      } else {
-                        // If PIN is not complete, just focus the Place Order button
-                        setTimeout(() => {
-                          placeOrderButtonRef.current?.focus();
-                        }, 0);
-                      }
+                      setTimeout(() => {
+                        placeOrderButtonRef.current?.focus();
+                      }, 0);
                     }
                   }}
-                  onBlur={handleZipBlur}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
