@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { useWatch, useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -178,6 +178,7 @@ const CartSheet = () => {
     }
   }, [isOpen]);
 
+  const [emailValue, setEmailValue] = useState<string>("")
 
 const [addresses, setAddresses] = useState<any[]>([])
 useEffect(() => {
@@ -200,10 +201,11 @@ useEffect(() => {
 const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
   // Memoize watched values to prevent unnecessary re-renders
-  const stateValue = watch('state');
-  const cityValue = watch('city');
-  const emailValue = watch('email');
-  const zipCodeValue = watch('zipCode');
+  //const stateValue = watch('state');
+  //const cityValue = watch('city');
+  //const emailValue = watch('email');
+  //const emailValue = "";
+  //const zipCodeValue = watch('zipCode');
 
   // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
@@ -214,14 +216,14 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   }, [setValue]);
 
   // Register non-input fields with RHF on component mount only
-  useEffect(() => {
-    register('state', { required: 'State is required' });
-    register('city', { required: 'City is required' });
-  }, []); // Remove register dependency to prevent re-renders
+  // useEffect(() => {
+  //   register('state', { required: 'State is required' });
+  //   register('city', { required: 'City is required' });
+  // }, []); // Remove register dependency to prevent re-renders
 
   // Watch for ZIP code changes and auto-populate state/city
-  useEffect(() => {
-    const handleZipCodeChange = async (zipCode: string) => {
+  
+    const handleZipCodeChangeEffect = async (zipCode: string) => {
       if (zipCode && zipCode.length === 6) {
         try {
           const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
@@ -232,12 +234,14 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
             const po = result.PostOffice[0];
             const stateName = po.State as string;
             const district = po.District as string;
+           
 
             const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
             if (matchedState) {
               setSelectedStateCode(matchedState.isoCode);
               setValue('state', matchedState.name, { shouldValidate: false });
               setValue('city', district, { shouldValidate: false });
+
             } else {
               setValue('state', stateName, { shouldValidate: false });
               setValue('city', district, { shouldValidate: false });
@@ -249,16 +253,14 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
       }
     };
 
-    if (zipCodeValue) {
-      handleZipCodeChange(zipCodeValue);
-    }
-  }, [zipCodeValue, setValue]);
+
 
   // Handle ZIP code input formatting
   const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 6) val = val.slice(0, 6);
     setValue('zipCode', val, { shouldDirty: true });
+    handleZipCodeChangeEffect(val);
   }, [setValue]);
 
   // Handle email validation on blur
@@ -341,6 +343,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   };
 
 const isUserExistValidate = async (email: string) => {
+    setEmailValue(email);
     if (isLoggedIn) return;
     if (!email) return;
     try {
@@ -751,7 +754,7 @@ const isUserExistValidate = async (email: string) => {
                   id="state"
                   placeholder="Auto-filled from PIN code"
                   readOnly
-                  value={stateValue || ''}
+                  value={''}
                   {...register('state', { required: 'State is required' })}
                   className={`bg-muted ${errors.state ? 'border-destructive' : ''}`}
                 />
@@ -769,7 +772,7 @@ const isUserExistValidate = async (email: string) => {
                   id="city"
                   placeholder="Auto-filled from PIN code"
                   readOnly
-                  value={cityValue || ''}
+                  value={''}
                   {...register('city', { required: 'City is required' })}
                   className={`bg-muted ${errors.city ? 'border-destructive' : ''}`}
                 />
