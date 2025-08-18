@@ -734,14 +734,14 @@ const isUserExistValidate = async (email: string) => {
                     }
                   })}
                   onChange={handleZipCodeChange}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Tab' && !e.shiftKey) {
-                      e.preventDefault();
-                      setTimeout(() => {
-                        placeOrderButtonRef.current?.focus();
-                      }, 0);
-                    }
-                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Tab' && !e.shiftKey) {
+                  //     e.preventDefault();
+                  //     setTimeout(() => {
+                  //       placeOrderButtonRef.current?.focus();
+                  //     }, 0);
+                  //   }
+                  // }}
                   className={errors.zipCode ? 'border-destructive' : ''}
                 />
                 {errors.zipCode && (
