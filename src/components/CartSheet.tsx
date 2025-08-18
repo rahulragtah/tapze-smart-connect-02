@@ -214,7 +214,7 @@ useEffect(() => {
     }
   });
 
-  // Form state for manual validation
+  // Simple form state
   const [formData, setFormData] = useState<CheckoutFormData>({
     firstName: '',
     lastName: '',
@@ -228,10 +228,14 @@ useEffect(() => {
     country: 'India'
   });
 
-  // Validation state
-  const [validationErrors, setValidationErrors] = useState<Partial<CheckoutFormData>>({});
+  // Simple validation errors for phone, email, PIN only
+  const [fieldErrors, setFieldErrors] = useState<{
+    phone?: string;
+    email?: string;
+    zipCode?: string;
+  }>({});
 
-  // India address helpers - removed unused state since fields are now read-only
+  // India address helpers
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
 
   // Ensure country is India and non-editable
@@ -239,87 +243,47 @@ useEffect(() => {
     setValue('country', 'India');
   }, [setValue]);
 
-  // Validation functions - memoized to prevent re-renders
-  const validateField = useCallback((name: keyof CheckoutFormData, value: string) => {
-    const errors: Partial<CheckoutFormData> = {};
-    
-    switch (name) {
-      case 'firstName':
-        if (!value.trim()) errors.firstName = 'First name is required';
-        break;
-      case 'lastName':
-        if (!value.trim()) errors.lastName = 'Last name is required';
-        break;
-      case 'email':
-        if (!isLoggedIn) {
-          if (!value.trim()) {
-            errors.email = 'Email is required';
-          } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-            errors.email = 'Please enter a valid email';
-          }
-        }
-        break;
-      case 'phone':
-        if (!value.trim()) {
-          errors.phone = 'Phone number is required';
-        } else if (value.replace(/\D/g, '').length < 10) {
-          errors.phone = 'Please enter a valid phone number';
-        }
-        break;
-      case 'address':
-        if (!value.trim()) errors.address = 'Address is required';
-        break;
-      case 'zipCode':
-        if (!value.trim()) {
-          errors.zipCode = 'PIN code is required';
-        } else if (!/^\d{6}$/.test(value)) {
-          errors.zipCode = 'PIN code must be 6 digits';
-        }
-        break;
-      case 'state':
-        if (!value.trim()) errors.state = 'State is required';
-        break;
-      case 'city':
-        if (!value.trim()) errors.city = 'City is required';
-        break;
-    }
-    
-    return errors;
-  }, [isLoggedIn]);
-
-  // Update form data and validate
-  const updateFormField = useCallback((name: keyof CheckoutFormData, value: string) => {
-    // Use functional state updates to prevent unnecessary re-renders
+  // Simple field update function
+  const updateFormField = (name: keyof CheckoutFormData, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
     setValue(name, value);
-    
-    // Validate this field and update errors
-    const fieldErrors = validateField(name, value);
-    
-    // Use functional update for validation errors
-    setValidationErrors(prev => {
-      const newErrors = { ...prev };
-      
-      // Update or clear the error for this field
-      if (fieldErrors[name]) {
-        newErrors[name] = fieldErrors[name];
-      } else {
-        delete newErrors[name];
-      }
-      
-      return newErrors;
-    });
-  }, [setValue, validateField]);
+  };
 
-  // Check if form is valid for submit button
+  // Validation functions for specific fields (on blur only)
+  const validatePhone = (phone: string) => {
+    if (!phone.trim()) return 'Phone number is required';
+    if (phone.replace(/\D/g, '').length < 10) return 'Please enter a valid phone number';
+    return '';
+  };
+
+  const validateEmail = (email: string) => {
+    if (!isLoggedIn) {
+      if (!email.trim()) return 'Email is required';
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email';
+    }
+    return '';
+  };
+
+  const validateZipCode = (zipCode: string) => {
+    if (!zipCode.trim()) return 'PIN code is required';
+    if (!/^\d{6}$/.test(zipCode)) return 'PIN code must be 6 digits';
+    return '';
+  };
+
+  // Check if all required fields are filled
   const isFormValid = () => {
-    const required = ['firstName', 'lastName', 'phone', 'address', 'zipCode', 'state', 'city'];
-    if (!isLoggedIn) required.push('email');
+    const requiredFields = ['firstName', 'lastName', 'phone', 'address', 'zipCode', 'state', 'city'];
+    if (!isLoggedIn) requiredFields.push('email');
     
-    return required.every(field => {
+    const allFieldsFilled = requiredFields.every(field => {
       const value = formData[field as keyof CheckoutFormData];
-      return value && value.trim() && !validationErrors[field as keyof CheckoutFormData];
+      return value && value.trim();
     });
+
+    // Check if there are any validation errors for specific fields
+    const hasErrors = Object.values(fieldErrors).some(error => error);
+    
+    return allFieldsFilled && !hasErrors;
   };
 
   // Ref to track the currently focused element
@@ -777,11 +741,8 @@ const isUserExistValidate = async (email: string) => {
                   placeholder="Enter your first name"
                   value={formData.firstName}
                   onChange={(e) => updateFormField('firstName', e.target.value)}
-                  className={validationErrors.firstName ? 'border-destructive' : ''}
+                  className=""
                 />
-                {validationErrors.firstName && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.firstName}</p>
-                )}
               </div>
               <div>
                 <Label htmlFor="lastName">Last Name *</Label>
@@ -791,11 +752,7 @@ const isUserExistValidate = async (email: string) => {
                   placeholder="Enter your last name"
                   value={formData.lastName}
                   onChange={(e) => updateFormField('lastName', e.target.value)}
-                  className={validationErrors.lastName ? 'border-destructive' : ''}
                 />
-                {validationErrors.lastName && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.lastName}</p>
-                )}
               </div>
             </div>
             { isLoggedIn ?  <div className="text-sm text-muted-foreground">Logged in as: {localStorage.getItem('email')}</div> : 
@@ -808,11 +765,15 @@ const isUserExistValidate = async (email: string) => {
                 placeholder="Enter your email address"
                 value={formData.email}
                 onChange={(e) => updateFormField('email', e.target.value)}
-                onBlur={handleEmailBlur}
-                className={validationErrors.email ? 'border-destructive' : ''}
+                onBlur={(e) => {
+                  handleEmailBlur(e);
+                  const error = validateEmail(e.target.value);
+                  setFieldErrors(prev => ({ ...prev, email: error || undefined }));
+                }}
+                className={fieldErrors.email ? 'border-destructive' : ''}
               />
-              {validationErrors.email && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.email}</p>
+              {fieldErrors.email && (
+                <p className="text-sm text-destructive mt-1">{fieldErrors.email}</p>
               )}
             </div>
              }
@@ -825,10 +786,14 @@ const isUserExistValidate = async (email: string) => {
                 placeholder="10-digit mobile number"
                 value={formData.phone}
                 onChange={(e) => updateFormField('phone', e.target.value)}
-                className={validationErrors.phone ? 'border-destructive' : ''}
+                onBlur={(e) => {
+                  const error = validatePhone(e.target.value);
+                  setFieldErrors(prev => ({ ...prev, phone: error || undefined }));
+                }}
+                className={fieldErrors.phone ? 'border-destructive' : ''}
               />
-              {validationErrors.phone && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.phone}</p>
+              {fieldErrors.phone && (
+                <p className="text-sm text-destructive mt-1">{fieldErrors.phone}</p>
               )}
             </div>
           </CardContent>
@@ -848,11 +813,7 @@ const isUserExistValidate = async (email: string) => {
                 placeholder="House no., street, area"
                 value={formData.address}
                 onChange={(e) => updateFormField('address', e.target.value)}
-                className={validationErrors.address ? 'border-destructive' : ''}
               />
-              {validationErrors.address && (
-                <p className="text-sm text-destructive mt-1">{validationErrors.address}</p>
-              )}
             </div>
             <div>
               <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
@@ -877,10 +838,14 @@ const isUserExistValidate = async (email: string) => {
                   maxLength={6}
                   value={formData.zipCode}
                   onChange={handleZipCodeChange}
-                  className={validationErrors.zipCode ? 'border-destructive' : ''}
+                  onBlur={(e) => {
+                    const error = validateZipCode(e.target.value);
+                    setFieldErrors(prev => ({ ...prev, zipCode: error || undefined }));
+                  }}
+                  className={fieldErrors.zipCode ? 'border-destructive' : ''}
                 />
-                {validationErrors.zipCode && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.zipCode}</p>
+                {fieldErrors.zipCode && (
+                  <p className="text-sm text-destructive mt-1">{fieldErrors.zipCode}</p>
                 )}
               </div>
               <div>
@@ -891,11 +856,8 @@ const isUserExistValidate = async (email: string) => {
                   placeholder="Auto-filled from PIN code"
                   readOnly
                   value={formData.state}
-                  className={`bg-muted ${validationErrors.state ? 'border-destructive' : ''}`}
+                  className="bg-muted"
                 />
-                {validationErrors.state && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.state}</p>
-                )}
               </div>
             </div>
 
@@ -909,11 +871,8 @@ const isUserExistValidate = async (email: string) => {
                   placeholder="Auto-filled from PIN code"
                   readOnly
                   value={formData.city}
-                  className={`bg-muted ${validationErrors.city ? 'border-destructive' : ''}`}
+                  className="bg-muted"
                 />
-                {validationErrors.city && (
-                  <p className="text-sm text-destructive mt-1">{validationErrors.city}</p>
-                )}
               </div>
               <div>
                 <Label htmlFor="country">Country *</Label>
