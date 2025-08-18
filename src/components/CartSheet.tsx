@@ -198,14 +198,22 @@ useEffect(() => {
     }
   }, [location.state, setIsOpen]);
   
-const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
+const { register, handleSubmit, formState: { errors, isValid }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>({
+    mode: 'onChange'
+  });
 
-  // Memoize watched values to prevent unnecessary re-renders
-  //const stateValue = watch('state');
-  //const cityValue = watch('city');
-  //const emailValue = watch('email');
-  //const emailValue = "";
-  //const zipCodeValue = watch('zipCode');
+  // Watch form values for validation
+  const watchedValues = watch(['firstName', 'lastName', 'email', 'phone', 'address', 'zipCode', 'state', 'city']);
+  
+  // Check if all required fields are filled
+  const isFormValid = watchedValues[0] && // firstName
+                     watchedValues[1] && // lastName
+                     (isLoggedIn || watchedValues[2]) && // email (not required if logged in)
+                     watchedValues[3] && // phone
+                     watchedValues[4] && // address
+                     watchedValues[5] && watchedValues[5].length === 6 && // zipCode (6 digits)
+                     watchedValues[6] && // state
+                     watchedValues[7]; // city
 
   // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
@@ -892,10 +900,10 @@ const isUserExistValidate = async (email: string) => {
         <Button 
           ref={placeOrderButtonRef}
           data-place-order-button
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed" 
           size="lg"
           onClick={handleSubmit(onSubmit)}
-          disabled={isProcessing}
+          disabled={isProcessing || !isFormValid}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
