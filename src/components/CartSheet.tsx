@@ -221,61 +221,47 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
   //   register('city', { required: 'City is required' });
   // }, []); // Remove register dependency to prevent re-renders
 
-  // Ref to track the currently focused element
-  const focusedElementRef = useRef<HTMLElement | null>(null);
-
   // Watch for ZIP code changes and auto-populate state/city
-  const handleZipCodeChangeEffect = useCallback(async (zipCode: string) => {
-    if (zipCode && zipCode.length === 6) {
-      // Store the currently focused element
-      focusedElementRef.current = document.activeElement as HTMLElement;
-      
-      try {
-        const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
-        const data = await response.json();
-        const result = data?.[0];
-        
-        if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
-          const po = result.PostOffice[0];
-          const stateName = po.State as string;
-          const district = po.District as string;
-         
-          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
-          if (matchedState) {
-            setSelectedStateCode(matchedState.isoCode);
-            setValue('state', matchedState.name, { shouldValidate: false, shouldDirty: true });
-            setValue('city', district, { shouldValidate: false, shouldDirty: true });
-          } else {
-            setValue('state', stateName, { shouldValidate: false, shouldDirty: true });
-            setValue('city', district, { shouldValidate: false, shouldDirty: true });
-          }
+  
+    const handleZipCodeChangeEffect = async (zipCode: string) => {
+      if (zipCode && zipCode.length === 6) {
+        try {
+          const response = await fetch(`https://api.postalpincode.in/pincode/${zipCode}`);
+          const data = await response.json();
+          const result = data?.[0];
+          
+          if (result?.Status === 'Success' && Array.isArray(result.PostOffice) && result.PostOffice.length) {
+            const po = result.PostOffice[0];
+            const stateName = po.State as string;
+            const district = po.District as string;
+           
 
-          // Restore focus after a brief delay to allow DOM updates
-          setTimeout(() => {
-            if (focusedElementRef.current && document.contains(focusedElementRef.current)) {
-              focusedElementRef.current.focus();
+            const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
+            if (matchedState) {
+              setSelectedStateCode(matchedState.isoCode);
+              setValue('state', matchedState.name, { shouldValidate: false });
+              setValue('city', district, { shouldValidate: false });
+
+            } else {
+              setValue('state', stateName, { shouldValidate: false });
+              setValue('city', district, { shouldValidate: false });
             }
-          }, 10);
+          }
+        } catch (err) {
+          console.error('PIN lookup failed', err);
         }
-      } catch (err) {
-        console.error('PIN lookup failed', err);
       }
-    }
-  }, [setValue, setSelectedStateCode]);
+    };
+
+
 
   // Handle ZIP code input formatting
   const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 6) val = val.slice(0, 6);
     setValue('zipCode', val, { shouldDirty: true });
-    
-    // Debounce the effect to avoid multiple API calls
-    const timeoutId = setTimeout(() => {
-      handleZipCodeChangeEffect(val);
-    }, 300);
-    
-    return () => clearTimeout(timeoutId);
-  }, [setValue, handleZipCodeChangeEffect]);
+    handleZipCodeChangeEffect(val);
+  }, [setValue]);
 
   // Handle email validation on blur
   const handleEmailBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
