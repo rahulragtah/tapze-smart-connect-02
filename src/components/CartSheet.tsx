@@ -198,44 +198,16 @@ useEffect(() => {
     }
   }, [location.state, setIsOpen]);
   
-  const { handleSubmit, formState: { errors, isValid }, reset, setValue, watch, getValues } = useForm<CheckoutFormData>({
-    mode: 'onChange',
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      address: '',
-      apartment: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'India'
-    }
-  });
+const { register, handleSubmit, formState: { errors }, reset, setValue, watch, trigger } = useForm<CheckoutFormData>();
 
-  // Simple form state
-  const [formData, setFormData] = useState<CheckoutFormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    apartment: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: 'India'
-  });
+  // Memoize watched values to prevent unnecessary re-renders
+  //const stateValue = watch('state');
+  //const cityValue = watch('city');
+  //const emailValue = watch('email');
+  //const emailValue = "";
+  //const zipCodeValue = watch('zipCode');
 
-  // Simple validation errors for phone, email, PIN only
-  const [fieldErrors, setFieldErrors] = useState<{
-    phone?: string;
-    email?: string;
-    zipCode?: string;
-  }>({});
-
-  // India address helpers
+  // India address helpers - removed unused state since fields are now read-only
   const [selectedStateCode, setSelectedStateCode] = useState<string | null>(null);
 
   // Ensure country is India and non-editable
@@ -243,48 +215,11 @@ useEffect(() => {
     setValue('country', 'India');
   }, [setValue]);
 
-  // Simple field update function
-  const updateFormField = (name: keyof CheckoutFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setValue(name, value);
-  };
-
-  // Validation functions for specific fields (on blur only)
-  const validatePhone = (phone: string) => {
-    if (!phone.trim()) return 'Phone number is required';
-    if (phone.replace(/\D/g, '').length < 10) return 'Please enter a valid phone number';
-    return '';
-  };
-
-  const validateEmail = (email: string) => {
-    if (!isLoggedIn) {
-      if (!email.trim()) return 'Email is required';
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Please enter a valid email';
-    }
-    return '';
-  };
-
-  const validateZipCode = (zipCode: string) => {
-    if (!zipCode.trim()) return 'PIN code is required';
-    if (!/^\d{6}$/.test(zipCode)) return 'PIN code must be 6 digits';
-    return '';
-  };
-
-  // Check if all required fields are filled
-  const isFormValid = () => {
-    const requiredFields = ['firstName', 'lastName', 'phone', 'address', 'zipCode', 'state', 'city'];
-    if (!isLoggedIn) requiredFields.push('email');
-    
-    const allFieldsFilled = requiredFields.every(field => {
-      const value = formData[field as keyof CheckoutFormData];
-      return value && value.trim();
-    });
-
-    // Check if there are any validation errors for specific fields
-    const hasErrors = Object.values(fieldErrors).some(error => error);
-    
-    return allFieldsFilled && !hasErrors;
-  };
+  // Register non-input fields with RHF on component mount only
+  // useEffect(() => {
+  //   register('state', { required: 'State is required' });
+  //   register('city', { required: 'City is required' });
+  // }, []); // Remove register dependency to prevent re-renders
 
   // Ref to track the currently focused element
   const focusedElementRef = useRef<HTMLElement | null>(null);
@@ -308,11 +243,11 @@ useEffect(() => {
           const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
           if (matchedState) {
             setSelectedStateCode(matchedState.isoCode);
-            updateFormField('state', matchedState.name);
-            updateFormField('city', district);
+            setValue('state', matchedState.name, { shouldValidate: false, shouldDirty: true });
+            setValue('city', district, { shouldValidate: false, shouldDirty: true });
           } else {
-            updateFormField('state', stateName);
-            updateFormField('city', district);
+            setValue('state', stateName, { shouldValidate: false, shouldDirty: true });
+            setValue('city', district, { shouldValidate: false, shouldDirty: true });
           }
 
           // Restore focus after a brief delay to allow DOM updates
@@ -326,35 +261,21 @@ useEffect(() => {
         console.error('PIN lookup failed', err);
       }
     }
-  }, [updateFormField, setSelectedStateCode]);
+  }, [setValue, setSelectedStateCode]);
 
-  // Handle ZIP code input formatting with debounce ref
-  const zipCodeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+  // Handle ZIP code input formatting
   const handleZipCodeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 6) val = val.slice(0, 6);
-    updateFormField('zipCode', val);
-    
-    // Clear previous timeout
-    if (zipCodeTimeoutRef.current) {
-      clearTimeout(zipCodeTimeoutRef.current);
-    }
+    setValue('zipCode', val, { shouldDirty: true });
     
     // Debounce the effect to avoid multiple API calls
-    zipCodeTimeoutRef.current = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       handleZipCodeChangeEffect(val);
     }, 300);
-  }, [updateFormField, handleZipCodeChangeEffect]);
-
-  // Cleanup timeout on component unmount
-  useEffect(() => {
-    return () => {
-      if (zipCodeTimeoutRef.current) {
-        clearTimeout(zipCodeTimeoutRef.current);
-      }
-    };
-  }, []);
+    
+    return () => clearTimeout(timeoutId);
+  }, [setValue, handleZipCodeChangeEffect]);
 
   // Handle email validation on blur
   const handleEmailBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
@@ -450,25 +371,13 @@ const isUserExistValidate = async (email: string) => {
         console.error("Error checking user:", error);
     }
   };
-  const onSubmit = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    
-    if (!isFormValid()) {
-      toast({
-        title: "Please fill all required fields",
-        description: "Make sure all required fields are filled correctly.",
-        variant: "destructive",
-      });
-      return;
-    }
-
+  const onSubmit = async (values: CheckoutFormData) => {
     setIsProcessing(true);
     setProcessingStage('creating');
 
-    const values: CheckoutFormData = {
-      ...formData,
-      email: isLoggedIn ? localStorage.getItem('email') || '' : formData.email
-    };
+    if(isLoggedIn){
+      values.email=localStorage.getItem('email');
+    }
     console.log('current email.', values.email );
     const finalOrderDto: CheckoutDTO = {
       personalInfo: {
@@ -717,9 +626,9 @@ const isUserExistValidate = async (email: string) => {
   );
 
   const CheckoutForm = () => (
-    <form onSubmit={onSubmit} className="h-full flex flex-col">
+    <div className="h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
-        <Button type="button" variant="ghost" size="sm" onClick={handleBackToCart}>
+        <Button variant="ghost" size="sm" onClick={handleBackToCart}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Cart
         </Button>
@@ -737,63 +646,60 @@ const isUserExistValidate = async (email: string) => {
                 <Label htmlFor="firstName">First Name *</Label>
                 <Input
                   id="firstName"
-                  name="firstName"
                   placeholder="Enter your first name"
-                  value={formData.firstName}
-                  onChange={(e) => updateFormField('firstName', e.target.value)}
-                  className=""
+                  {...register('firstName', { required: 'First name is required' })}
+                  className={errors.firstName ? 'border-destructive' : ''}
                 />
+                {errors.firstName && (
+                  <p className="text-sm text-destructive mt-1">{errors.firstName.message}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="lastName">Last Name *</Label>
                 <Input
                   id="lastName"
-                  name="lastName"
                   placeholder="Enter your last name"
-                  value={formData.lastName}
-                  onChange={(e) => updateFormField('lastName', e.target.value)}
+                  {...register('lastName', { required: 'Last name is required' })}
+                  className={errors.lastName ? 'border-destructive' : ''}
                 />
+                {errors.lastName && (
+                  <p className="text-sm text-destructive mt-1">{errors.lastName.message}</p>
+                )}
               </div>
             </div>
-            { isLoggedIn ?  <div className="text-sm text-muted-foreground">Logged in as: {localStorage.getItem('email')}</div> : 
+            { isLoggedIn ?  <div>{isLoggedIn} </div> : 
             <div>
               <Label htmlFor="email">Email *</Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
                 placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) => updateFormField('email', e.target.value)}
-                onBlur={(e) => {
-                  handleEmailBlur(e);
-                  const error = validateEmail(e.target.value);
-                  setFieldErrors(prev => ({ ...prev, email: error || undefined }));
-                }}
-                className={fieldErrors.email ? 'border-destructive' : ''}
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: 'Please enter a valid email'
+                  }
+                })}
+                onBlur={handleEmailBlur}
+                className={errors.email ? 'border-destructive' : ''}
               />
-              {fieldErrors.email && (
-                <p className="text-sm text-destructive mt-1">{fieldErrors.email}</p>
+              {errors.email && (
+                <p className="text-sm text-destructive mt-1">{errors.email.message}</p>
               )}
             </div>
              }
             
             <div>
               <Label htmlFor="phone">Phone Number *</Label>
-              <Input
+              <PhoneInput
                 id="phone"
-                name="phone"
                 placeholder="10-digit mobile number"
-                value={formData.phone}
-                onChange={(e) => updateFormField('phone', e.target.value)}
-                onBlur={(e) => {
-                  const error = validatePhone(e.target.value);
-                  setFieldErrors(prev => ({ ...prev, phone: error || undefined }));
-                }}
-                className={fieldErrors.phone ? 'border-destructive' : ''}
+                {...register('phone', { required: 'Phone number is required' })}
+                className={errors.phone ? 'border-destructive' : ''}
               />
-              {fieldErrors.phone && (
-                <p className="text-sm text-destructive mt-1">{fieldErrors.phone}</p>
+              {errors.phone && (
+                <p className="text-sm text-destructive mt-1">{errors.phone.message}</p>
               )}
             </div>
           </CardContent>
@@ -805,25 +711,24 @@ const isUserExistValidate = async (email: string) => {
             <CardTitle className="text-lg">Shipping Address</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Address first */}
+            {/* <p>
+          {addresses.map((address) => (  <p> {address.line1}  {address.line2} {address.state}, {address.pincode} {address.isDefault}</p> )) }</p> */}
             <div>
               <Label htmlFor="address">Address *</Label>
               <Input
                 id="address"
-                name="address"
                 placeholder="House no., street, area"
-                value={formData.address}
-                onChange={(e) => updateFormField('address', e.target.value)}
+                {...register('address', { required: 'Address is required' })}
+                className={errors.address ? 'border-destructive' : ''}
               />
+              {errors.address && (
+                <p className="text-sm text-destructive mt-1">{errors.address.message}</p>
+              )}
             </div>
             <div>
               <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
-              <Input 
-                id="apartment" 
-                name="apartment"
-                placeholder="Apartment, suite, floor (optional)" 
-                value={formData.apartment || ''} 
-                onChange={(e) => updateFormField('apartment', e.target.value)}
-              />
+              <Input id="apartment" placeholder="Apartment, suite, floor (optional)" {...register('apartment')} />
             </div>
 
             {/* PIN Code & State */}
@@ -832,32 +737,44 @@ const isUserExistValidate = async (email: string) => {
                 <Label htmlFor="zipCode">PIN Code *</Label>
                 <Input
                   id="zipCode"
-                  name="zipCode"
                   inputMode="numeric"
                   placeholder="6-digit PIN code"
                   maxLength={6}
-                  value={formData.zipCode}
+                  {...register('zipCode', { 
+                    required: 'PIN code is required',
+                    pattern: {
+                      value: /^\d{6}$/,
+                      message: 'Please enter a valid 6-digit PIN code'
+                    }
+                  })}
                   onChange={handleZipCodeChange}
-                  onBlur={(e) => {
-                    const error = validateZipCode(e.target.value);
-                    setFieldErrors(prev => ({ ...prev, zipCode: error || undefined }));
-                  }}
-                  className={fieldErrors.zipCode ? 'border-destructive' : ''}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Tab' && !e.shiftKey) {
+                  //     e.preventDefault();
+                  //     setTimeout(() => {
+                  //       placeOrderButtonRef.current?.focus();
+                  //     }, 0);
+                  //   }
+                  // }}
+                  className={errors.zipCode ? 'border-destructive' : ''}
                 />
-                {fieldErrors.zipCode && (
-                  <p className="text-sm text-destructive mt-1">{fieldErrors.zipCode}</p>
+                {errors.zipCode && (
+                  <p className="text-sm text-destructive mt-1">{errors.zipCode.message as string}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor="state">State *</Label>
                 <Input
                   id="state"
-                  name="state"
                   placeholder="Auto-filled from PIN code"
                   readOnly
-                  value={formData.state}
-                  className="bg-muted"
+                  value={''}
+                  {...register('state', { required: 'State is required' })}
+                  className={`bg-muted ${errors.state ? 'border-destructive' : ''}`}
                 />
+                {errors.state && (
+                  <p className="text-sm text-destructive mt-1">{errors.state.message}</p>
+                )}
               </div>
             </div>
 
@@ -867,22 +784,28 @@ const isUserExistValidate = async (email: string) => {
                 <Label htmlFor="city">City *</Label>
                 <Input
                   id="city"
-                  name="city"
                   placeholder="Auto-filled from PIN code"
                   readOnly
-                  value={formData.city}
-                  className="bg-muted"
+                  value={''}
+                  {...register('city', { required: 'City is required' })}
+                  className={`bg-muted ${errors.city ? 'border-destructive' : ''}`}
                 />
+                {errors.city && (
+                  <p className="text-sm text-destructive mt-1">{errors.city.message}</p>
+                )}
               </div>
               <div>
                 <Label htmlFor="country">Country *</Label>
                 <Input
                   id="country"
-                  name="country"
-                  value={formData.country}
+                  defaultValue="India"
                   readOnly
-                  className="bg-muted"
+                  {...register('country', { required: 'Country is required' })}
+                  className={errors.country ? 'border-destructive' : ''}
                 />
+                {errors.country && (
+                  <p className="text-sm text-destructive mt-1">{errors.country.message}</p>
+                )}
               </div>
             </div>
           </CardContent>
@@ -976,20 +899,22 @@ const isUserExistValidate = async (email: string) => {
         
       </div>
 
-      {/* Place Order Button - Fixed at bottom */}
+      {/* Place Order Button - Fixed at bottom   <ReCAPTCHA sitekey="6LfS1ZQrAAAAAOWPmKZRXxqCAjFkURJVYBpYY7Vh" onChange={handleCaptchaChange} /> */}
       <div className="border-t bg-background p-4 mt-auto mb-4">
+          
+        
         <Button 
           ref={placeOrderButtonRef}
-          type="submit"
           data-place-order-button
           className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
           size="lg"
-          disabled={isProcessing || !isFormValid()}
+          onClick={handleSubmit(onSubmit)}
+          disabled={isProcessing}
         >
           {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
         </Button>
       </div>
-    </form>
+    </div>
   );
 
   return (
