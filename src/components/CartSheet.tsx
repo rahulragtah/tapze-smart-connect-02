@@ -226,6 +226,7 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
 
   // Watch for ZIP code changes and auto-populate state/city
   const handleZipCodeChangeEffect = useCallback(async (zipCode: string) => {
+    
     if (zipCode && zipCode.length === 6) {
       // Store the currently focused element
       focusedElementRef.current = document.activeElement as HTMLElement;
@@ -239,7 +240,10 @@ const { register, handleSubmit, formState: { errors }, reset, setValue, watch, t
           const po = result.PostOffice[0];
           const stateName = po.State as string;
           const district = po.District as string;
-         
+
+           setValue('city', district);
+           setValue('state', stateName);
+         return;
           const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
           if (matchedState) {
             setSelectedStateCode(matchedState.isoCode);
