@@ -52,7 +52,7 @@ const ResetPassword = () => {
     if (verification==='true'){
       console.log('ddd  ' ,verification );
       const response =  resetPassword(String(token || ''),password, confirmPassword, 'verification');
-      alert("verification completed");
+      alert("Your mail has been verified Successfully");
       navigate("/login")
     }
     
