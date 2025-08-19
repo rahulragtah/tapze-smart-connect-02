@@ -17,6 +17,7 @@ const Login = () => {
   const [searchParams] = useSearchParams();
   // Optional: token from email link (if available later)
   const redirecturl = searchParams.get("redirecturl");
+  const verified = searchParams.get("verified");
 
 
   const [email, setEmail] = useState("");
@@ -29,7 +30,20 @@ const Login = () => {
   useEffect(() => {
     const prefill = location?.state?.prefillEmail;
     if (prefill) setEmail(prefill);
-  }, [location?.state]);
+    
+    // Show verification success toast
+    if (verified === 'true') {
+      const timer = setTimeout(() => {
+        toast({
+          title: "Email Verified Successfully",
+          description: "Your email has been verified. You can now login.",
+          duration: 10000, // 10 seconds
+        });
+      }, 100); // Small delay to ensure component is mounted
+      
+      return () => clearTimeout(timer);
+    }
+  }, [location?.state, verified, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
