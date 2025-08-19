@@ -110,13 +110,12 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = React.memo(({
                   e.stopPropagation();
                   if (e.key === 'Enter') {
                     e.preventDefault();
-                    applyCoupon();
+                   // applyCoupon();
                   }
                 }}
                 className="flex-1"
                 autoComplete="off"
-                onFocus={(e) => e.stopPropagation()}
-                onBlur={(e) => e.stopPropagation()}
+               
               />
             </div>
             <Button 
@@ -818,7 +817,7 @@ const isUserExistValidate = async (email: string) => {
         </Card>
 
         {/* Coupon Code - Standalone component to prevent form interference */}
-        <CouponCodeSection 
+        {/* <CouponCodeSection 
           key="coupon-section"
           appliedCoupon={appliedCoupon}
           couponCode={couponCode}
@@ -827,7 +826,7 @@ const isUserExistValidate = async (email: string) => {
           validCoupons={validCoupons}
           applyCoupon={applyCoupon}
           removeCoupon={removeCoupon}
-        />
+        /> */}
 
         {/* Order Summary */}
         <Card>
