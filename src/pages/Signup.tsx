@@ -94,7 +94,7 @@ const Signup = () => {
                    lastName:response.lastName,
                    urlParam: mailurl ,
                    emailSubject : 'tapZe Account Verification !!', 
-                   tagline: 'Please verify your email & login to your account.',
+                   tagline: 'Please verify your email to activate your account.',
                    actionText: 'verify your account'
                    }
                    sendAccountVerificationEmail(payload);

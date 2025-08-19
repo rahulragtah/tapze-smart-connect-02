@@ -35,12 +35,11 @@ const Navigation = () => {
     setIsLoginModalOpen(false);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async  () => {
     setIsLoggedIn(false);
-    logOut();
+    await  logOut();
     setUserInfo({ name: "", phone: "" });
     navigate('/login');
-    
   };
 
   const closeMobileMenu = () => {
@@ -51,12 +50,6 @@ const Navigation = () => {
     setIsOpen(true);
     closeMobileMenu();
   };
-
-  const handleLoginOpen = () => {
-    window.open('https://dashboard.tapze.in/login', '_blank');
-    closeMobileMenu();
-  };
-
 
   useEffect(() => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
