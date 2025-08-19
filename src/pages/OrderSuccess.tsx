@@ -159,21 +159,49 @@ const OrderSuccess = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-muted-foreground">Order ID</p>
                   <p className="font-semibold text-lg">#{orderDetails.orderId}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Total Amount</p>
-                  <p className="font-semibold text-lg">₹{orderDetails.finalTotal.toFixed(2)}</p>
+                  <p className="text-sm text-muted-foreground">Order Date</p>
+                  <p className="font-semibold text-lg">{new Date().toLocaleDateString()}</p>
                 </div>
-                {orderDetails.couponDiscount > 0 && (
-                <div>
-                  <p className="text-sm text-muted-foreground">Coupen Discount</p>
-                  <p className="font-semibold text-lg">- ₹{orderDetails.couponDiscount.toFixed(2)}</p>
+              </div>
+
+              <Separator />
+
+              {/* Pricing Breakdown */}
+              <div>
+                <h3 className="font-semibold mb-4">Order Summary</h3>
+                <div className="bg-muted/50 p-4 rounded-lg space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Total MRP</span>
+                    <span className="font-medium">₹{orderDetails.totalPrice.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Total MRP Discount</span>
+                    <span className="text-green-600">- ₹{(orderDetails.totalPrice - orderDetails.offerPrice).toFixed(2)}</span>
+                  </div>
+                  {orderDetails.couponDiscount > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Coupon Discount</span>
+                      <span className="text-green-600">- ₹{orderDetails.couponDiscount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {orderDetails.shippingCharge > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Shipping Charges</span>
+                      <span className="font-medium">₹{orderDetails.shippingCharge.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <Separator />
+                  <div className="flex justify-between text-base font-semibold">
+                    <span>Order Total</span>
+                    <span>₹{orderDetails.finalTotal.toFixed(2)}</span>
+                  </div>
                 </div>
-                )}
               </div>
 
               <Separator />
