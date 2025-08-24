@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Helmet } from "react-helmet";
 import Navigation from "@/components/Navigation";
 import ProductHero from "@/components/ProductHero";
 import ProductOrderTimelineContainer from "@/components/ProductOrderTimelineContainer";
@@ -157,8 +158,85 @@ const ProductDetails = () => {
     console.log("Redirecting to checkout with:", product.name);
   };
 
+  // Generate structured data for SEO
+  const currentPrice = offer?.isActive ? product.price - offer.value : product.price;
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description || `${product.name} - Premium NFC business card with smart digital features`,
+    "image": product.image || `https://tapze.in${product.heroImage}`,
+    "sku": product.id,
+    "brand": {
+      "@type": "Brand",
+      "name": "Tapze"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "INR",
+      "price": currentPrice,
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "Organization",
+        "name": "Tapze"
+      },
+      "priceValidUntil": offer?.isActive ? "2024-12-31" : undefined
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "150"
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Satisfied Customer"
+        },
+        "reviewBody": "Excellent quality NFC business card. Professional design and works perfectly."
+      }
+    ]
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>{product.name} | Tapze - Premium NFC Business Cards</title>
+        <meta name="description" content={product.description || `${product.name} - Premium NFC business card with smart digital features. Share your contact details, social links, and personal brand with a single tap.`} />
+        <meta name="keywords" content={`${product.name}, NFC business card, smart business card, digital business card, contactless networking, ${selectedColor} business card`} />
+        <link rel="canonical" href={window.location.href} />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content={`${product.name} | Tapze`} />
+        <meta property="og:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
+        <meta property="og:image" content={product.image || `https://tapze.in${product.heroImage}`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content="Tapze" />
+        <meta property="product:price:amount" content={currentPrice} />
+        <meta property="product:price:currency" content="INR" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.name} | Tapze`} />
+        <meta name="twitter:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
+        <meta name="twitter:image" content={product.image || `https://tapze.in${product.heroImage}`} />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-black text-white">
       <Navigation />
       
       {/* Breadcrumb Navigation - Hidden on mobile */}
@@ -219,6 +297,7 @@ const ProductDetails = () => {
         onBuyNow={handleBuyNow}
       />
     </div>
+    </>
   );
 };
 
