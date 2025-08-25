@@ -57,7 +57,7 @@ const Index = () => {
     "offers": {
       "@type": "Offer",
       "description": "Premium NFC Business Cards with 20% Independence Day discount",
-      "priceValidUntil": "2024-08-31"
+      "priceValidUntil": "2025-08-31"
     }
   };
 

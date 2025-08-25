@@ -181,7 +181,7 @@ const ProductDetails = () => {
         "@type": "Organization",
         "name": "Tapze"
       },
-      "priceValidUntil": offer?.isActive ? "2024-12-31" : undefined
+      "priceValidUntil": offer?.isActive ? "2025-12-31" : undefined
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -216,7 +216,7 @@ const ProductDetails = () => {
         {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
         <meta property="og:title" content={`${product.name} | Tapze`} />
         <meta property="og:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
-        <meta property="og:image" content={product.image || `https://tapze.in${product.heroImage}`} />
+        <meta property="og:image" content={product.image || `${product.heroImage}`} />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content="Tapze" />
@@ -227,7 +227,7 @@ const ProductDetails = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Tapze`} />
         <meta name="twitter:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
-        <meta name="twitter:image" content={product.image || `https://tapze.in${product.heroImage}`} />
+        <meta name="twitter:image" content={product.image || `${product.heroImage}`} />
         <meta name="twitter:site" content="@tapze" />
 
         {/* Structured Data */}
