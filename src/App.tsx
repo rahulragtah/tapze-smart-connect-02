@@ -9,6 +9,7 @@ import CartSheet from "@/components/CartSheet";
 import SSRLoader from "@/components/SSRLoader";
 import PageLoader from "@/components/PageLoader";
 import PerformanceOptimizer from "@/components/PerformanceOptimizer";
+import PrerenderDetector from "@/components/PrerenderDetector";
 import Index from "./pages/Index";
 import ProductDetails from "./pages/ProductDetails";
 import Contact from "./pages/Contact";
@@ -40,13 +41,14 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <CartProvider>
-        <SSRLoader />
-        <PerformanceOptimizer />
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
+        <PrerenderDetector>
+          <SSRLoader />
+          <PerformanceOptimizer />
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products/:productId" element={<ProductDetails />} />
               <Route path="/contact" element={<Contact />} />
@@ -77,10 +79,11 @@ const App = () => (
               <Route path="/support" element={<Support />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-          <CartSheet />
-        </BrowserRouter>
+              </Routes>
+            </Suspense>
+            <CartSheet />
+          </BrowserRouter>
+        </PrerenderDetector>
       </CartProvider>
     </TooltipProvider>
   </QueryClientProvider>
