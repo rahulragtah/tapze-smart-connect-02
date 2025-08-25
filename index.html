@@ -2,57 +2,101 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- Critical Performance Optimizations -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!-- DNS Prefetch & Preconnect for External Resources -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="//checkout.razorpay.com" />
+    <link rel="dns-prefetch" href="//embed.tawk.to" />
+    <link rel="dns-prefetch" href="//static.hotjar.com" />
+    <link rel="dns-prefetch" href="//onsite.optimonk.com" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    
+    <!-- Critical CSS Inlined for Faster Rendering -->
+    <style>
+      /* Critical above-the-fold styles */
+      html { line-height: 1.15; -webkit-text-size-adjust: 100%; }
+      body { margin: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+      #root { min-height: 100vh; }
+      
+      /* Loading skeleton styles for immediate render */
+      .loading-skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+      }
+      
+      @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+      
+      /* Prevent layout shifts */
+      .hero-skeleton { height: 60vh; }
+      .nav-skeleton { height: 80px; }
+      
+      /* Dark mode support */
+      @media (prefers-color-scheme: dark) {
+        .loading-skeleton {
+          background: linear-gradient(90deg, #2a2a2a 25%, #1a1a1a 50%, #2a2a2a 75%);
+        }
+      }
+    </style>
+    
+    <!-- Fonts with display=swap for better performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- PWA & Mobile Optimizations -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Tapze" />
+    <link rel="apple-touch-icon" href="/lovable-uploads/vcard27.png" />
+    
+    <!-- Default meta tags (will be overridden by React Helmet) -->
+    <title>Tapze - Premium NFC Business Cards | Smart Digital Networking</title>
+    <meta name="description" content="Transform your networking with Tapze's premium NFC business cards. Instant contact sharing, eco-friendly, and professional digital solutions." />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Tapze",
+      "url": "https://tapze.in",
+      "description": "Premium NFC business cards with smart mobile software for instant contact sharing",
+      "foundingDate": "2023",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://tapze.in"
+      ]
+    }
+    </script>
+    
+    <!-- Google Analytics (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LB5HHWS3TW"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-LB5HHWS3TW');
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <!-- Page-specific meta tags will be set by React Helmet in each component -->
-    <title>Tapze</title>
-    <meta name="robots" content="index, follow" />
-    <meta name="language" content="English" />
-    
-    <!-- Structured Data for SEO -->
-    <!-- <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": "Tapze NFC Business Cards",
-      "description": "Premium NFC business cards with smart mobile software for instant contact sharing",
-      "brand": {
-        "@type": "Brand",
-        "name": "Tapze"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://tapze.in",
-        "price" : "1000"
-        "priceCurrency": "INR",
-        "availability": "In Stock",
-        "seller": {
-          "@type": "Organization",
-          "name": "Tapze"
-        }
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "150"
-      }
-    }
-    </script> -->
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Hotjar Tracking Code for Site 6476947 (name missing) -->
     <script>
       (function(h,o,t,j,a,r){
@@ -67,7 +111,41 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- SSR Simulation: Loading skeleton that renders immediately -->
+      <div id="initial-loader" style="min-height: 100vh; background: #ffffff;">
+        <!-- Navigation skeleton -->
+        <div class="nav-skeleton loading-skeleton" style="width: 100%; height: 80px; border-bottom: 1px solid #e5e5e5;"></div>
+        
+        <!-- Hero section skeleton -->
+        <div class="hero-skeleton" style="padding: 4rem 1rem; text-align: center;">
+          <div class="loading-skeleton" style="height: 3rem; width: 60%; margin: 0 auto 2rem; border-radius: 0.5rem;"></div>
+          <div class="loading-skeleton" style="height: 1.5rem; width: 80%; margin: 0 auto 1rem; border-radius: 0.25rem;"></div>
+          <div class="loading-skeleton" style="height: 1.5rem; width: 70%; margin: 0 auto 2rem; border-radius: 0.25rem;"></div>
+          <div class="loading-skeleton" style="height: 3rem; width: 200px; margin: 0 auto; border-radius: 0.5rem;"></div>
+        </div>
+        
+        <!-- Content skeleton -->
+        <div style="padding: 2rem 1rem;">
+          <div class="loading-skeleton" style="height: 200px; width: 100%; margin-bottom: 2rem; border-radius: 0.5rem;"></div>
+          <div class="loading-skeleton" style="height: 150px; width: 100%; margin-bottom: 2rem; border-radius: 0.5rem;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Remove loader once React hydrates -->
+    <script>
+      window.addEventListener('DOMContentLoaded', function() {
+        // Hide loader once React starts mounting
+        setTimeout(function() {
+          const loader = document.getElementById('initial-loader');
+          if (loader && document.querySelector('[data-reactroot], [data-react-app]')) {
+            loader.style.display = 'none';
+          }
+        }, 100);
+      });
+    </script>
+    
     <script type="module" src="/src/main.tsx"></script>
   </body>
   <!--Start of Tawk.to Script-->
