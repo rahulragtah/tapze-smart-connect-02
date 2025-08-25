@@ -5,6 +5,7 @@ import { Smartphone, QrCode, Share2, BarChart3, Shield, Zap, Palette, Store, Cal
 import { useRef, useEffect, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet";
 
 const DigitalProfile = () => {
   const [currentIndex, setCurrentIndex] = useState(2); // Start with center image active
@@ -88,8 +89,32 @@ const DigitalProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Digital Profile | Create Your Professional Online Presence | Tapze</title>
+        <meta name="description" content="Create a stunning digital business profile with Tapze. Showcase your professional identity, share contact info, social links, and portfolio instantly with NFC technology." />
+        <meta name="keywords" content="digital profile, digital business card, professional profile, online presence, NFC profile, smart networking" />
+        <link rel="canonical" href="https://tapze.in/digital-profile" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Digital Profile | Create Your Professional Online Presence" />
+        <meta property="og:description" content="Create a stunning digital business profile with Tapze. Showcase your professional identity and share instantly." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/digital-profile" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Digital Profile | Create Your Professional Online Presence" />
+        <meta name="twitter:description" content="Create a stunning digital business profile with Tapze." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
         <section className="py-12 lg:py-20 px-4 text-center">
@@ -429,6 +454,7 @@ const DigitalProfile = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

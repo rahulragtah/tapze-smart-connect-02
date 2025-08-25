@@ -1,12 +1,38 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet";
 
 const CancellationPolicy = () => {
   const monthName = new Date().toLocaleString('default', { month: 'long' });
   const currentYear = new Date().getFullYear();
+  
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/20 to-black">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Cancellation Policy | Tapze NFC Business Cards | Order Cancellation</title>
+        <meta name="description" content="Learn about Tapze's order cancellation policy for NFC business cards. Understand cancellation terms, refund processing, and how to cancel your order." />
+        <meta name="keywords" content="tapze cancellation policy, cancel order, NFC card cancellation, order refund, cancellation terms" />
+        <link rel="canonical" href="https://tapze.in/cancellation-policy" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Cancellation Policy | Tapze NFC Business Cards" />
+        <meta property="og:description" content="Learn about Tapze's order cancellation policy for NFC business cards and how to cancel your order." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/cancellation-policy" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Cancellation Policy | Tapze NFC Business Cards" />
+        <meta name="twitter:description" content="Learn about Tapze's order cancellation policy for NFC business cards." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-900/20 to-black">
+        <Navigation />
       
       <div className="pt-20 pb-16 px-4">
         <div className="max-w-4xl mx-auto">
@@ -115,6 +141,7 @@ const CancellationPolicy = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

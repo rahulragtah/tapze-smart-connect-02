@@ -1,13 +1,39 @@
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet";
 
 const PrivacyPolicy = () => {
   const monthName = new Date().toLocaleString('default', { month: 'long' });
   const currentYear = new Date().getFullYear();
+  
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Privacy Policy | Tapze NFC Business Cards | Data Protection & Security</title>
+        <meta name="description" content="Read Tapze's Privacy Policy to understand how we collect, use, and protect your personal information when using our NFC business cards and services." />
+        <meta name="keywords" content="tapze privacy policy, data protection, privacy rights, information security, NFC card privacy" />
+        <link rel="canonical" href="https://tapze.in/privacy-policy" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Privacy Policy | Tapze NFC Business Cards" />
+        <meta property="og:description" content="Read Tapze's Privacy Policy to understand how we collect, use, and protect your personal information." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/privacy-policy" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Privacy Policy | Tapze NFC Business Cards" />
+        <meta name="twitter:description" content="Read Tapze's Privacy Policy to understand how we protect your personal information." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
       <div className="pt-16">
         <div className="max-w-4xl mx-auto px-4 py-16">
           <h1 className="text-4xl font-bold mb-8 text-white">Privacy Policy</h1>
@@ -109,6 +135,7 @@ const PrivacyPolicy = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

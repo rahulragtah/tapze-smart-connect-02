@@ -10,6 +10,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import authBackground from "@/assets/auth-background.jpg";
 import { loginUser } from '@/services/login';
+import { Helmet } from "react-helmet";
 
 
 
@@ -84,8 +85,32 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Login to Tapze | Access Your NFC Business Card Dashboard</title>
+        <meta name="description" content="Login to your Tapze account to manage your NFC business cards, update your digital profile, and track engagement analytics." />
+        <meta name="keywords" content="tapze login, NFC card dashboard, digital business card login, account access" />
+        <link rel="canonical" href="https://tapze.in/login" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Login to Tapze | Access Your Dashboard" />
+        <meta property="og:description" content="Login to your Tapze account to manage your NFC business cards and digital profile." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/login" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Login to Tapze | Access Your Dashboard" />
+        <meta name="twitter:description" content="Login to your Tapze account to manage your NFC business cards." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <Navigation />
       <div className="min-h-screen flex pt-16">
         {/* Left side - Image */}
         <div 
@@ -196,6 +221,7 @@ const Login = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

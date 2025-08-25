@@ -1,13 +1,39 @@
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet";
 
 const TermsOfService = () => {
   const monthName = new Date().toLocaleString('default', { month: 'long' });
   const currentYear = new Date().getFullYear();
+  
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Terms of Service | Tapze NFC Business Cards | User Agreement</title>
+        <meta name="description" content="Read Tapze's Terms of Service to understand your rights and responsibilities when using our NFC business cards and digital profile services." />
+        <meta name="keywords" content="tapze terms of service, user agreement, terms and conditions, NFC card terms, service agreement" />
+        <link rel="canonical" href="https://tapze.in/terms-of-service" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Terms of Service | Tapze NFC Business Cards" />
+        <meta property="og:description" content="Read Tapze's Terms of Service to understand your rights and responsibilities when using our services." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/terms-of-service" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms of Service | Tapze NFC Business Cards" />
+        <meta name="twitter:description" content="Read Tapze's Terms of Service and user agreement." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
       <div className="pt-16">
         <div className="max-w-4xl mx-auto px-4 py-16">
           <h1 className="text-4xl font-bold mb-8 text-white">Terms of Service</h1>
@@ -125,6 +151,7 @@ const TermsOfService = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

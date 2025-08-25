@@ -5,6 +5,7 @@ import { ArrowRight, Smartphone, Hand, Share2, Users, CheckCircle } from "lucide
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const steps = [
   {
@@ -38,9 +39,51 @@ const steps = [
 ];
 
 const HowItWorks = () => {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Use Tapze NFC Business Cards",
+    "description": "Learn how to get started with Tapze NFC business cards in 4 simple steps",
+    "step": steps.map((step, index) => ({
+      "@type": "HowToStep",
+      "position": index + 1,
+      "name": step.title,
+      "text": step.description
+    }))
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>How Tapze Works | 4 Simple Steps to Smart Networking | NFC Business Cards</title>
+        <meta name="description" content="Learn how Tapze NFC business cards work in 4 simple steps. Choose your card, customize your profile, tap to share, and track connections effortlessly." />
+        <meta name="keywords" content="how tapze works, NFC card setup, digital business card guide, smart networking, contactless sharing" />
+        <link rel="canonical" href="https://tapze.in/how-it-works" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="How Tapze Works | 4 Simple Steps to Smart Networking" />
+        <meta property="og:description" content="Learn how Tapze NFC business cards work in 4 simple steps. Transform your networking effortlessly." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/how-it-works" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="How Tapze Works | 4 Simple Steps to Smart Networking" />
+        <meta name="twitter:description" content="Learn how Tapze NFC business cards work in 4 simple steps." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
         <section className="py-12 lg:py-20 px-4 text-center">
@@ -192,6 +235,7 @@ const HowItWorks = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

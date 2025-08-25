@@ -14,6 +14,7 @@ import { signUpDTO } from '@/components/models/loginInterface';
 import { sendAccountVerificationEmail } from '@/services/appEmailService';
 import { resendEmailDTO } from '@/components/models/loginInterface';
 import { PhoneInput } from "@/components/ui/phone-input";
+import { Helmet } from "react-helmet";
 
 const Signup = () => {
   const [formData, setFormData] = useState<signUpDTO>({
@@ -127,8 +128,32 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Create Tapze Account | Sign Up for NFC Business Cards | Join Today</title>
+        <meta name="description" content="Create your Tapze account to get started with premium NFC business cards. Sign up today and build your digital professional presence." />
+        <meta name="keywords" content="tapze signup, create account, NFC card registration, digital business card signup, join tapze" />
+        <link rel="canonical" href="https://tapze.in/signup" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Create Tapze Account | Sign Up for NFC Business Cards" />
+        <meta property="og:description" content="Create your Tapze account to get started with premium NFC business cards and build your digital presence." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/signup" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Create Tapze Account | Sign Up for NFC Business Cards" />
+        <meta name="twitter:description" content="Create your Tapze account to get started with premium NFC business cards." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <Navigation />
       <div className="min-h-screen flex pt-16">
         {/* Left side - Image */}
         <div 
@@ -316,6 +341,7 @@ const Signup = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

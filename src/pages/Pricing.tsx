@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet";
 import { 
   Accordion,
   AccordionContent,
@@ -76,9 +77,51 @@ const faqs = [
 ];
 
 const Pricing = () => {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Pricing & FAQ | Tapze NFC Business Cards | Frequently Asked Questions</title>
+        <meta name="description" content="Find answers to frequently asked questions about Tapze NFC business cards. Learn about pricing, features, shipping, and more." />
+        <meta name="keywords" content="tapze FAQ, NFC card questions, pricing help, shipping info, technical support, business card help" />
+        <link rel="canonical" href="https://tapze.in/pricing" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Pricing & FAQ | Tapze NFC Business Cards" />
+        <meta property="og:description" content="Find answers to frequently asked questions about Tapze NFC business cards. Learn about pricing, features, shipping, and more." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/pricing" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Pricing & FAQ | Tapze NFC Business Cards" />
+        <meta name="twitter:description" content="Find answers to frequently asked questions about Tapze NFC business cards." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
+        <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
         <section className="py-12 lg:py-20 px-4 text-center">
@@ -125,6 +168,7 @@ const Pricing = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 
