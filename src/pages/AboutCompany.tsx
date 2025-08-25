@@ -1,11 +1,73 @@
 
+import { Helmet } from "react-helmet";  
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Users, Target, Award, Globe } from "lucide-react";
 
 const AboutCompany = () => {
+  // SEO structured data for about page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About Tapze",
+    "description": "Learn about Tapze's mission to revolutionize professional networking through innovative NFC technology and digital business solutions",
+    "url": "https://tapze.in/about-company",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Tapze",
+      "description": "Revolutionary NFC business card solutions for modern professionals",
+      "foundingDate": "2023",
+      "employee": [
+        {
+          "@type": "Person",
+          "name": "Brijesh Kannaujia",
+          "jobTitle": "Product Excellence"
+        },
+        {
+          "@type": "Person", 
+          "name": "Sunil Kumar",
+          "jobTitle": "Chief Technology Officer"
+        },
+        {
+          "@type": "Person",
+          "name": "Rahul Ragtah", 
+          "jobTitle": "Head of Design"
+        }
+      ]
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>About Tapze | Revolutionizing Professional Networking with NFC Technology</title>
+        <meta name="description" content="Learn about Tapze's mission to revolutionize professional networking through innovative NFC technology. Meet our team and discover our values." />
+        <meta name="keywords" content="about tapze, nfc technology, professional networking, digital business solutions, team, company story, mission, vision" />
+        <link rel="canonical" href="https://tapze.in/about-company" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="About Tapze | Revolutionizing Professional Networking" />
+        <meta property="og:description" content="Learn about Tapze's mission to revolutionize professional networking through innovative NFC technology and digital business solutions." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/tapze-about.png" />
+        <meta property="og:url" content="https://tapze.in/about-company" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Tapze | Revolutionizing Professional Networking" />
+        <meta name="twitter:description" content="Learn about Tapze's mission to revolutionize professional networking through innovative NFC technology and digital business solutions." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/tapze-about.png" />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       
       <div className="pt-16">
@@ -245,6 +307,7 @@ const AboutCompany = () => {
       
       <Footer />
     </div>
+    </>
   );
 };
 

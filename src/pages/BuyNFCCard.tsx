@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Star, Flame } from "lucide-react";
+import { Helmet } from "react-helmet";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -17,11 +18,24 @@ interface Offer {
 
 
 const BuyNFCCard = () => {
-
-
+  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState<{[key: string]: Offer}>({});
+
+  // SEO structured data for product listing page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "NFC Business Cards Collection",
+    "description": "Browse our collection of premium NFC business cards with smart digital features",
+    "url": "https://tapze.in/buy-nfc-card",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "NFC Business Cards",
+      "description": "Premium NFC business cards for modern professionals"
+    }
+  };
 
   useEffect(() => {
     fetch('https://tapze.in/tapzeservice/productapi.php')
@@ -102,7 +116,36 @@ const BuyNFCCard = () => {
 
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Buy NFC Business Cards | Tapze - Premium Smart Cards Collection</title>
+        <meta name="description" content="Browse our collection of premium NFC business cards. Smart, professional, and stylish cards with digital features. Choose from multiple designs and colors." />
+        <meta name="keywords" content="buy NFC business cards, smart business cards, digital business cards, premium business cards, NFC cards online, contactless business cards" />
+        <link rel="canonical" href="https://tapze.in/buy-nfc-card" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Buy NFC Business Cards | Tapze Premium Collection" />
+        <meta property="og:description" content="Browse our collection of premium NFC business cards. Smart, professional, and stylish cards with digital features." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/buy-nfc-card" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Buy NFC Business Cards | Tapze Premium Collection" />
+        <meta name="twitter:description" content="Browse our collection of premium NFC business cards. Smart, professional, and stylish cards with digital features." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
@@ -207,6 +250,7 @@ const BuyNFCCard = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { useForm } from "react-hook-form";
 import { MapPin, Mail, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Helmet } from "react-helmet";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { PhoneInput } from "@/components/ui/phone-input";
@@ -35,6 +36,28 @@ const Contact = () => {
     },
   });
 
+  // SEO structured data for contact page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Tapze",
+    "description": "Get in touch with Tapze for support, bulk inquiries, or general questions about our NFC business cards",
+    "url": "https://tapze.in/contact",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Tapze",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "3/1, Subhash Nagar",
+        "addressLocality": "New Delhi",
+        "postalCode": "110027",
+        "addressCountry": "IN"
+      },
+      "email": "contacto@tapze.in",
+      "telephone": "+91 9990909789"
+    }
+  };
+
   const onSubmit = async (data: ContactForm) => {
     setIsSubmitting(true);
     
@@ -53,7 +76,36 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <>
+      <Helmet>
+        {/* SEO Meta */}
+        <title>Contact Tapze | Get Support & Bulk Inquiries | NFC Business Cards</title>
+        <meta name="description" content="Contact Tapze for support, bulk orders, or questions about our premium NFC business cards. Email us at contacto@tapze.in or call +91 9990909789." />
+        <meta name="keywords" content="contact tapze, nfc card support, bulk inquiry, customer service, tapze help, business card support" />
+        <link rel="canonical" href="https://tapze.in/contact" />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content="Contact Tapze | Get Support & Bulk Inquiries" />
+        <meta property="og:description" content="Contact Tapze for support, bulk orders, or questions about our premium NFC business cards." />
+        <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:url" content="https://tapze.in/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Tapze" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Tapze | Get Support & Bulk Inquiries" />
+        <meta name="twitter:description" content="Contact Tapze for support, bulk orders, or questions about our premium NFC business cards." />
+        <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+      
+      <div className="min-h-screen bg-background text-foreground">
       <Navigation />
       <div className="pt-16">
         {/* Hero Section */}
@@ -256,6 +308,7 @@ const Contact = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 
