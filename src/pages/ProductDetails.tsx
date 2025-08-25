@@ -160,12 +160,23 @@ const ProductDetails = () => {
 
   // Generate structured data for SEO
   const currentPrice = offer?.isActive ? product.price - offer.value : product.price;
+  
+  // Ensure absolute URL for product image
+  const getAbsoluteImageUrl = (image: string) => {
+    if (!image) return '';
+    if (image.startsWith('http')) return image;
+    if (image.startsWith('/')) return `https://tapze.in${image}`;
+    return `https://tapze.in/${image}`;
+  };
+
+  const productImageUrl = getAbsoluteImageUrl(product.image || product.heroImage);
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
     "description": product.description || `${product.name} - Premium NFC business card with smart digital features`,
-    "image": product.image || `https://tapze.in${product.heroImage}`,
+    "image": productImageUrl,
     "sku": product.id,
     "brand": {
       "@type": "Brand",
@@ -216,7 +227,10 @@ const ProductDetails = () => {
         {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
         <meta property="og:title" content={`${product.name} | Tapze`} />
         <meta property="og:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
-        <meta property="og:image" content={product.image || `${product.heroImage}`} />
+        <meta property="og:image" content={productImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${product.name} - Premium NFC Business Card`} />
         <meta property="og:url" content={window.location.href} />
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content="Tapze" />
@@ -227,7 +241,8 @@ const ProductDetails = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${product.name} | Tapze`} />
         <meta name="twitter:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
-        <meta name="twitter:image" content={product.image || `${product.heroImage}`} />
+        <meta name="twitter:image" content={productImageUrl} />
+        <meta name="twitter:image:alt" content={`${product.name} - Premium NFC Business Card`} />
         <meta name="twitter:site" content="@tapze" />
 
         {/* Structured Data */}
