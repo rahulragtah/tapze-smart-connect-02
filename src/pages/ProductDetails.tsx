@@ -5,8 +5,6 @@ import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Helmet } from "react-helmet";
-import { usePrerender } from "@/hooks/usePrerender";
-import SEOPrerender from "@/components/SEOPrerender";
 import Navigation from "@/components/Navigation";
 import ProductHero from "@/components/ProductHero";
 import ProductOrderTimelineContainer from "@/components/ProductOrderTimelineContainer";
@@ -24,7 +22,6 @@ const ProductDetails = () => {
   const { productId } = useParams();
   const { addItem, setIsOpen } = useCart();
   const { toast } = useToast();
-  const { isBot, shouldPrerender } = usePrerender();
 
   
   const [product, setProduct] = useState<any>(null);
@@ -220,15 +217,39 @@ const ProductDetails = () => {
 
   return (
     <>
-      <SEOPrerender
-        title={`${product.name} | Tapze - Premium NFC Business Cards`}
-        description={product.description || `${product.name} - Premium NFC business card with smart digital features. Share your contact details, social links, and personal brand with a single tap.`}
-        keywords={`${product.name}, NFC business card, smart business card, digital business card, contactless networking, ${selectedColor} business card`}
-        image={productImageUrl}
-        url={window.location.href}
-        type="product"
-        structuredData={structuredData}
-      />
+      <Helmet>
+        {/* SEO Meta */}
+        <title>{product.name} | Tapze - Premium NFC Business Cards</title>
+        <meta name="description" content={product.description || `${product.name} - Premium NFC business card with smart digital features. Share your contact details, social links, and personal brand with a single tap.`} />
+        <meta name="keywords" content={`${product.name}, NFC business card, smart business card, digital business card, contactless networking, ${selectedColor} business card`} />
+        <link rel="canonical" href={window.location.href} />
+
+        {/* Open Graph (Facebook / LinkedIn / WhatsApp) */}
+        <meta property="og:title" content={`${product.name} | Tapze`} />
+        <meta property="og:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
+        <meta property="og:image" content={productImageUrl} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={`${product.name} - Premium NFC Business Card`} />
+        <meta property="og:url" content={window.location.href} />
+        <meta property="og:type" content="product" />
+        <meta property="og:site_name" content="Tapze" />
+        <meta property="product:price:amount" content={currentPrice} />
+        <meta property="product:price:currency" content="INR" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.name} | Tapze`} />
+        <meta name="twitter:description" content={product.description || `${product.name} - Premium NFC business card with smart digital features`} />
+        <meta name="twitter:image" content={productImageUrl} />
+        <meta name="twitter:image:alt" content={`${product.name} - Premium NFC Business Card`} />
+        <meta name="twitter:site" content="@tapze" />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
       
       <div className="min-h-screen bg-black text-white">
       <Navigation />
