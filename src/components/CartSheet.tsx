@@ -25,7 +25,7 @@ import { PhoneInput } from '@/components/ui/phone-input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { State, City } from 'country-state-city';
 import { getUserAddress } from '@/services/orderService';
-import CouponCodeSection from './CouponCodeSection';
+import CouponCodeSection from '../components/CouponCodeSection';
 
 interface CheckoutFormData {
   firstName: string;
