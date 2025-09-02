@@ -215,20 +215,20 @@ const AccountOrders = () => {
                       </div>
 
                       {/* Shipping Details */}
-                        {(order.trackingNumber || order.courierPartner || order.courierWebsite) ? (
+                        {(order.tracking_number || order.shipping_partner || order.partner_url) ? (
                           <div className="space-y-2">
                             <h4 className="font-medium text-sm">Shipping Details</h4>
                             <div className="space-y-1">
-                              {order.trackingNumber && (
+                              {order.tracking_number && (
                                 <div>
                                   <p className="text-xs text-muted-foreground">Tracking Number</p>
-                                  <p className="text-sm font-mono">{order.trackingNumber}</p>
+                                  <p className="text-sm font-mono">{order.tracking_number}</p>
                                 </div>
                               )}
-                              {(order.courierPartner || order.courierWebsite) && (
+                              {(order.shipping_partner || order.partner_url) && (
                                 <div className="flex items-center gap-2">
-                                  <span className="text-sm">Courier: {order.courierPartner}</span>
-                                  {order.courierWebsite && (
+                                  <span className="text-sm">Courier: {order.shipping_partner}</span>
+                                  {order.partner_url && (
                                     <Button
                                       variant="ghost"
                                       size="sm"
@@ -236,7 +236,7 @@ const AccountOrders = () => {
                                       asChild
                                     >
                                       <a 
-                                        href={order.courierWebsite} 
+                                        href={order.partner_url} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                       >
@@ -259,9 +259,16 @@ const AccountOrders = () => {
                         View Digital Profiles
                       </Button> */}
                       <Button size="sm" variant="outline" className="w-full sm:w-auto">
-                      <a href="https://form.typeform.com/to/QSpgT5zA" target="_blank" >
-                      Provide details to set up Digital Profile
+
+                        {
+                         (order.tracking_number || order.shipping_partner || order.partner_url) ? (
+                          <a href="https://dashboard.tapze.in/login" target="_blank" >
+                      Manage Your Digital Profiles
                       </a>
+                         ): ( <a href="https://form.typeform.com/to/QSpgT5zA" target="_blank" >
+                                 Provide details to set up Digital Profile</a> )
+
+                        }
                       </Button>
 
   
