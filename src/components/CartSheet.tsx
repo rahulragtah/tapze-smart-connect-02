@@ -234,7 +234,7 @@ const onProcessingChange = (value: boolean) => {
           ) : step === 'cart' ? (
             <CustomerCart/>
           ) : (
-            <CheckoutForm  onBack={handleBackToCart}   onProcessingChange={onProcessingChange}/>
+            <CheckoutForm  onBack={handleBackToCart}   onProcessingChange={onProcessingChange} onStageChange={setProcessingStage}/>
           )}
         </SheetContent>
       </Sheet>

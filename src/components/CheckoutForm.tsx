@@ -37,9 +37,10 @@ interface CheckoutFormData {
 interface CheckoutFormProps {
   onBack: () => void;
   onProcessingChange: (value: boolean) => void;
+  onStageChange: (stage: 'creating' | 'payment' | 'confirming' | 'complete') => void;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({  onBack, onProcessingChange }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({  onBack, onProcessingChange, onStageChange }) => {
   const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
 const checkoutScrollRef = useRef<HTMLDivElement>(null);
 const placeOrderButtonRef = useRef<HTMLButtonElement>(null);
@@ -74,6 +75,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     setErrorMessage(error);
     setShowErrorModal(true);
     setIsProcessing(false);
+    onProcessingChange(false);
   };
 
    // Ensure country is India and non-editable
@@ -147,18 +149,10 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
           const stateName = po.State as string;
           const district = po.District as string;
 
-           setValue('city', district);
-           setValue('state', stateName);
-         return;
-          const matchedState = State.getStatesOfCountry('IN').find(s => s.name.toLowerCase() === stateName.toLowerCase());
-          if (matchedState) {
-            setSelectedStateCode(matchedState.isoCode);
-            setValue('state', matchedState.name, { shouldValidate: false, shouldDirty: true });
-            setValue('city', district, { shouldValidate: false, shouldDirty: true });
-          } else {
-            setValue('state', stateName, { shouldValidate: false, shouldDirty: true });
-            setValue('city', district, { shouldValidate: false, shouldDirty: true });
-          }
+          setValue('city', district);
+          setValue('state', stateName);
+          // Successfully set city and state, no need for further processing
+          return;
 
           // Restore focus after a brief delay to allow DOM updates
           setTimeout(() => {
@@ -194,6 +188,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         setIsProcessing(true);
         onProcessingChange(true);
         setProcessingStage('creating');
+        onStageChange('creating');
     
         if(isLoggedIn){
           values.email=localStorage.getItem('email');
@@ -230,6 +225,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         try {
           // Stage 1: Create Razorpay order
           setProcessingStage('creating');
+          onStageChange('creating');
           
           //postOrderProcessing(finalOrderDto, isLoggedIn);
           
@@ -273,6 +269,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     
           // Stage 3: Initialize payment
           setProcessingStage('payment');
+          onStageChange('payment');
           const razorpayPaymentOptions = {
             //key: "rzp_test_OmyeGhZlBHqJUK", //test key
             key: "rzp_live_hS5lXcbNNUiAFa", //live key
@@ -284,6 +281,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             handler: async function (response) {
               try {
                 setProcessingStage('confirming');
+                onStageChange('confirming');
                 
                 // Verify payment
                 const body = {
@@ -309,6 +307,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     
                 if (verifyResult.success) {
                   setProcessingStage('complete');
+                  onStageChange('complete');
                   
                   // Send email confirmation
                   const finalEmailDto: orderDTO = {
@@ -363,6 +362,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                   // Keep loader visible during navigation
                   setTimeout(() => {
                     setIsProcessing(false);
+                    onProcessingChange(false);
                     navigate('/order-success');
                   }, 1500);
                 } else {
@@ -376,6 +376,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             modal: {
               ondismiss: function() {
                 setIsProcessing(false);
+                onProcessingChange(false);
                 toast({
                   title: "Payment Cancelled",
                   description: "You cancelled the payment. Your cart is still saved.",
@@ -403,6 +404,8 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     
         } catch (error) {
           console.error('Order creation error:', error);
+          setIsProcessing(false);
+          onProcessingChange(false);
           handleOrderError(error.message || 'Something went wrong while creating your order. Please try again.');
         }
       };
