@@ -59,6 +59,11 @@ const CartSheet = () => {
 const {  setValue} = useForm<CheckoutFormData>();
 
 
+const onProcessingChange = (value: boolean) => {
+  setIsProcessing(value);
+  };
+
+
   
   const handleRetryOrder = () => {
     setShowErrorModal(false);
@@ -229,7 +234,7 @@ const {  setValue} = useForm<CheckoutFormData>();
           ) : step === 'cart' ? (
             <CustomerCart/>
           ) : (
-            <CheckoutForm  onBack={handleBackToCart}/>
+            <CheckoutForm  onBack={handleBackToCart}   onProcessingChange={onProcessingChange}/>
           )}
         </SheetContent>
       </Sheet>
@@ -247,39 +252,7 @@ const {  setValue} = useForm<CheckoutFormData>();
         errorMessage={errorMessage}
       />
 
-      {/* Existing Account Prompt */}
-      <AlertDialog open={showExistingAccountDialog} onOpenChange={(open) => {
-        setShowExistingAccountDialog(open);
-        if (!open) {
-          setValue('email', '');
-        }
-      }}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Account already exists</AlertDialogTitle>
-            <AlertDialogDescription>
-              You already have an account with us. Please log in for a seamless checkout & best offers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => {
-              setShowExistingAccountDialog(false);
-              setValue('email', '');
-            }}>Close</AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              const emailVal = emailValue;
-              setShowExistingAccountDialog(false);
-              setIsOpen(false);
-              
-              navigate(`/login?redirecturl=${location.pathname}${location.search}`, {
-                state: { prefillEmail: emailVal },
-              });
-            }}>
-              Login
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      
     </>
   );
 };

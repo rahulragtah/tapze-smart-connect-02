@@ -15,6 +15,9 @@ import { postOrderProcessing } from '@/services/orderService';
 import emailjs from '@emailjs/browser';
 import {  ArrowLeft } from 'lucide-react';
 import { useCart} from '@/contexts/CartContext';
+import OrderProcessingLoader from './OrderProcessingLoader';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+
 
 
 
@@ -33,9 +36,10 @@ interface CheckoutFormData {
 
 interface CheckoutFormProps {
   onBack: () => void;
+  onProcessingChange: (value: boolean) => void;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({  onBack }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({  onBack, onProcessingChange }) => {
   const { items, totalItems,  totalOfferPrice, totalPrice, isOpen, setIsOpen, updateQuantity, removeItem, clearCart } = useCart();
 const checkoutScrollRef = useRef<HTMLDivElement>(null);
 const placeOrderButtonRef = useRef<HTMLButtonElement>(null);
@@ -188,6 +192,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
     const onSubmit = async (values: CheckoutFormData) => {
         setIsProcessing(true);
+        onProcessingChange(true);
         setProcessingStage('creating');
     
         if(isLoggedIn){
@@ -548,7 +553,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     id="state"
                     placeholder="Auto-filled from PIN code"
                     readOnly
-                    value={''}
+                    
                     {...register('state', { required: 'State is required' })}
                     className={`bg-muted ${errors.state ? 'border-destructive' : ''}`}
                   />
@@ -566,7 +571,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     id="city"
                     placeholder="Auto-filled from PIN code"
                     readOnly
-                    value={''}
+                    
                     {...register('city', { required: 'City is required' })}
                     className={`bg-muted ${errors.city ? 'border-destructive' : ''}`}
                   />
@@ -718,7 +723,44 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             {isProcessing ? 'Processing...' : `Place Order - ₹${finalTotal.toFixed(2)}`}
           </Button>
         </div>
+
+         {/* Existing Account Prompt */}
+      <AlertDialog open={showExistingAccountDialog} onOpenChange={(open) => {
+        setShowExistingAccountDialog(open);
+        if (!open) {
+          setValue('email', '');
+        }
+      }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Account already exists</AlertDialogTitle>
+            <AlertDialogDescription>
+              You already have an account with us. Please log in for a seamless checkout & best offers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setShowExistingAccountDialog(false);
+              setValue('email', '');
+            }}>Close</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              const emailVal = emailValue;
+              setShowExistingAccountDialog(false);
+              setIsOpen(false);
+              
+              navigate(`/login?redirecturl=${location.pathname}${location.search}`, {
+                state: { prefillEmail: emailVal },
+              });
+            }}>
+              Login
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog> 
       </div>
+      
+
+
     );
 };
 export default CheckoutForm;
