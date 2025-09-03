@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsTablet } from "@/hooks/use-tablet";
 
 const features = [
   {
@@ -26,15 +28,16 @@ const features = [
 ];
 
 const MobileAppSection = () => {
+  const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
+  const isMobileOrTablet = isMobile || isTablet;
+  
   return (
     <section className="py-12 lg:py-20 px-4 relative">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Phone mockup */}
-          <img src="/lovable-uploads/manage-profile.svg"></img>
-          
-          {/* Content */}
-          <div className="space-y-8 order-1 lg:order-2">
+          {/* Content - appears first on mobile/tablet */}
+          <div className={`space-y-8 ${isMobileOrTablet ? 'order-1' : 'order-2 lg:order-2'}`}>
             <div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 Manage Your <span className="text-gradient">Digital Profile</span>
@@ -67,6 +70,11 @@ const MobileAppSection = () => {
                 </Link>
               </Button>
             </div>
+          </div>
+
+          {/* Phone mockup - appears after content on mobile/tablet */}
+          <div className={isMobileOrTablet ? 'order-2' : 'order-1 lg:order-1'}>
+            <img src="/lovable-uploads/manage-profile.svg" alt="Mobile App Interface" />
           </div>
         </div>
       </div>

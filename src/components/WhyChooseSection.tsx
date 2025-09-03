@@ -76,12 +76,12 @@ const WhyChooseSection = () => {
             <CarouselContent className="-ml-2 md:-ml-4">
               {benefits.map((benefit, index) => (
                 <CarouselItem key={index} className="pl-2 md:pl-4 basis-4/5">
-                  <Card className="glass p-6 rounded-2xl text-center">
+                  <Card className="glass p-6 rounded-2xl text-center h-48 flex flex-col justify-between">
                     <div className="text-4xl mb-4">
                       {benefit.icon}
                     </div>
                     <h3 className="text-xl font-semibold mb-3 text-white">{benefit.title}</h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">{benefit.description}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed flex-1 flex items-center justify-center">{benefit.description}</p>
                   </Card>
                 </CarouselItem>
               ))}
