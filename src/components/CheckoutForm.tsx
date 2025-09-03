@@ -92,7 +92,11 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
 
   const validCoupons = {
-    'COMEBACK10': { discount: 10, type: 'percentage' }
+    'COMEBACK10': { discount: 10, type: 'percentage' },
+    'WELCOME10': { discount: 10, type: 'percentage' },
+    'NEWUSER20': { discount: 20, type: 'percentage' },
+    'NEW30': { discount: 30, type: 'percentage' },
+    
   };
    const shippingCharge = totalPrice > 1000 ? 0 : 50;
   const subtotal = totalPrice;
