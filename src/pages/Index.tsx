@@ -73,15 +73,21 @@ const Index = () => {
         <meta property="og:title" content="Tapze - Make Every Tap Count | Premium Smart Business Cards" />
         <meta property="og:description" content="Tapze combines premium NFC business cards with smart mobile software. Share your contact details, social links, and personal brand with a single tap." />
         <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:image:alt" content="Tapze Premium NFC Business Cards" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:url" content="https://tapze.in" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Tapze" />
+        <meta property="og:locale" content="en_US" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Tapze - Make Every Tap Count | Premium Smart Business Cards" />
         <meta name="twitter:description" content="Tapze combines premium NFC business cards with smart mobile software. Share your contact details, social links, and personal brand with a single tap." />
         <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:image:alt" content="Tapze Premium NFC Business Cards" />
         <meta name="twitter:site" content="@tapze" />
 
         {/* Structured Data */}

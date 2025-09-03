@@ -128,15 +128,21 @@ const BuyNFCCard = () => {
         <meta property="og:title" content="Buy NFC Business Cards | Tapze Premium Collection" />
         <meta property="og:description" content="Browse our collection of premium NFC business cards. Smart, professional, and stylish cards with digital features." />
         <meta property="og:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta property="og:image:alt" content="Tapze NFC Business Cards Collection" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:url" content="https://tapze.in/buy-nfc-card" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Tapze" />
+        <meta property="og:locale" content="en_US" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Buy NFC Business Cards | Tapze Premium Collection" />
         <meta name="twitter:description" content="Browse our collection of premium NFC business cards. Smart, professional, and stylish cards with digital features." />
         <meta name="twitter:image" content="https://tapze.in/lovable-uploads/meta-image.png" />
+        <meta name="twitter:image:alt" content="Tapze NFC Business Cards Collection" />
         <meta name="twitter:site" content="@tapze" />
 
         {/* Structured Data */}
