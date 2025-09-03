@@ -113,10 +113,10 @@ const Index = () => {
         <Footer />
       </div>
       
-      <PromotionalModal
+      {/* <PromotionalModal
         isOpen={showPromotionalModal}
         onClose={() => setShowPromotionalModal(false)}
-      />
+      /> */}
     </div>
     </>
   );

@@ -209,7 +209,7 @@ const AccountOrders = () => {
                           <p className="font-medium text-foreground">{order.first_name} {order.last_name}</p>
                           <p>Phone: {order.phone}</p>
                           <p>
-                            {order.address?.line1} {order.address?.line2},{order.address?.city},{order.address?.state} {order.address?.pin_code}, {order.address?.country}
+                          {order.address?.line1} {order.address?.line2 ? `, ${order.address.line2}` : ""}, {order.address?.city}, {order.address?.state}, {order.address?.pin_code}, {order.address?.country}
                           </p>
                         </div>
                       </div>

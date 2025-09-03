@@ -88,7 +88,7 @@ const ProductBulkOrder = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/20">
                     <div>
-                      <div className="text-white font-semibold">50-99 Cards</div>
+                      <div className="text-white font-semibold">10-20 Cards</div>
                       <div className="text-gray-400 text-sm">Starter Package</div>
                     </div>
                     <div className="text-blue-400 font-bold text-lg">15% OFF</div>
@@ -96,7 +96,7 @@ const ProductBulkOrder = () => {
                   
                   <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
                     <div>
-                      <div className="text-white font-semibold">100-499 Cards</div>
+                      <div className="text-white font-semibold">20-40 Cards</div>
                       <div className="text-gray-400 text-sm">Business Package</div>
                     </div>
                     <div className="text-purple-400 font-bold text-lg">25% OFF</div>
@@ -104,7 +104,7 @@ const ProductBulkOrder = () => {
                   
                   <div className="flex items-center justify-between p-4 bg-gradient-to-r from-pink-900/30 to-orange-900/30 rounded-xl border border-pink-500/20">
                     <div>
-                      <div className="text-white font-semibold">500+ Cards</div>
+                      <div className="text-white font-semibold">40+ Cards</div>
                       <div className="text-gray-400 text-sm">Enterprise Package</div>
                     </div>
                     <div className="text-pink-400 font-bold text-lg">35% OFF</div>

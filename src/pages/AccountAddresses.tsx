@@ -117,9 +117,9 @@ const AccountAddresses = () => {
                 <CardContent className="space-y-3">
                   <div>
                     <p className="font-medium text-foreground">{address.address_Name}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{address.line1}  {address.line2}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{address?.line1}{address?.line2 ? `, ${address.line2}` : ""}</p>
                     <p className="text-sm text-muted-foreground">
-                      {address.city}, {address.state} {address.pincode} {address.country}
+                      {address.city}, {address.state}, {address.pincode}, {address.country}
                     </p>
                   </div>
                   
