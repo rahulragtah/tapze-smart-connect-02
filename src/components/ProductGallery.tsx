@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Play, ZoomIn, Flame, X } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { gImage } from '@/components/models/productInterface';
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -119,8 +120,10 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
         } transition-all duration-200`}
       >
         {/* Thumbnail Strip */}
-        <div className="order-2 lg:order-1 flex lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto lg:max-h-100 pb-2 lg:pb-0">
-          {imageGallery.map((image, index) => (
+        <div className="order-2 lg:order-1">
+          <ScrollArea className="h-16 lg:h-96 w-full">
+            <div className="flex lg:flex-col gap-2 pb-2 lg:pb-0 pr-2 lg:pr-0">
+              {imageGallery.map((image, index) => (
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
@@ -142,6 +145,8 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
               )}
             </button>
           ))}
+            </div>
+          </ScrollArea>
         </div>
 
         {/* Main Image */}
