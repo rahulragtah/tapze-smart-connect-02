@@ -23,6 +23,7 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   const galleryRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
+  const thumbnailRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isMobile = useIsMobile();
   
   // Touch handling for swipe gestures
@@ -62,6 +63,17 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Auto-scroll selected thumbnail into view
+  useEffect(() => {
+    if (thumbnailRefs.current[selectedImage]) {
+      thumbnailRefs.current[selectedImage]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center'
+      });
+    }
+  }, [selectedImage]);
 
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % imageGallery.length);
@@ -121,11 +133,12 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
       >
         {/* Thumbnail Strip */}
         <div className="order-2 lg:order-1">
-          <ScrollArea className="h-16 lg:h-96 w-full">
+          <ScrollArea className="h-20 lg:h-[32rem] w-full">
             <div className="flex lg:flex-col gap-2 pb-2 lg:pb-0 pr-2 lg:pr-0">
               {imageGallery.map((image, index) => (
             <button
               key={index}
+              ref={(el) => (thumbnailRefs.current[index] = el)}
               onClick={() => setSelectedImage(index)}
               className={`relative flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 rounded-lg overflow-hidden border-2 transition-all ${
                 selectedImage === index 
