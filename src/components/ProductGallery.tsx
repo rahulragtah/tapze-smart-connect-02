@@ -29,6 +29,24 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   // Touch handling for swipe gestures
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Keyboard navigation for zoom modal
+  useEffect(() => {
+    if (!isZoomOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevZoomImage();
+      } else if (event.key === 'ArrowRight') {
+        nextZoomImage();
+      } else if (event.key === 'Escape') {
+        setIsZoomOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isZoomOpen]);
   
 
   //console.log("dfffffffffffffffff",   galleryImages);
@@ -37,13 +55,13 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
     ? galleryImages.map((imageUrl, index) => ({
         url: imageUrl.image,
         alt: `${name} - View ${index + 1}`,
-        type: "image"
+        type: imageUrl.image.includes('.mp4') || imageUrl.image.includes('.webm') || imageUrl.image.includes('.mov') ? "video" : "image"
       }))
     : [
         {
           url: heroImage,
           alt: `${name} - Main view`,
-          type: "image"
+          type: heroImage.includes('.mp4') || heroImage.includes('.webm') || heroImage.includes('.mov') ? "video" : "image"
         }
       ];
 
@@ -173,18 +191,34 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
               </Badge>
             )}
             
-            <img
-              ref={imageRef}
-              src={imageGallery[selectedImage].url}
-              alt={imageGallery[selectedImage].alt}
-              className={`w-full h-full object-cover transition-transform duration-300 ${
-                !isMobile ? 'group-hover:scale-110 cursor-zoom-in' : 'cursor-default'
-              }`}
-              onClick={!isMobile ? openZoom : undefined}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            />
+            {imageGallery[selectedImage].type === 'video' ? (
+              <video
+                src={imageGallery[selectedImage].url}
+                className={`w-full h-full object-cover transition-transform duration-300 ${
+                  !isMobile ? 'group-hover:scale-110 cursor-zoom-in' : 'cursor-default'
+                }`}
+                controls
+                muted
+                preload="metadata"
+                onClick={!isMobile ? openZoom : undefined}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              />
+            ) : (
+              <img
+                ref={imageRef}
+                src={imageGallery[selectedImage].url}
+                alt={imageGallery[selectedImage].alt}
+                className={`w-full h-full object-cover transition-transform duration-300 ${
+                  !isMobile ? 'group-hover:scale-110 cursor-zoom-in' : 'cursor-default'
+                }`}
+                onClick={!isMobile ? openZoom : undefined}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              />
+            )}
             
             {/* Zoom Icon - Hidden on mobile */}
             {!isMobile && (
@@ -270,13 +304,23 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
               </>
             )}
 
-            {/* Zoomed Image Container */}
+            {/* Zoomed Content Container */}
             <div className="w-full h-full flex items-center justify-center px-20 py-16 max-w-[50%]">
-              <img
-                src={imageGallery[zoomImageIndex].url}
-                alt={imageGallery[zoomImageIndex].alt}
-                className="max-w-full max-h-full object-contain"
-              />
+              {imageGallery[zoomImageIndex].type === 'video' ? (
+                <video
+                  src={imageGallery[zoomImageIndex].url}
+                  className="max-w-full max-h-full object-contain"
+                  controls
+                  autoPlay
+                  muted
+                />
+              ) : (
+                <img
+                  src={imageGallery[zoomImageIndex].url}
+                  alt={imageGallery[zoomImageIndex].alt}
+                  className="max-w-full max-h-full object-contain"
+                />
+              )}
             </div>
 
             {/* Image Counter */}
