@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Zap, Star, Shield, Truck, Award, Users } from "lucide-react";
 import ProductGallery from "./ProductGallery";
 import ProductColorSwitcher from "./ProductColorSwitcher";
+import ProductProfessionSwitcher from "./ProductProfessionSwitcher";
 import { Card } from "@/components/ui/card";
 import { gImage } from '@/components/models/productInterface';
 import { Link} from "react-router-dom";
@@ -28,10 +29,10 @@ interface Offer {
 }
 interface ProductHeroProps {
   product: Product;
-  onAddToCart: (color?: string) => void;
-  onBuyNow: (color?: string) => void;
+  onAddToCart: (colorOrProfession?: string) => void;
+  onBuyNow: (colorOrProfession?: string) => void;
   selectedColor: string;
-  onColorChange: (color: string) => void;
+  onColorChange: (colorOrProfession: string) => void;
 }
 
 
@@ -198,8 +199,12 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
               </div>
             </Card> */}
 
-            {/* Color Switcher */}
-            <ProductColorSwitcher onColorChange={onColorChange} />
+            {/* Color/Profession Switcher */}
+            {product.id === "predesignedpvrcard" ? (
+              <ProductProfessionSwitcher onProfessionChange={onColorChange} />
+            ) : (
+              <ProductColorSwitcher onColorChange={onColorChange} />
+            )}
 
             {/* Key Features */}
             <div className="space-y-3">

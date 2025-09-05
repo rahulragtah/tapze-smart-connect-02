@@ -135,6 +135,9 @@ const onProcessingChange = (value: boolean) => {
                         {item.color && (
                           <p className="text-xs text-muted-foreground mt-1">Color: {item.color}</p>
                         )}
+                        {item.profession && (
+                          <p className="text-xs text-muted-foreground mt-1">Profession: {item.profession}</p>
+                        )}
                         <div className="flex items-center gap-2 mt-1">
                           {item.price !== item.offerPrice && (
                             <span className="text-xs sm:text-sm text-muted-foreground line-through">₹{item.price}</span>

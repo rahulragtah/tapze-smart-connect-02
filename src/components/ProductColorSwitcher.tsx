@@ -74,6 +74,11 @@ const { productId } = useParams();
   }, [productId]
 ); // Empty dependency array = run once on mount
 
+  // Don't render if no colors available
+  if (!productColor || productColor.length === 0) {
+    return null;
+  }
+
   const handleColorClick = (variant: colorVariant) => {
     if (variant.colorName !== selectedColor) {
       setSelectedColor(variant.colorId);

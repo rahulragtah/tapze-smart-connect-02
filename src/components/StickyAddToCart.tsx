@@ -8,8 +8,8 @@ interface StickyAddToCartProps {
   price: number;
   originalPrice?: number;
   offerPrice?: number;
-  onAddToCart: (color?: string) => void;
-  onBuyNow: (color?: string) => void;
+  onAddToCart: (colorOrProfession?: string) => void;
+  onBuyNow: (colorOrProfession?: string) => void;
 }
 
 const StickyAddToCart = ({ productName, price, originalPrice, offerPrice, onAddToCart, onBuyNow }: StickyAddToCartProps) => {

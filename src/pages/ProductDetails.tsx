@@ -27,7 +27,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [offer, setOffer] = useState<any>(null);
-  const [selectedColor, setSelectedColor] = useState<string>("Black");
+  const [selectedColor, setSelectedColor] = useState<string>("");
   
     useEffect(() => {
       setLoading(true);
@@ -124,35 +124,51 @@ const ProductDetails = () => {
     );
   }
 
-  const handleAddToCart = (color?: string) => {
-    const colorToUse = color || selectedColor;
+  const handleAddToCart = (colorOrProfession?: string) => {
+    const selectionToUse = colorOrProfession || selectedColor;
     const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
+    
+    // Determine if this is a color or profession product
+    const isColorProduct = product.id !== "predesignedpvrcard" && selectionToUse;
+    const isProfessionProduct = product.id === "predesignedpvrcard";
+    
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
       offerPrice: offerPrice,
-      color: colorToUse
+      color: isColorProduct ? selectionToUse : (isProfessionProduct ? undefined : selectionToUse),
+      ...(isProfessionProduct && { profession: selectionToUse })
     });
     
     // Show toast notification
+    const description = selectionToUse ? 
+      `${product.name} (${isProfessionProduct ? 'Profession: ' : 'Color: '}${selectionToUse}) - Quantity: 1` : 
+      `${product.name} - Quantity: 1`;
+    
     toast({
       title: "Added to Cart",
-      description: `${product.name} (${colorToUse}) - Quantity: 1`,
+      description: description,
     });
   };
 
-  const handleBuyNow = (color?: string) => {
-    const colorToUse = color || selectedColor;
+  const handleBuyNow = (colorOrProfession?: string) => {
+    const selectionToUse = colorOrProfession || selectedColor;
     const offerPrice = offer && offer.isActive ? product.price - offer.value : product.price;
+    
+    // Determine if this is a color or profession product
+    const isColorProduct = product.id !== "predesignedpvrcard" && selectionToUse;
+    const isProfessionProduct = product.id === "predesignedpvrcard";
+    
     addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       image: product.image,
       offerPrice: offerPrice,
-      color: colorToUse
+      color: isColorProduct ? selectionToUse : (isProfessionProduct ? undefined : selectionToUse),
+      ...(isProfessionProduct && { profession: selectionToUse })
     });
     setIsOpen(true); // Open cart drawer for Buy Now
     console.log("Redirecting to checkout with:", product.name);
