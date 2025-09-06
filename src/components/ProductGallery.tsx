@@ -13,11 +13,9 @@ interface ProductGalleryProps {
   name: string;
   hotSelling?: boolean;
   galleryImages?: gImage[];
-  productId?: string;
-  selectedProfession?: string;
 }
 
-const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [], productId, selectedProfession }: ProductGalleryProps) => {
+const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [] }: ProductGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isSticky, setIsSticky] = useState(true);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
@@ -52,55 +50,9 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   
 
   //console.log("dfffffffffffffffff",   galleryImages);
-  // Build gallery images array from API data with profession filtering
-  let filteredGalleryImages = galleryImages;
-  
-  console.log('ProductGallery - productId:', productId, 'selectedProfession:', selectedProfession);
-  console.log('ProductGallery - Total gallery images:', galleryImages.length);
-  
-  // Filter images by profession for predesignedpvrcard product
-  if (productId === "predesignedpvrcard" && selectedProfession) {
-    console.log('Filtering images for profession:', selectedProfession);
-    console.log('Available images:', galleryImages.map(img => img.image));
-    
-    filteredGalleryImages = galleryImages.filter(imageData => {
-      // Check if image has profession metadata or contains profession name in filename/path
-      const imageName = imageData.image.toLowerCase();
-      const professionLower = selectedProfession.toLowerCase();
-      
-      // Multiple matching strategies for different naming conventions
-      const exactMatch = imageName.includes(professionLower);
-      const noSpaceMatch = imageName.includes(professionLower.replace(/\s+/g, ''));
-      const underscoredMatch = imageName.includes(professionLower.replace(/\s+/g, '_'));
-      const dashedMatch = imageName.includes(professionLower.replace(/\s+/g, '-'));
-      const prefixMatch = imageName.includes(`${professionLower}-`) || imageName.includes(`${professionLower}_`);
-      const professionMetadata = (imageData as any).profession === selectedProfession;
-      
-      // Special handling for common profession abbreviations and variations
-      let aliasMatch = false;
-      if (professionLower === 'ca') {
-        aliasMatch = imageName.includes('chartered') || imageName.includes('accountant');
-      } else if (professionLower === 'doctor') {
-        aliasMatch = imageName.includes('dr') || imageName.includes('medical') || imageName.includes('physician');
-      }
-      
-      const isMatch = exactMatch || noSpaceMatch || underscoredMatch || dashedMatch || prefixMatch || professionMetadata || aliasMatch;
-      console.log(`Image "${imageData.image}" matches profession "${selectedProfession}":`, isMatch);
-      return isMatch;
-    });
-    
-    console.log('Filtered images count:', filteredGalleryImages.length);
-    console.log('Filtered images:', filteredGalleryImages.map(img => img.image));
-    
-    // If no images match the profession, show all images as fallback
-    if (filteredGalleryImages.length === 0) {
-      console.log('No images matched, showing all images as fallback');
-      filteredGalleryImages = galleryImages;
-    }
-  }
-  
-  const imageGallery = filteredGalleryImages.length > 0 
-    ? filteredGalleryImages.map((imageUrl, index) => ({
+  // Build gallery images array from API data
+  const imageGallery = galleryImages.length > 0 
+    ? galleryImages.map((imageUrl, index) => ({
         url: imageUrl.image,
         alt: `${name} - View ${index + 1}`,
         type: imageUrl.image.includes('.mp4') || imageUrl.image.includes('.webm') || imageUrl.image.includes('.mov') ? "video" : "image"
@@ -140,13 +92,6 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
       });
     }
   }, [selectedImage]);
-
-  // Reset to first image when profession changes
-  useEffect(() => {
-    if (productId === "predesignedpvrcard" && selectedProfession) {
-      setSelectedImage(0);
-    }
-  }, [selectedProfession, productId]);
 
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % imageGallery.length);

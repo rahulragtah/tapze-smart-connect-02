@@ -41,9 +41,6 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
   const [offer, setOffer] = useState<Offer>();
 
   const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
-  const [selectedProfession, setSelectedProfession] = useState<string>("");
-  
-  console.log('ProductHero - Current selectedProfession:', selectedProfession);
   // Update gallery images when product changes
   useEffect(() => {
 
@@ -101,8 +98,6 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
               name={product.name} 
               hotSelling={product.hotSelling} 
               galleryImages={galleryImages}
-              productId={product.id}
-              selectedProfession={selectedProfession}
             />
             <Card className="glass p-4 rounded-lg mt-5">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
@@ -206,12 +201,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
 
             {/* Color/Profession Switcher */}
             {product.id === "predesignedpvrcard" ? (
-              <ProductProfessionSwitcher 
-                onProfessionChange={(profession) => {
-                  setSelectedProfession(profession);
-                  onColorChange(profession);
-                }} 
-              />
+              <ProductProfessionSwitcher onProfessionChange={onColorChange} />
             ) : (
               <ProductColorSwitcher onColorChange={onColorChange} />
             )}

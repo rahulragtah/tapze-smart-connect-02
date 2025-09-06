@@ -29,11 +29,9 @@ const ProductProfessionSwitcher = ({ onProfessionChange }: ProductProfessionSwit
     // For predesignedpvrcard, use default professions
     if (productId === "predesignedpvrcard") {
       setProfessions(defaultProfessions);
-      if (defaultProfessions.length > 0) {
-        const defaultProf = defaultProfessions[0];
-        setSelectedProfession(defaultProf.professionId);
-        console.log('Setting default profession:', defaultProf.professionName);
-        onProfessionChange?.(defaultProf.professionName);
+      if (defaultProfessions.length > 0 && !selectedProfession) {
+        setSelectedProfession(defaultProfessions[0].professionId);
+        onProfessionChange?.(defaultProfessions[0].professionName);
       }
     } else {
       // For other products that might have professions, fetch from API
@@ -57,7 +55,6 @@ const ProductProfessionSwitcher = ({ onProfessionChange }: ProductProfessionSwit
   }, [productId]);
 
   const handleProfessionClick = (profession: ProfessionVariant) => {
-    console.log('Profession clicked:', profession.professionName);
     if (profession.professionId !== selectedProfession) {
       setSelectedProfession(profession.professionId);
       onProfessionChange?.(profession.professionName);
