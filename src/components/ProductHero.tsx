@@ -42,6 +42,8 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
 
   const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
   const [selectedProfession, setSelectedProfession] = useState<string>("");
+  
+  console.log('ProductHero - Current selectedProfession:', selectedProfession);
   // Update gallery images when product changes
   useEffect(() => {
 

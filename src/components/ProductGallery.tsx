@@ -55,8 +55,14 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   // Build gallery images array from API data with profession filtering
   let filteredGalleryImages = galleryImages;
   
+  console.log('ProductGallery - productId:', productId, 'selectedProfession:', selectedProfession);
+  console.log('ProductGallery - Total gallery images:', galleryImages.length);
+  
   // Filter images by profession for predesignedpvrcard product
   if (productId === "predesignedpvrcard" && selectedProfession) {
+    console.log('Filtering images for profession:', selectedProfession);
+    console.log('Available images:', galleryImages.map(img => img.image));
+    
     filteredGalleryImages = galleryImages.filter(imageData => {
       // Check if image has profession metadata or contains profession name in filename/path
       const imageName = imageData.image.toLowerCase();
@@ -78,11 +84,17 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
         aliasMatch = imageName.includes('dr') || imageName.includes('medical') || imageName.includes('physician');
       }
       
-      return exactMatch || noSpaceMatch || underscoredMatch || dashedMatch || prefixMatch || professionMetadata || aliasMatch;
+      const isMatch = exactMatch || noSpaceMatch || underscoredMatch || dashedMatch || prefixMatch || professionMetadata || aliasMatch;
+      console.log(`Image "${imageData.image}" matches profession "${selectedProfession}":`, isMatch);
+      return isMatch;
     });
+    
+    console.log('Filtered images count:', filteredGalleryImages.length);
+    console.log('Filtered images:', filteredGalleryImages.map(img => img.image));
     
     // If no images match the profession, show all images as fallback
     if (filteredGalleryImages.length === 0) {
+      console.log('No images matched, showing all images as fallback');
       filteredGalleryImages = galleryImages;
     }
   }
@@ -128,6 +140,13 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
       });
     }
   }, [selectedImage]);
+
+  // Reset to first image when profession changes
+  useEffect(() => {
+    if (productId === "predesignedpvrcard" && selectedProfession) {
+      setSelectedImage(0);
+    }
+  }, [selectedProfession, productId]);
 
   const nextImage = () => {
     setSelectedImage((prev) => (prev + 1) % imageGallery.length);
