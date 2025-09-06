@@ -62,10 +62,23 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
       const imageName = imageData.image.toLowerCase();
       const professionLower = selectedProfession.toLowerCase();
       
-      // Look for profession name in the image filename or path
-      return imageName.includes(professionLower) || 
-             imageName.includes(professionLower.replace(' ', '')) ||
-             (imageData as any).profession === selectedProfession;
+      // Multiple matching strategies for different naming conventions
+      const exactMatch = imageName.includes(professionLower);
+      const noSpaceMatch = imageName.includes(professionLower.replace(/\s+/g, ''));
+      const underscoredMatch = imageName.includes(professionLower.replace(/\s+/g, '_'));
+      const dashedMatch = imageName.includes(professionLower.replace(/\s+/g, '-'));
+      const prefixMatch = imageName.includes(`${professionLower}-`) || imageName.includes(`${professionLower}_`);
+      const professionMetadata = (imageData as any).profession === selectedProfession;
+      
+      // Special handling for common profession abbreviations and variations
+      let aliasMatch = false;
+      if (professionLower === 'ca') {
+        aliasMatch = imageName.includes('chartered') || imageName.includes('accountant');
+      } else if (professionLower === 'doctor') {
+        aliasMatch = imageName.includes('dr') || imageName.includes('medical') || imageName.includes('physician');
+      }
+      
+      return exactMatch || noSpaceMatch || underscoredMatch || dashedMatch || prefixMatch || professionMetadata || aliasMatch;
     });
     
     // If no images match the profession, show all images as fallback
