@@ -326,7 +326,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     city: values.city,
                     pinCode: values.zipCode,
                     orderSummary: items.map(item =>
-                      `${item.quantity} x ${item.name} (${item.color}) - ₹${item.offerPrice}`
+                      `${item.quantity} x ${item.name}${item.color ? ` (Color: ${item.color})` : ''}${item.profession ? ` (Profession: ${item.profession})` : ''} - ₹${item.offerPrice}`
                     ).join('\n'),
                     totalItems: totalItems,
                     totalPrice: totalPrice,
@@ -658,6 +658,9 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     <h4 className="font-medium text-sm">{item.name}</h4>
                     {item.color && (
                       <p className="text-xs text-muted-foreground">Color: {item.color}</p>
+                    )}
+                    {item.profession && (
+                      <p className="text-xs text-muted-foreground">Profession: {item.profession}</p>
                     )}
                     <div className="flex items-center gap-2">
                       {item.price !== item.offerPrice && (

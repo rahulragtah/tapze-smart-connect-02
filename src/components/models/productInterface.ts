@@ -77,6 +77,8 @@ export interface CartItem {
   offerPrice:number;
   quantity: number;
   image?: string;
+  color?: string;
+  profession?: string;
 }
 
 export interface gImage {

@@ -9,7 +9,8 @@ export interface CartItem {
   quantity: number;
   image?: string;
   color?: string;
-  uniqueId: string; // Combination of id and color for unique identification
+  profession?: string;
+  uniqueId: string; // Combination of id, color, and profession for unique identification
 }
 
 interface CartContextType {
@@ -52,10 +53,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const addItem = (newItem: Omit<CartItem, 'quantity' | 'uniqueId'>) => {
-    const uniqueId = `${newItem.id}-${newItem.color || 'default'}`;
+    const uniqueId = `${newItem.id}-${newItem.color || 'default'}-${newItem.profession || 'default'}`;
     setItems(prev => {
       const existingItem = prev.find(item => 
-        item.id === newItem.id && item.color === newItem.color
+        item.id === newItem.id && 
+        item.color === newItem.color && 
+        item.profession === newItem.profession
       );
       let newItems;
       if (existingItem) {
