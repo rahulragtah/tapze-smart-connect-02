@@ -17,6 +17,8 @@ import {  ArrowLeft } from 'lucide-react';
 import { useCart} from '@/contexts/CartContext';
 import OrderProcessingLoader from './OrderProcessingLoader';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import {applyCoupon} from '../services/orderService';
+import { ApplyCouponResponse}  from '../components/models/orderInterface';
 
 
 
@@ -50,6 +52,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const location = useLocation();
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [appliedCoupon, setAppliedCoupon] = useState('');
+  const [coupon, setCoupon] = useState<ApplyCouponResponse | null>(null);
   const [couponCode, setCouponCodeState] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState<'creating' | 'payment' | 'confirming' | 'complete'>('creating');
@@ -99,11 +102,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     
   };
    const shippingCharge = totalPrice > 1000 ? 0 : 50;
-  const subtotal = totalPrice;
-  const discountAmount = appliedCoupon ? 
-    (validCoupons[appliedCoupon as keyof typeof validCoupons]?.type === 'percentage' 
-      ? (totalOfferPrice * couponDiscount) / 100 
-      : couponDiscount) : 0;
+  const discountAmount =  coupon && coupon.success ? coupon.discount: 0;
   const afterDiscount = totalOfferPrice - discountAmount;
   // const gstAmount = (afterDiscount * 18) / 100; // 18% GST
   // const finalTotal = afterDiscount + gstAmount + shippingCharge;
@@ -608,17 +607,20 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
               appliedCoupon={appliedCoupon}
               couponDiscount={couponDiscount}
               validCoupons={validCoupons}
-              onApply={(code) => {
+              onApply={ async  (code) => {
                 const coupon = validCoupons[code.toUpperCase() as keyof typeof validCoupons];
-                if (coupon) {
-                  setCouponDiscount(coupon.discount);
-                  setAppliedCoupon(code.toUpperCase());
+                const myCoupons= await  applyCoupon(code, isLoggedIn ? localStorage.getItem('userId') : '0', totalOfferPrice);
+                console.log('coupon response', myCoupons);
+                if (myCoupons.success) {
+                  setCouponDiscount(myCoupons.discount_value);
+                  setAppliedCoupon(myCoupons.code);
+                  setCoupon(myCoupons)
                   toast({
                     title: "Coupon Applied!",
                     description: `${
-                      coupon.type === "percentage"
-                        ? `${coupon.discount}% off`
-                        : `₹${coupon.discount} off`
+                      myCoupons .type === "PERCENT"
+                        ? `${myCoupons.discount_value}% off`
+                        : `₹${myCoupons.discount_value} off`
                     } applied successfully.`,
                   });
                 } else {

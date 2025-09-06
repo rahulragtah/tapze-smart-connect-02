@@ -163,3 +163,13 @@ export const getOrders = async (userId: string) => {
     return null;
   }
 };
+
+
+export const applyCoupon = async (code, userId, orderAmount) => {
+  const res = await fetch("https://tapze.in/tapzeservice/applyCoupon.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, user_id: userId, order_amount: orderAmount }),
+  });
+  return res.json();
+};

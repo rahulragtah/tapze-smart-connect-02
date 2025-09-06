@@ -41,6 +41,7 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
 
   const [galleryImages, setGalleryImages] = useState<gImage[]>([]);
   // Update gallery images when product changes
+  const ispredesignedpvrcard = product.id=='predesignedpvrcard';
   useEffect(() => {
 
     // Fetch offers
@@ -199,7 +200,9 @@ const ProductHero = ({ product, onAddToCart, onBuyNow, selectedColor, onColorCha
             </Card> */}
 
             {/* Color Switcher */}
-            <ProductColorSwitcher onColorChange={onColorChange} />
+            {ispredesignedpvrcard ? <h1>  product category </h1> 
+            :  <ProductColorSwitcher onColorChange={onColorChange} />}
+           
 
             {/* Key Features */}
             <div className="space-y-3">
