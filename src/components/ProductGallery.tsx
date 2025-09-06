@@ -13,9 +13,11 @@ interface ProductGalleryProps {
   name: string;
   hotSelling?: boolean;
   galleryImages?: gImage[];
+  productId?: string;
+  selectedProfession?: string;
 }
 
-const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [] }: ProductGalleryProps) => {
+const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [], productId, selectedProfession }: ProductGalleryProps) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isSticky, setIsSticky] = useState(true);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
@@ -50,9 +52,30 @@ const ProductGallery = ({ heroImage, name, hotSelling = false, galleryImages = [
   
 
   //console.log("dfffffffffffffffff",   galleryImages);
-  // Build gallery images array from API data
-  const imageGallery = galleryImages.length > 0 
-    ? galleryImages.map((imageUrl, index) => ({
+  // Build gallery images array from API data with profession filtering
+  let filteredGalleryImages = galleryImages;
+  
+  // Filter images by profession for predesignedpvrcard product
+  if (productId === "predesignedpvrcard" && selectedProfession) {
+    filteredGalleryImages = galleryImages.filter(imageData => {
+      // Check if image has profession metadata or contains profession name in filename/path
+      const imageName = imageData.image.toLowerCase();
+      const professionLower = selectedProfession.toLowerCase();
+      
+      // Look for profession name in the image filename or path
+      return imageName.includes(professionLower) || 
+             imageName.includes(professionLower.replace(' ', '')) ||
+             (imageData as any).profession === selectedProfession;
+    });
+    
+    // If no images match the profession, show all images as fallback
+    if (filteredGalleryImages.length === 0) {
+      filteredGalleryImages = galleryImages;
+    }
+  }
+  
+  const imageGallery = filteredGalleryImages.length > 0 
+    ? filteredGalleryImages.map((imageUrl, index) => ({
         url: imageUrl.image,
         alt: `${name} - View ${index + 1}`,
         type: imageUrl.image.includes('.mp4') || imageUrl.image.includes('.webm') || imageUrl.image.includes('.mov') ? "video" : "image"
