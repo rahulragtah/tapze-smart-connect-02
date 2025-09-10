@@ -18,7 +18,6 @@ import RefundPolicy from "./pages/RefundPolicy";
 import Support from "./pages/Support";
 import BrandCarousel from "./pages/BrandCarousel";
 import AboutCompany from "./pages/AboutCompany";
-import Profile from "./pages/Profile";
 import CancellationPolicy from "./pages/CancellationPolicy";
 import NotFound from "./pages/NotFound";
 import OrderSuccess from "./pages/OrderSuccess";
@@ -48,7 +47,6 @@ const App = () => (
             <Route path="/digital-profile" element={<DigitalProfile />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/brands" element={<BrandCarousel />} />
             <Route path="/about-company" element={<AboutCompany />} />
             <Route path="/order-success" element={<OrderSuccess />} />
