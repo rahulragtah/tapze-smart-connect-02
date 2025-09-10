@@ -50,9 +50,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const [couponDiscount, setCouponDiscount] = useState(0);
-  const [appliedCoupon, setAppliedCoupon] = useState('');
-  const [coupon, setCoupon] = useState<ApplyCouponResponse | null>(null);
+  const [coupon, setCoupon] = useState<ApplyCouponResponse >({success: false, message: "", discount: 0,final_amount: 0,});
   const [couponCode, setCouponCodeState] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStage, setProcessingStage] = useState<'creating' | 'payment' | 'confirming' | 'complete'>('creating');
@@ -93,19 +91,8 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     }, [setValue]);
    // Mock coupon codes for demo
 
-
-  const validCoupons = {
-    'COMEBACK10': { discount: 10, type: 'percentage' },
-    'WELCOME10': { discount: 10, type: 'percentage' },
-    'NEWUSER20': { discount: 20, type: 'percentage' },
-    'NEW30': { discount: 30, type: 'percentage' },
-    
-  };
-   const shippingCharge = totalPrice > 1000 ? 0 : 50;
-  const discountAmount =  coupon && coupon.success ? coupon.discount: 0;
-  const afterDiscount = totalOfferPrice - discountAmount;
-  // const gstAmount = (afterDiscount * 18) / 100; // 18% GST
-  // const finalTotal = afterDiscount + gstAmount + shippingCharge;
+  const shippingCharge = totalPrice > 1000 ? 0 : 50;
+  const afterDiscount =   coupon && coupon.success ? totalOfferPrice - coupon.discount : totalOfferPrice;
   const finalTotal = afterDiscount;
 
  // Handle email validation on blur
@@ -217,7 +204,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
           totalItems: totalItems,
           totalPrice: totalPrice,
           offerPrice: totalOfferPrice,
-          couponDiscount: discountAmount,
+          couponDiscount: coupon.discount,
           couponCode: couponCode,
           gstAmount: 0,
           finalTotal: finalTotal,
@@ -331,7 +318,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     totalItems: totalItems,
                     totalPrice: totalPrice,
                     discountOnMRP: totalPrice - totalOfferPrice,
-                    couponDiscount: discountAmount,
+                    couponDiscount: coupon.discount,
                     couponCode: couponCode,
                     finalTotal: finalTotal,
                   };
@@ -357,11 +344,9 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                   clearCart();
                   reset();
                   setStep('cart');
-                  setCouponDiscount(0);
-                  setAppliedCoupon('');
                   setCouponCodeState('');
                   setIsOpen(false);
-    
+                  setCoupon({success: false, message: "", discount: 0,final_amount: 0,});
                   // Keep loader visible during navigation
                   setTimeout(() => {
                     setIsProcessing(false);
@@ -604,19 +589,11 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   
           {/* Coupon Code - Standalone component to prevent form interference */}
           <CouponCodeSection
-              appliedCoupon={appliedCoupon}
-              couponDiscount={couponDiscount}
-              validCoupons={validCoupons}
+              appliedCoupon={coupon}
               onApply={ async  (code) => {
-                const coupon = validCoupons[code.toUpperCase() as keyof typeof validCoupons];
                 const myCoupons= await  applyCoupon(code, isLoggedIn ? localStorage.getItem('userId') : '0', totalOfferPrice);
                 console.log('coupon response', myCoupons);
                 if (myCoupons.success) {
-                  setCouponDiscount(myCoupons.discount_value);
-                  setAppliedCoupon(myCoupons.code);
-
-
-
                   setCoupon(myCoupons)
                   toast({
                     title: "Coupon Applied!",
@@ -635,8 +612,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 }
               }}
               onRemove={() => {
-                setCouponDiscount(0);
-                setAppliedCoupon("");
+                setCoupon({success: false, message: "", discount: 0,final_amount: 0,});
                 toast({
                   title: "Coupon Removed",
                   description: "Coupon code has been removed from your order.",
@@ -689,10 +665,10 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                     <span>Discount on MRP </span>
                     <span>-₹{(totalPrice-totalOfferPrice).toFixed(2)} </span>
                   </div>
-               {appliedCoupon && (
+               {coupon && coupon.success && (
                   <div className="flex justify-between text-green-600">
-                    <span>Coupon Discount ({appliedCoupon})</span>
-                    <span>-₹{discountAmount}</span>
+                    <span>Coupon Discount ({coupon.code})</span>
+                    <span>-₹{Number(coupon.discount).toFixed(2)}</span>
                   </div>
                 )}
                 {/* <div className="flex justify-between">
@@ -715,7 +691,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 
                 <div className="flex justify-between font-bold">
                   <span>Total</span>
-                  <span>₹{(totalOfferPrice-discountAmount).toFixed(2)}</span>
+                  <span>₹{(afterDiscount).toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
