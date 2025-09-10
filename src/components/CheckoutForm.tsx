@@ -614,6 +614,9 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                 if (myCoupons.success) {
                   setCouponDiscount(myCoupons.discount_value);
                   setAppliedCoupon(myCoupons.code);
+
+
+
                   setCoupon(myCoupons)
                   toast({
                     title: "Coupon Applied!",
@@ -689,7 +692,7 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
                {appliedCoupon && (
                   <div className="flex justify-between text-green-600">
                     <span>Coupon Discount ({appliedCoupon})</span>
-                    <span>-₹{discountAmount.toFixed(2)}</span>
+                    <span>-₹{discountAmount}</span>
                   </div>
                 )}
                 {/* <div className="flex justify-between">

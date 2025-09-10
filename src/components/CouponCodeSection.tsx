@@ -41,7 +41,7 @@ const CouponCodeSection: React.FC<CouponCodeSectionProps> = ({
               </Badge>
               <span className="text-sm text-green-700">
                 {validCoupons[appliedCoupon as keyof typeof validCoupons]?.type ===
-                "percentage"
+                "PERCENT"
                   ? `${couponDiscount}% off`
                   : `₹${couponDiscount} off`}
               </span>
